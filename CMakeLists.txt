@@ -21,6 +21,7 @@ if(UNIX AND NOT APPLE)
 endif()
 find_package(PkgConfig)
 
+
 pkg_check_modules(QSS REQUIRED QtShadowsocks>=2.0.0)
 find_library(QSS_LIBRARY_VAR
     NAMES ${QSS_LIBRARIES}
@@ -35,6 +36,7 @@ pkg_check_modules(ZBAR REQUIRED zbar)
 find_library(ZBAR_LIBRARY_VAR
     NAMES ${ZBAR_LIBRARIES}
     HINTS ${ZBAR_LIBRARY_DIRS} ${ZBAR_LIBDIR})
+
 
 if(WIN32 OR APPLE)
     add_definitions(-DFD_SETSIZE=1024)
