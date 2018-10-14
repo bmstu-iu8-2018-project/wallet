@@ -2,9 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "QMessageBox"
+#include <informationwindow.h>
 
-
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
@@ -16,8 +18,16 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_Authorization_clicked();
+
+    void on_CreateWallet_clicked();
+
 private:
     Ui::MainWindow *ui;
+    InformationWindow *sWindow;
+
+    void open_info_window();
 };
 
 #endif // MAINWINDOW_H

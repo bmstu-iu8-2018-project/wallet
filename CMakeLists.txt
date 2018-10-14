@@ -46,8 +46,10 @@ set(APP_NAME "ss-qt5")
 add_definitions(-DAPP_VERSION="${PROJECT_VERSION}")
 
 set(SOURCE
-    main.cpp
-    mainwindow.cpp
+    offline_wallet/
+        main.cpp
+        mainwindow.cpp
+        informationwindow.cpp
     )
 
 

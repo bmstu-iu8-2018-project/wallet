@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-10-06T01:41:08
+# Project created by QtCreator 2018-10-07T16:10:01
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = test
+TARGET = Offline_wallet
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -24,15 +24,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
+LIBS += C:\Temp\openssl\lib\libeay32.lib
+LIBS += C:\Temp\openssl\lib\ssleay32.lib
+
+INCLUDEPATH += C:\Temp\openssl\include
+
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    informationwindow.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    informationwindow.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    informationwindow.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
