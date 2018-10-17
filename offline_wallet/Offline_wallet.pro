@@ -22,7 +22,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++11
+CONFIG += c++17
 
 LIBS += C:\Temp\openssl\lib\libeay32.lib
 LIBS += C:\Temp\openssl\lib\ssleay32.lib
@@ -32,15 +32,27 @@ INCLUDEPATH += C:\Temp\openssl\include
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    informationwindow.cpp
+    informationwindow.cpp \
+    passwordforwallet.cpp \
+    jsonwallet.cpp \
+    includes/base58.cpp
 
 HEADERS += \
         mainwindow.h \
-    informationwindow.h
+    informationwindow.h \
+    passwordforwallet.h \
+    jsonwallet.h \
+    includes/allocators.h \
+    includes/base58.h \
+    includes/Crypto.h \
+    includes/hash.h \
+    includes/Key.h \
+    includes/OfflineWallet.h
 
 FORMS += \
         mainwindow.ui \
-    informationwindow.ui
+    informationwindow.ui \
+    passwordforwallet.ui
 
 
 # Default rules for deployment.

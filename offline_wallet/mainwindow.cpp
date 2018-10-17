@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QString>
-#include <QtDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,35 +13,34 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::open_info_window()
-{
-    sWindow = new InformationWindow();
-    sWindow->setWindowTitle("Wallet information");
-    sWindow->show();
-}
-
 void MainWindow::on_Authorization_clicked()
 {
     QString login = ui->login->text();
     QString password = ui->pass->text();
 
-    // Name and password match check
-    // if true - open window with wallet information
+    QString login_of_file;
+    QString password_of_file;
 
-    open_info_window();
-    this->close();    // close the main window
+    if ((login == login_of_file) && (password == password_of_file))
+    {
+        // Open window with wallet information
+        infWindow = new InformationWindow();
+        infWindow->setWindowTitle("Wallet information");
+        infWindow->show();
+
+        this->close();    // close the main window
+    }
+    else
+    {
+        QMessageBox::warning(this, "Error", "The authorization data do not match, try again!");
+    }
 }
 
 void MainWindow::on_CreateWallet_clicked()
-{
-    // QString login = ui->login->text();
-    // QString password = ui->pass->text();
+{    
+    passWindow = new PasswordForWallet();
+    passWindow->setWindowTitle("Offline wallet");
+    passWindow->show();
 
-    // generate key
-
-    QMessageBox::information(this, "Message", "Wallet successfully created!");
-
-    // Open window with wallet information
-    open_info_window();
     this->close();    // close the main window
 }

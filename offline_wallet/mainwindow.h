@@ -1,9 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <informationwindow.h>
+#include <passwordforwallet.h>
 #include <QMainWindow>
 #include "QMessageBox"
-#include <informationwindow.h>
+#include <QString>
+#include <QtDebug>
 
 namespace Ui
 {
@@ -12,6 +15,7 @@ class MainWindow;
 
 class MainWindow : public QMainWindow
 {
+    friend class PasswordForWallet;
     Q_OBJECT
 
 public:
@@ -25,9 +29,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    InformationWindow *sWindow;
-
-    void open_info_window();
+    InformationWindow *infWindow;
+    PasswordForWallet *passWindow;
 };
 
 #endif // MAINWINDOW_H
