@@ -12,11 +12,11 @@ class InformationWindow : public QWidget
 {
     Q_OBJECT
 
-public:
+ public:
     explicit InformationWindow(QWidget *parent = nullptr);
     ~InformationWindow();
 
-private:
+ private:
     Ui::InformationWindow *ui;
 };
 

@@ -15,19 +15,17 @@ class MainWindow;
 
 class MainWindow : public QMainWindow
 {
-    friend class PasswordForWallet;
     Q_OBJECT
-
-public:
+ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+ private slots:
     void on_Authorization_clicked();
 
     void on_CreateWallet_clicked();
 
-private:
+ private:
     Ui::MainWindow *ui;
     InformationWindow *infWindow;
     PasswordForWallet *passWindow;

@@ -15,14 +15,14 @@ class PasswordForWallet : public QWidget
 
     Q_OBJECT
 
-public:
+ public:
     explicit PasswordForWallet(QWidget *parent = nullptr);
     ~PasswordForWallet();
 
-private slots:
+ private slots:
     void on_create_pass_clicked();
 
-private:
+ private:
     Ui::PasswordForWallet *ui;
     InformationWindow *infWindow;
 };

@@ -53,6 +53,7 @@ void PasswordForWallet::on_create_pass_clicked()
         json_addres_public_map.insert("public_key",
                                       QString::fromUtf8(wallet.get_public_key().c_str()));
         JsonWallet::recordJson(json_addres_public_map, path_addres_public);
+        JsonWallet::recordJson(json_addres_public_map, path_private_data + "address_public_key.json");
 
         QMessageBox::information(this, "Message", "Wallet successfully created!");
 
