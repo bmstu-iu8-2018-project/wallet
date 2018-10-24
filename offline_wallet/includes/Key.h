@@ -14,7 +14,7 @@ class Key
 
     void make_address()
     {
-        std::string hash = "00"; // основная сеть 0x00, тестовая сеть 0х0f, Namecoin сеть 0х34;
+        std::string hash = "0f"; // РѕСЃРЅРѕРІРЅР°СЏ СЃРµС‚СЊ 0x00, С‚РµСЃС‚РѕРІР°СЏ СЃРµС‚СЊ 0С…0f, Namecoin СЃРµС‚СЊ 0С…34;
         hash += RIPEMD160(SHA256(get_public_key()));
 
         auto checksum = SHA256(SHA256(hash));
@@ -28,7 +28,7 @@ class Key
 
     std::string private_to_wif(const std::string& key)
     {
-        std::string private_key = "80";
+        std::string private_key = "80"; // СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РїСЂРµС„РёРєСЃ
         private_key += key;
         std::vector<byte> bytes = from_hex_to_bytes(private_key);
         return to_base58(bytes);
