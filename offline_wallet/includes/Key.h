@@ -2,14 +2,38 @@
 #ifndef KEY_H
 #define KEY_H
 
-#include "Crypto.h"
-#include "base58.h"
+#include "CryptoUtils.h"
+
+using namespace cu;
 
 class Key
 {
  private:
     std::pair<std::string, std::string> _Keys;
     std::string _Address;
+
+    void make_address()
+    {
+        std::string hash = "00"; // основная сеть 0x00, тестовая сеть 0х0f, Namecoin сеть 0х34;
+        hash += RIPEMD160(SHA256(get_public_key()));
+
+        auto checksum = SHA256(SHA256(hash));
+        checksum.erase(checksum.begin() + 8, checksum.end());
+        hash += checksum;
+
+        std::vector<byte> bytes = from_hex_to_bytes(hash);
+
+        _Address = to_base58(bytes);
+    }
+
+    std::string private_to_wif(const std::string& key)
+    {
+        std::string private_key = "80";
+        private_key += key;
+        std::vector<byte> bytes = from_hex_to_bytes(private_key);
+        return to_base58(bytes);
+    }
+
  public:
     Key() = default;
     ~Key() = default;
@@ -61,28 +85,6 @@ class Key
         return _Address;
     }
 
-    void make_address()
-    {
-        std::string hash = "00"; // основная сеть 0x00, тестовая сеть 0х0f, Namecoin сеть 0х34;
-        hash += RIPEMD160(SHA256(get_public_key()));
-
-        auto checksum = SHA256(SHA256(hash));
-        checksum.erase(checksum.begin() + 8, checksum.end());
-        hash += checksum;
-
-        std::vector<byte> bytes = from_hex_to_bytes(hash);
-
-        _Address = EncodeBase58(bytes);
-    }
-
-    std::string private_to_wif(const std::string& key)
-    {
-        std::string private_key = "80";
-        private_key += key;
-        std::vector<byte> bytes = from_hex_to_bytes(private_key);
-        return EncodeBase58(bytes);
-    }
-
     static Key create_wallet_key()
     {
         Key key;
@@ -91,5 +93,4 @@ class Key
         return key;
     }
 };
-
 #endif
