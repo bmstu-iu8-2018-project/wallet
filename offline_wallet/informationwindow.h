@@ -5,7 +5,7 @@
 
 namespace Ui
 {
-class InformationWindow;
+    class InformationWindow;
 }
 
 class InformationWindow : public QWidget
@@ -18,6 +18,9 @@ class InformationWindow : public QWidget
 
  private:
     Ui::InformationWindow *ui;
+
+    QString get_path_private_dir();
+
 };
 
 #endif // INFORMATIONWINDOW_H

@@ -10,7 +10,7 @@
 
 namespace Ui
 {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -29,6 +29,8 @@ class MainWindow : public QMainWindow
     Ui::MainWindow *ui;
     InformationWindow *infWindow;
     PasswordForWallet *passWindow;
+
+    void change_window();
 };
 
 #endif // MAINWINDOW_H

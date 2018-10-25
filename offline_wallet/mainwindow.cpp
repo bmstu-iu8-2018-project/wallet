@@ -36,11 +36,15 @@ void MainWindow::on_Authorization_clicked()
     }
 }
 
-void MainWindow::on_CreateWallet_clicked()
-{    
+void MainWindow::change_window()
+{
     passWindow = new PasswordForWallet();
     passWindow->setWindowTitle("Offline wallet");
     passWindow->show();
+}
 
+void MainWindow::on_CreateWallet_clicked()
+{    
+    change_window();
     this->close();    // close the main window
 }

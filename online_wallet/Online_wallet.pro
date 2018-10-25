@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-10-07T16:10:01
+# Project created by QtCreator 2018-10-25T14:41:58
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Offline_wallet
+TARGET = Online_wallet
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -31,27 +31,13 @@ INCLUDEPATH += C:\Temp\openssl\include
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
-    informationwindow.cpp \
-    passwordforwallet.cpp \
-    jsonwallet.cpp \
-    includes/CryptoUtils.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-    informationwindow.h \
-    passwordforwallet.h \
-    jsonwallet.h \
-    includes/CryptoUtils.h \
-    includes/Key.h \
-    includes/OfflineWallet.h
-
+        mainwindow.h
 
 FORMS += \
-        mainwindow.ui \
-    informationwindow.ui \
-    passwordforwallet.ui
-
+        mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

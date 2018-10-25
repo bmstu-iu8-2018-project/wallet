@@ -66,11 +66,15 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="pass"/>
+          <widget class="QLineEdit" name="pass">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="Authorization">
          <property name="font">
           <font>
@@ -82,7 +86,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="CreateWallet">
          <property name="text">
           <string>Create offline wallet</string>
