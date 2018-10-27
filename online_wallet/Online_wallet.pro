@@ -7,7 +7,6 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 TARGET = Online_wallet
 TEMPLATE = app
 
@@ -31,13 +30,16 @@ INCLUDEPATH += C:\Temp\openssl\include
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    maketransactionwindow.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    maketransactionwindow.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    maketransactionwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

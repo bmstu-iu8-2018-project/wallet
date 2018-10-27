@@ -3,6 +3,7 @@
 #define CRYPTO_UTILS_H
 
 #include <cassert>
+#include <cstring>
 #include <exception>
 #include <iomanip>
 #include <sstream>

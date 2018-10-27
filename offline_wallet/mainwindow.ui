@@ -75,7 +75,7 @@
         </layout>
        </item>
        <item alignment="Qt::AlignHCenter">
-        <widget class="QPushButton" name="Authorization">
+        <widget class="QPushButton" name="authorization">
          <property name="font">
           <font>
            <pointsize>8</pointsize>
@@ -87,7 +87,7 @@
         </widget>
        </item>
        <item alignment="Qt::AlignHCenter">
-        <widget class="QPushButton" name="CreateWallet">
+        <widget class="QPushButton" name="go_to_create_wallet">
          <property name="text">
           <string>Create offline wallet</string>
          </property>

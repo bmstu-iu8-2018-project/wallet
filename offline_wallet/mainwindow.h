@@ -21,11 +21,11 @@ class MainWindow : public QMainWindow
     ~MainWindow();
 
  private slots:
-    void on_Authorization_clicked();
+    void on_authorization_clicked();
 
-    void on_CreateWallet_clicked();
+    void on_go_to_create_wallet_clicked();
 
- private:
+private:
     Ui::MainWindow *ui;
     InformationWindow *infWindow;
     PasswordForWallet *passWindow;

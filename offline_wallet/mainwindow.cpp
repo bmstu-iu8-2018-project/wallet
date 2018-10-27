@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);   
+    ui->setupUi(this);
 }
 
 MainWindow::~MainWindow()
@@ -13,7 +13,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_Authorization_clicked()
+void MainWindow::on_authorization_clicked()
 {
     QString login = ui->login->text();
     QString password = ui->pass->text();
@@ -43,8 +43,8 @@ void MainWindow::change_window()
     passWindow->show();
 }
 
-void MainWindow::on_CreateWallet_clicked()
-{    
+void MainWindow::on_go_to_create_wallet_clicked()
+{
     change_window();
     this->close();    // close the main window
 }
