@@ -25,17 +25,23 @@ CONFIG += c++17
 
 LIBS += C:\Temp\openssl\lib\libeay32.lib
 LIBS += C:\Temp\openssl\lib\ssleay32.lib
+LIBS += -L"C:\boost\boost_1_67_0\libs" -lpsapi
+LIBS += -L"C:\boost\boost_1_67_0\stage\lib" -lpsapi
+LIBS += -lhid -lsetupapi
 
 INCLUDEPATH += C:\Temp\openssl\include
+INCLUDEPATH += C:\boost\boost_1_67_0
 
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    maketransactionwindow.cpp
+    maketransactionwindow.cpp \
+    includes/usb_monitor.cpp
 
 HEADERS += \
         mainwindow.h \
-    maketransactionwindow.h
+    maketransactionwindow.h \
+    includes/usb_monitor.h
 
 FORMS += \
         mainwindow.ui \

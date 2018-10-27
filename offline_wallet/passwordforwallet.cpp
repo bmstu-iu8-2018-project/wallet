@@ -78,8 +78,13 @@ QString PasswordForWallet::get_public_data_path()
 {
     std::set<wchar_t> set_device = mon->get_flash_disks(1);
 
-    if (set_device.empty())
-        QMessageBox::information(this, "Message", "Insert USB device!");
+    while (set_device.empty())
+    {
+        if (set_device.empty())
+            QMessageBox::warning(this, "Message", "Insert USB device!");
+
+        set_device = mon->get_flash_disks(1);
+    }
 
     QString path;
     path.push_back(name_device_);
@@ -99,8 +104,20 @@ void PasswordForWallet::save_public_data(QString path, const OfflineWallet& wall
                                   QString::fromUtf8(wallet.get_public_key().c_str()));
     JsonWallet::record_to_json(json_addres_public_map, path_addres_public + "address.dat.json");
     JsonWallet::record_to_json(json_addres_public_map, path + "/address_public_key.json");
+
+    mark_device(path_addres_public + "mark.dat");
 }
 
+void PasswordForWallet::mark_device(QString fileName)
+{
+    QFile mark(fileName);
+    if( mark.open( QIODevice::WriteOnly ) )
+    {
+        QTextStream stream( &mark );
+        stream << QObject::trUtf8( "master device" );
+        mark.close();
+    }
+}
 
 void PasswordForWallet::save_wallet_data(QString name, QString pass)
 {

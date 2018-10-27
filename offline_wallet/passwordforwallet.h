@@ -57,6 +57,8 @@ class PasswordForWallet : public QWidget
 
     QString get_public_data_path();
 
+    void mark_device(QString fileName);
+
 };
 
 #endif // PASSWORDFORWALLET_H
