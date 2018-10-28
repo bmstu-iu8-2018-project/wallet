@@ -40,21 +40,21 @@ SOURCES += \
         mainwindow.cpp \
     informationwindow.cpp \
     passwordforwallet.cpp \
-    jsonwallet.cpp \
     includes/CryptoUtils.cpp \
     includes/Key.cpp \
     includes/OfflineWallet.cpp \
-    includes/usb_monitor.cpp
+    includes/usb_monitor.cpp \
+    includes/jsonwallet.cpp
 
 HEADERS += \
         mainwindow.h \
     informationwindow.h \
     passwordforwallet.h \
-    jsonwallet.h \
     includes/CryptoUtils.h \
     includes/Key.h \
     includes/OfflineWallet.h \
-    includes/usb_monitor.h
+    includes/usb_monitor.h \
+    includes/jsonwallet.h
 
 
 FORMS += \

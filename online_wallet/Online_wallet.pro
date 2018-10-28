@@ -36,12 +36,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     maketransactionwindow.cpp \
-    includes/usb_monitor.cpp
+    includes/usb_monitor.cpp \
+    includes/jsonwallet.cpp
 
 HEADERS += \
         mainwindow.h \
     maketransactionwindow.h \
-    includes/usb_monitor.h
+    includes/usb_monitor.h \
+    includes/jsonwallet.h
 
 FORMS += \
         mainwindow.ui \

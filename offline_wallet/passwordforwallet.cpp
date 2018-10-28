@@ -1,7 +1,7 @@
 #include "passwordforwallet.h"
 #include "ui_passwordforwallet.h"
 #include "mainwindow.h"
-#include "jsonwallet.h"
+#include "includes/jsonwallet.h"
 #include <QDir>
 
 PasswordForWallet::PasswordForWallet(QWidget *parent) :
@@ -89,7 +89,12 @@ QString PasswordForWallet::get_public_data_path()
     QString path;
     path.push_back(name_device_);
     path += ":/";
-    return path;
+
+    QDir dir(path);
+    dir.mkdir(ui->lineEdit_name->text());
+    dir.cd(ui->lineEdit_name->text());
+
+    return dir.path();
 }
 
 void PasswordForWallet::save_public_data(QString path, const OfflineWallet& wallet)
@@ -102,10 +107,10 @@ void PasswordForWallet::save_public_data(QString path, const OfflineWallet& wall
                                   QString::fromUtf8(wallet.get_address().c_str()));
     json_addres_public_map.insert("public_key",
                                   QString::fromUtf8(wallet.get_public_key().c_str()));
-    JsonWallet::record_to_json(json_addres_public_map, path_addres_public + "address.dat.json");
+    JsonWallet::record_to_json(json_addres_public_map, path_addres_public + "/address.dat.json");
     JsonWallet::record_to_json(json_addres_public_map, path + "/address_public_key.json");
 
-    mark_device(path_addres_public + "mark.dat");
+    mark_device(path_addres_public + "/mark.dat");
 }
 
 void PasswordForWallet::mark_device(QString fileName)

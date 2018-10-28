@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "includes/jsonwallet.h"
 #include <QMessageBox>
 #include <QString>
 #include <QDir>
+#include <QDirIterator>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -12,6 +14,12 @@ MainWindow::MainWindow(QWidget *parent)
     finde_usb_device();
     chek_device();
     ui->setupUi(this);
+
+    QString path_private_data = get_public_data_path();
+
+    ui->name->setText(get_name_wallet());
+    ui->addres->setText(JsonWallet::get_address(path_private_data + "/address.dat.json"));
+    ui->public_key->setText(JsonWallet::get_public_key(path_private_data + "/address.dat.json"));
 }
 
 MainWindow::~MainWindow()
@@ -31,37 +39,31 @@ void MainWindow::chek_device()
         set_device = mon->get_flash_disks(1);
     }
 
-    chec_mark_on_device();
+    chec_mark_on_device(get_device_path());
 }
 
-void MainWindow::chec_mark_on_device()
+void MainWindow::chec_mark_on_device(QString path)
 {
-    QString path = get_public_data_path();
-
-    QDir currentFolder(path);
-
-    currentFolder.setFilter(QDir::Files);
-    currentFolder.setSorting(QDir::Name);
-
-    QFileInfoList folderitems(currentFolder.entryInfoList());
     bool flag = false;
-    foreach (QFileInfo i_file, folderitems)
-    {
-        QString i_filename(i_file.fileName());
-        if (i_filename == "." || i_filename == ".." || i_filename.isEmpty())
-            continue;
 
-        if (i_filename == "mark.dat")
+    QDirIterator it(path, QStringList() << "*.dat", QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext())
+    {
+        it.next();
+
+        if (it.fileName() == "mark.dat")
         {
             flag = true;
+            mark_path_ = it.filePath();
             break;
         }
     }
+
     if (!flag)
     {
         QMessageBox::warning(this, "Message", "You inserted an incorrect USB flash drive!\nTry again");
         chek_device();
-        chec_mark_on_device();
+        chec_mark_on_device(get_device_path());
     }
 }
 
@@ -83,6 +85,20 @@ void MainWindow::device_added(char letter)
 }
 
 QString MainWindow::get_public_data_path()
+{
+    QDir dir(mark_path_);
+    dir.cdUp();
+    return dir.path();
+}
+
+QString MainWindow::get_name_wallet()
+{
+    QDir dir(mark_path_);
+    dir.cdUp();
+    return dir.dirName();
+}
+
+QString MainWindow::get_device_path()
 {
     QString path;
     path.push_back(name_device_);

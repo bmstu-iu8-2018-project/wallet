@@ -1,6 +1,6 @@
 #include "informationwindow.h"
 #include "ui_informationwindow.h"
-#include "jsonwallet.h"
+#include "includes/jsonwallet.h"
 #include "passwordforwallet.h"
 
 InformationWindow::InformationWindow(QWidget *parent)

@@ -25,6 +25,8 @@ private:
     MakeTransactionWindow *transWindow;
     usb_monitor* mon;
 
+    QString mark_path_;
+
     static char name_device_;
 
     void change_window();
@@ -33,12 +35,15 @@ private:
 
     void chek_device();
 
-    void chec_mark_on_device();
+    void chec_mark_on_device(QString path);
 
     static void device_added(char letter);
 
-    QString get_public_data_path();
+    QString get_device_path();
 
+    QString get_name_wallet();
+
+    QString get_public_data_path();
 };
 
 #endif // MAINWINDOW_H
