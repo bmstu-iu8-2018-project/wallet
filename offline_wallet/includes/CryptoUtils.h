@@ -20,6 +20,8 @@
 
 
 using byte = unsigned char;
+using const_bytes = const unsigned char*;
+const int DIGEST_LENGTH = 32;
 
 namespace cu
 {
@@ -27,15 +29,17 @@ namespace cu
 
     std::vector<byte> from_hex_to_bytes(const std::string& hex);
 
+    std::string from_bytes_to_hex(const_bytes bytes, int length);
+
     std::string from_bytes_to_hex(const std::vector<byte>& bytes);
-    
+
     std::string to_hex(byte s);
 
     std::string SHA256(const std::string& string);
 
     std::string RIPEMD160(const std::string& string);
 
-    std::string to_base58(const unsigned char* pbegin, const unsigned char* pend);
+    std::string to_base58(const_bytes pbegin, const_bytes pend);
 
     std::string to_base58(const std::vector<byte>& vch);
 
@@ -52,5 +56,9 @@ namespace cu
     ECDSA_SIG* sign(const std::string& private_key, const std::string& text);
 
     bool is_validate_signature(const std::string& public_key, const ECDSA_SIG* signature, const std::string& text);
+
+    std::string signature_to_der(ECDSA_SIG* signature);
+
+    ECDSA_SIG* from_der_to_sig(const std::string& scriptSig);
 }
 #endif

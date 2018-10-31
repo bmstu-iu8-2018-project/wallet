@@ -1,12 +1,12 @@
 #include "CryptoUtils.h"
+#include <iostream>
 
 std::vector<byte> cu::from_hex_to_bytes(const std::string& hex)
 {
     std::vector<byte> vector_of_bytes;
     for (size_t i = 0; i < hex.length(); i += 2)
     {
-        std::string byteString = hex.substr(i, 2);
-        byte ibyte = static_cast<byte>(strtol(byteString.c_str(), NULL, 16));
+        byte ibyte = static_cast<byte>(strtol(hex.substr(i, 2).c_str(), NULL, 16));
         vector_of_bytes.push_back(ibyte);
     }
     return vector_of_bytes;
@@ -20,47 +20,48 @@ std::string cu::to_hex(byte s)
     return ss.str();
 };
 
-std::string cu::from_bytes_to_hex(const std::vector<byte>& bytes)
+std::string cu::from_bytes_to_hex(const unsigned char* bytes, int length)
 {
     std::string hex;
-    for (const auto& byte : bytes)
+    for (int i = 0; i < length; i++)
     {
-        hex += cu::to_hex(byte);
+        hex += cu::to_hex(bytes[i]);
     }
     return hex;
 };
 
+std::string cu::from_bytes_to_hex(const std::vector<byte>& bytes)
+{
+    return cu::from_bytes_to_hex(&bytes[0], bytes.size());
+};
+
 std::string cu::SHA256(const std::string& string)
 {
+    auto byte_string = cu::from_hex_to_bytes(string);
+
     byte hash[SHA256_DIGEST_LENGTH];
     SHA256_CTX sha256;
     SHA256_Init(&sha256);
-    SHA256_Update(&sha256, string.c_str(), string.length());
+    SHA256_Update(&sha256, &byte_string[0], byte_string.size());
     SHA256_Final(hash, &sha256);
 
-    std::string output;
-    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
-        output += to_hex(hash[i]);
-
-    return output;
+    return cu::from_bytes_to_hex(hash, SHA256_DIGEST_LENGTH);
 };
 
 std::string cu::RIPEMD160(const std::string& string)
 {
+    auto byte_string = cu::from_hex_to_bytes(string);
+
     byte hash[RIPEMD160_DIGEST_LENGTH];
     RIPEMD160_CTX ripemd160;
     RIPEMD160_Init(&ripemd160);
-    RIPEMD160_Update(&ripemd160, string.c_str(), string.length());
+    RIPEMD160_Update(&ripemd160, &byte_string[0], byte_string.size());
     RIPEMD160_Final(hash, &ripemd160);
 
-    std::string output;
-    for (int i = 0; i < RIPEMD160_DIGEST_LENGTH; i++)
-        output += to_hex(hash[i]);
-
-    return  output;
+    return  cu::from_bytes_to_hex(hash, RIPEMD160_DIGEST_LENGTH);
 };
 
-std::string cu::to_base58(const unsigned char* pbegin, const unsigned char* pend)
+std::string cu::to_base58(const_bytes pbegin, const_bytes pend)
 {
     // Skip & count leading zeroes.
     int zeroes = 0;
@@ -159,16 +160,15 @@ bool cu::from_base58(const std::string& str, std::vector<byte>& vchRet)
 BIGNUM* cu::get_private_key(const std::string& private_key)
 {
     BIGNUM* prv_key = BN_new();
-
     std::vector<byte> private_k;
+
     if (!cu::from_base58(private_key, private_k))
     {
         throw std::runtime_error("wrong format of private key");
     }
-    private_k.erase(private_k.begin(), private_k.begin() + 1);
 
-    auto key = cu::from_bytes_to_hex(private_k);
-    BN_hex2bn(&prv_key, key.c_str());
+    private_k.erase(private_k.begin(), private_k.begin() + 1);
+    BN_hex2bn(&prv_key, cu::from_bytes_to_hex(private_k).c_str());
 
     return prv_key;
 };
@@ -215,6 +215,7 @@ EC_KEY* cu::get_ec_key_from_public(const std::string& public_key)
 ECDSA_SIG* cu::sign(const std::string& private_key, const std::string& text)
 {
     auto hash = cu::from_hex_to_bytes(cu::SHA256(cu::SHA256(text)));
+
     EC_KEY* ec_key = get_ec_key_from_private(private_key);
     ECDSA_SIG* signature = ECDSA_do_sign(&hash[0], hash.size(), ec_key);
     if (signature == NULL)
@@ -230,6 +231,7 @@ ECDSA_SIG* cu::sign(const std::string& private_key, const std::string& text)
 bool cu::is_validate_signature(const std::string& public_key, const ECDSA_SIG* signature, const std::string& text)
 {
     auto hash = cu::from_hex_to_bytes(cu::SHA256(cu::SHA256(text)));
+
     EC_KEY* ec_key = get_ec_key_from_public(public_key);
     auto flag = ECDSA_do_verify(&hash[0], hash.size(), signature, ec_key);
 
@@ -237,3 +239,34 @@ bool cu::is_validate_signature(const std::string& public_key, const ECDSA_SIG* s
 
     return flag == 1;
 };
+
+std::string cu::signature_to_der(ECDSA_SIG* signature)
+{
+    std::string r = BN_bn2hex(signature->r);
+    std::string s = BN_bn2hex(signature->s);
+    std::string der;
+
+    der += "30"; //  headline
+    int size = (r.size() + s.size()) / 2 + 3;
+    std::stringstream oss;
+    oss << std::hex << size;
+    der += oss.str(); //  length of next data
+    der += "02"; //  begin of number
+    der += r; //  r
+    der += "02"; //  begin of number
+    der += s; //  s
+    der += "01"; // SIGHASH_ALL = 1; signature is valid for all exits
+
+    return der;
+}
+
+ECDSA_SIG* cu::from_der_to_sig(const std::string& scriptSig)
+{
+    ECDSA_SIG* signature = ECDSA_SIG_new();
+
+    const int begin = 6;
+    std::string s = scriptSig.substr(begin, DIGEST_LENGTH * 2);
+    std::string r = scriptSig.substr(begin + DIGEST_LENGTH * 2 + 2, DIGEST_LENGTH * 2);
+
+    return signature;
+}

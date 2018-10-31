@@ -25,58 +25,10 @@ const std::wstring usb_monitor::class_name(L"UsbMonWinClass");
 usb_monitor::usb_monitor(bool monitor_hard_drives)
     :started_(false),
     safe_remove_on_timeout_(true),
-    monitor_hard_drives_(monitor_hard_drives),
-    mon_hwnd_(NULL)
-{
-    WNDCLASSEXW wndClass = {0};
+    monitor_hard_drives_(monitor_hard_drives)
+{}
 
-    wndClass.cbSize = sizeof(WNDCLASSEX);
-    wndClass.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
-    wndClass.hInstance = reinterpret_cast<HINSTANCE>(GetModuleHandleW(NULL));
-    wndClass.lpfnWndProc = reinterpret_cast<WNDPROC>(WinProcCallback);
-    wndClass.cbClsExtra = 0;
-    wndClass.cbWndExtra = 0;
-    wndClass.lpszClassName = class_name.c_str();
 
-    if(!RegisterClassExW(&wndClass))
-        throw usb_monitor_exception("Cannot register window class");
-
-    existing_usb_devices_ = get_flash_disks(monitor_hard_drives_);
-
-    mon_hwnd_ = CreateWindowExW(WS_EX_CONTROLPARENT,
-        class_name.c_str(),
-        L"UsbMon",
-        WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, 0,
-        640, 480,
-        NULL, NULL,
-        GetModuleHandleW(NULL),
-        NULL);
-
-    if(mon_hwnd_ == NULL)
-    {
-        UnregisterClassW(class_name.c_str(), GetModuleHandleW(NULL));
-        throw usb_monitor_exception("Cannot create window");
-    }
-
-    SetWindowLongPtrW(mon_hwnd_, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
-}
-
-INT_PTR WINAPI usb_monitor::WinProcCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    switch(message)
-    {
-    case WM_DEVICECHANGE:
-        {
-            LONG_PTR data = GetWindowLongPtrW(hWnd, GWLP_USERDATA);
-            if(data)
-                return reinterpret_cast<usb_monitor*>(data)->devices_changed(wParam, lParam);
-        }
-        return TRUE;
-    }
-
-    return TRUE;
-}
 
 BOOL usb_monitor::devices_changed(WPARAM wParam, LPARAM lParam)
 {
@@ -268,6 +220,7 @@ void usb_monitor::on_device_remove_fail()
     on_device_remove_failed_.clear();
 }
 
+//////////////////////////////////////////////////////////////////////////////
 usb_monitor* usb_monitor::create(bool monitor_hard_drives)
 {
     if(!instanse_.get())
@@ -275,6 +228,7 @@ usb_monitor* usb_monitor::create(bool monitor_hard_drives)
 
     return instanse_.get();
 }
+//////////////////////////////////////////////////////////////////////////////
 
 void usb_monitor::remove()
 {
@@ -296,6 +250,7 @@ usb_monitor::~usb_monitor()
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////////
 std::set<wchar_t> usb_monitor::get_flash_disks(bool include_usb_hard_drives)
 {
     std::set<wchar_t> devices;
@@ -350,6 +305,7 @@ std::set<wchar_t> usb_monitor::get_flash_disks(bool include_usb_hard_drives)
 
     return devices;
 }
+////////////////////////////////////////////////////////////////////////////////////
 
 void usb_monitor::message_pump()
 {

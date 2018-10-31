@@ -2,24 +2,24 @@
 
 void Key::make_address()
 {
-    std::string hash = "00"; // main network 0x00, test network 0x0f, Namecoin network 0x34;
-    hash += RIPEMD160(SHA256(get_public_key()));
+    std::string address = "00"; // main network 0x00, test network 0x0f, Namecoin network 0x34;
+    address += RIPEMD160(SHA256(get_public_key()));
 
-    auto checksum = SHA256(SHA256(hash));
-    checksum.erase(checksum.begin() + 8, checksum.end());
-    hash += checksum;
+    auto checksum = SHA256(SHA256(address));
+    address.insert(address.end(), checksum.begin(), checksum.begin() + 8);
 
-    std::vector<byte> bytes = from_hex_to_bytes(hash);
-
-    _Address = to_base58(bytes);
+    _Address = to_base58(from_hex_to_bytes(address));
 };
 
 std::string Key::private_to_wif(const std::string& key)
 {
     std::string private_key = "80";
     private_key += key;
-    std::vector<byte> bytes = from_hex_to_bytes(private_key);
-    return to_base58(bytes);
+
+    auto checksum = SHA256(SHA256(private_key));
+    private_key.insert(private_key.end(), checksum.begin(), checksum.begin() + 8);
+
+    return to_base58(from_hex_to_bytes(private_key));
 };
 
 void Key::generate_keys()

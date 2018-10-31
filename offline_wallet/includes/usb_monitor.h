@@ -124,7 +124,6 @@ private:
     typedef std::map<size_t, std::pair<HDEVNOTIFY, wchar_t> > notifications;
     notifications existing_notifications_;
 
-    static INT_PTR WINAPI WinProcCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static std::auto_ptr<usb_monitor> instanse_;
 
     void detect_changed_devices();
