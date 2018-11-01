@@ -1,5 +1,6 @@
 #include "informationwindow.h"
 #include "ui_informationwindow.h"
+#include "mainwindow.h"
 #include "includes/jsonwallet.h"
 #include "passwordforwallet.h"
 
@@ -20,7 +21,12 @@ QString InformationWindow::get_path_private_dir()
 {
     QDir dir(QDir::currentPath());
     dir.cd("Private data");
-    dir.cd(PasswordForWallet::get_wallet_name());
+
+    if (PasswordForWallet::get_wallet_name().isEmpty())
+        dir.cd(MainWindow::get_wallet_name());
+    else
+        dir.cd(PasswordForWallet::get_wallet_name());
+
     return dir.path();
 }
 

@@ -13,16 +13,50 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+QString MainWindow:: name_;
+
 void MainWindow::on_authorization_clicked()
 {
     QString login = ui->login->text();
     QString password = ui->pass->text();
 
-    QString login_of_file;
-    QString password_of_file;
+    QDir dir(QDir::currentPath());
+
+    QDirIterator it(dir.path(), QDir::Dirs, QDirIterator::Subdirectories);
+
+    bool flag = false;
+    while (it.hasNext())
+    {
+        it.next();
+
+        if (it.fileName() == "Private data")
+        {
+            flag = true;
+            dir.cd("Private data");
+
+            QDirIterator iter(dir.path(), QDir::Dirs, QDirIterator::Subdirectories);
+            while (iter.hasNext())
+            {
+                iter.next();
+
+                if (iter.fileName() == login)
+                {
+                    dir.cd(login);
+                    break;
+                }
+            }
+        }
+    }
+
+    if (!flag)
+        QMessageBox::warning(this, "Error", "Wallet is not created on the device!");
+
+    QString login_of_file = JsonWallet::get_name(dir.path() + "/authorization_data.json");
+    QString password_of_file = load_password(dir.path());
 
     if ((login == login_of_file) && (password == password_of_file))
     {
+        name_ = login_of_file;
         // Open window with wallet information
         infWindow = new InformationWindow();
         infWindow->setWindowTitle("Wallet information");
@@ -35,6 +69,22 @@ void MainWindow::on_authorization_clicked()
         QMessageBox::warning(this, "Error", "The authorization data do not match, try again!");
     }
 }
+
+QString MainWindow::load_password(QString path)
+{
+    QFile jsonFile(path + "/authorization_data.json");
+    jsonFile.open(QFile::ReadOnly);
+    QJsonDocument document = QJsonDocument().fromJson(jsonFile.readAll());
+    QJsonObject name = document.object();
+    QJsonValue value = name.value("password");
+    return value.toString();
+}
+
+QString MainWindow::get_wallet_name()
+{
+    return name_;
+}
+
 
 void MainWindow::change_window()
 {

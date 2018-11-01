@@ -106,11 +106,14 @@ void PasswordForWallet::save_public_data(QString path, const OfflineWallet& wall
     json_addres_public_map.insert("address",
                                   QString::fromUtf8(wallet.get_address().c_str()));
     json_addres_public_map.insert("public_key",
-                                  QString::fromUtf8(wallet.get_public_key().c_str()));
+                                   QString::fromUtf8(wallet.get_public_key().c_str()));
     JsonWallet::record_to_json(json_addres_public_map, path_addres_public + "/address.dat.json");
     JsonWallet::record_to_json(json_addres_public_map, path + "/address_public_key.json");
 
     mark_device(path_addres_public + "/mark.dat");
+
+    QDir dir(path_addres_public);
+    dir.mkdir("Transactions");
 }
 
 void PasswordForWallet::mark_device(QString fileName)
