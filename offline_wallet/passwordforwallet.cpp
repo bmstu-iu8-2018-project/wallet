@@ -135,7 +135,7 @@ void PasswordForWallet::save_wallet_data(QString name, QString pass)
 
     // generate key
     OfflineWallet  wallet;
-    wallet.create_wallet();
+    wallet.create_wallet(TEST_NETWORK);
 
     // save private key on offline device
     save_private_data(path_private_data, wallet);

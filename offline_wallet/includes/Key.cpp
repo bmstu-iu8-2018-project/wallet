@@ -1,9 +1,8 @@
 #include "Key.h"
 
-void Key::make_address()
+void Key::make_address(const byte type_network)
 {
-    std::string address = "00"; // main network 0x00, test network 0x0f, Namecoin network 0x34;
-    address += RIPEMD160(SHA256(get_public_key()));
+    std::string address = to_hex(type_network) + RIPEMD160(SHA256(get_public_key()));
 
     auto checksum = SHA256(SHA256(address));
     address.insert(address.end(), checksum.begin(), checksum.begin() + 8);
@@ -13,8 +12,7 @@ void Key::make_address()
 
 std::string Key::private_to_wif(const std::string& key)
 {
-    std::string private_key = "80";
-    private_key += key;
+    std::string private_key = to_hex(PRIVATE_PREFIX) + key;
 
     auto checksum = SHA256(SHA256(private_key));
     private_key.insert(private_key.end(), checksum.begin(), checksum.begin() + 8);
@@ -68,10 +66,10 @@ std::string Key::get_address() const noexcept
     return _Address;
 };
 
-Key Key::create_wallet_key()
+Key Key::create_wallet_key(const byte type_network)
 {
     Key key;
     key.generate_keys();
-    key.make_address();
+    key.make_address(type_network);
     return key;
 };

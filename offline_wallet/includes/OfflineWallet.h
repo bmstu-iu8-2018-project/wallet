@@ -13,7 +13,7 @@ public:
 
     ~OfflineWallet() = default;
 
-    void create_wallet();
+    void create_wallet(const byte type_network);
 
     std::string get_private_key() const noexcept;
 
