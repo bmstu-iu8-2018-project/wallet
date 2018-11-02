@@ -127,6 +127,30 @@ void PasswordForWallet::mark_device(QString fileName)
     }
 }
 
+bool PasswordForWallet::check_test_network()
+{
+    if (ui->test_network->isChecked())
+        return true;
+
+    return false;
+}
+
+bool PasswordForWallet::check_main_network()
+{
+    if (ui->main_network->isChecked())
+        return true;
+
+    return false;
+}
+
+bool PasswordForWallet::check_network()
+{
+    if (check_test_network() || check_main_network())
+        return true;
+
+    return false;
+}
+
 void PasswordForWallet::save_wallet_data(QString name, QString pass)
 {
     QString path_private_data = create_private_dir(name);
@@ -135,11 +159,18 @@ void PasswordForWallet::save_wallet_data(QString name, QString pass)
 
     // generate key
     OfflineWallet  wallet;
-    wallet.create_wallet(TEST_NETWORK);
+
+    if (check_test_network())
+    {
+        wallet.create_wallet(TEST_NETWORK);
+    }
+    else if (check_main_network())
+    {
+        wallet.create_wallet(MAIN_NETWORK);
+    }
 
     // save private key on offline device
     save_private_data(path_private_data, wallet);
-
     save_public_data(path_private_data, wallet);
 
     QMessageBox::information(this, "Message", "Wallet successfully created!");
@@ -148,18 +179,21 @@ void PasswordForWallet::save_wallet_data(QString name, QString pass)
     change_window();
 }
 
-
 void PasswordForWallet::on_create_wallet()
 {
-    QString password1 = ui->lineEdit_pass1->text();
-    QString password2 = ui->lineEdit_pass2->text();
-    QString name = ui->lineEdit_name->text();
-    name_ = name;
+    name_ = ui->lineEdit_name->text();
 
-    if (password1 == password2)
+    if (ui->lineEdit_pass1->text() == ui->lineEdit_pass2->text())
     {
-        save_wallet_data(name, password1);
-        this->close();    // close the main window
+        if (check_network())
+        {
+            save_wallet_data(ui->lineEdit_name->text(), ui->lineEdit_pass1->text());
+            this->close();    // close the main window
+        }
+        else
+        {
+            QMessageBox::warning(this, "Error", "Select the type of wallet!");
+        }
     }
     else
     {
@@ -172,3 +206,18 @@ void PasswordForWallet::on_create_wallet_clicked()
     on_create_wallet();
 }
 
+void PasswordForWallet::on_test_network_toggled(bool checked)
+{
+    if(checked)
+        ui->main_network->setEnabled(false);
+    else
+        ui->main_network->setEnabled(true);
+}
+
+void PasswordForWallet::on_main_network_toggled(bool checked)
+{
+    if(checked)
+        ui->test_network->setEnabled(false);
+    else
+        ui->test_network->setEnabled(true);
+}

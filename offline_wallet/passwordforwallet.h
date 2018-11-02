@@ -27,7 +27,11 @@ class PasswordForWallet : public QWidget
  private slots:
     void on_create_wallet_clicked();
 
- private:
+    void on_test_network_toggled(bool checked);
+
+    void on_main_network_toggled(bool checked);
+
+private:
     Ui::PasswordForWallet *ui;
 
     InformationWindow *infWindow;
@@ -59,6 +63,11 @@ class PasswordForWallet : public QWidget
 
     void mark_device(QString fileName);
 
+    bool check_test_network();
+
+    bool check_main_network();
+
+    bool check_network();
 };
 
 #endif // PASSWORDFORWALLET_H
