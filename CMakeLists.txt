@@ -52,8 +52,6 @@ set(SOURCE
         informationwindow.cpp
     )
 
-
-
 if (WIN32)
     list(APPEND SOURCE ss-qt5.rc)
 endif()
@@ -71,6 +69,7 @@ target_link_libraries(${APP_NAME}
     PRIVATE ${ZBAR_LIBRARY_VAR})
 
 target_include_directories(${APP_NAME}
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
     PRIVATE ${QSS_INCLUDE_DIRS}
     PRIVATE ${QRENCODE_INCLUDE_DIRS}
     PRIVATE ${ZBAR_INCLUDE_DIRS})
