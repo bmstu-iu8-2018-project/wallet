@@ -54,7 +54,8 @@ void MainWindow::on_authorization_clicked()
     QString login_of_file = JsonWallet::get_name(dir.path() + "/authorization_data.json");
     QString password_of_file = load_password(dir.path());
 
-    if ((login == login_of_file) && (password == password_of_file))
+    if ((login == login_of_file) && (password == password_of_file) &&
+            (!login.isEmpty()))
     {
         name_ = login_of_file;
         // Open window with wallet information
@@ -70,7 +71,7 @@ void MainWindow::on_authorization_clicked()
     }
 }
 
-QString MainWindow::load_password(QString path)
+QString MainWindow::load_password(const QString& path)
 {
     QFile jsonFile(path + "/authorization_data.json");
     jsonFile.open(QFile::ReadOnly);

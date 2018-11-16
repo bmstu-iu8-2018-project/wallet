@@ -1,7 +1,7 @@
 #include "passwordforwallet.h"
 #include "ui_passwordforwallet.h"
-#include "mainwindow.h"
 #include "includes/jsonwallet.h"
+#include <mainwindow.h>
 #include <QDir>
 
 PasswordForWallet::PasswordForWallet(QWidget *parent) :
@@ -34,7 +34,7 @@ void PasswordForWallet::device_added(char letter)
     name_device_ = letter;
 }
 
-QString PasswordForWallet::create_private_dir(QString name)
+QString PasswordForWallet::create_private_dir(const QString& name)
 {
     QDir dir(QDir::currentPath());
     dir.mkdir("Private data");
@@ -56,7 +56,8 @@ void PasswordForWallet::change_window()
     infWindow->show();
 }
 
-void PasswordForWallet::save_authorization_data(QString path, QString name, QString pass)
+void PasswordForWallet::save_authorization_data(
+        const QString& path, const QString& name, const QString& pass)
 {
     QVariantMap json_authorization_data_map;
     json_authorization_data_map.insert("name", name);
@@ -65,7 +66,8 @@ void PasswordForWallet::save_authorization_data(QString path, QString name, QStr
                            path + "/authorization_data.json");
 }
 
-void PasswordForWallet::save_private_data(QString path, const OfflineWallet& wallet)
+void PasswordForWallet::save_private_data(
+        const QString& path, const OfflineWallet& wallet)
 {
     QVariantMap json_private_map;
     json_private_map.insert("private_key",
@@ -97,7 +99,8 @@ QString PasswordForWallet::get_public_data_path()
     return dir.path();
 }
 
-void PasswordForWallet::save_public_data(QString path, const OfflineWallet& wallet)
+void PasswordForWallet::save_public_data(
+        const QString& path, const OfflineWallet& wallet)
 {
     // get path for save public_key and address
     QString path_addres_public = get_public_data_path();
@@ -116,7 +119,7 @@ void PasswordForWallet::save_public_data(QString path, const OfflineWallet& wall
     dir.mkdir("Transactions");
 }
 
-void PasswordForWallet::mark_device(QString fileName)
+void PasswordForWallet::mark_device(const QString& fileName)
 {
     QFile mark(fileName);
     if( mark.open( QIODevice::WriteOnly ) )
@@ -151,7 +154,8 @@ bool PasswordForWallet::check_network()
     return false;
 }
 
-void PasswordForWallet::save_wallet_data(QString name, QString pass)
+void PasswordForWallet::save_wallet_data(
+        const QString& name, const QString& pass)
 {
     QString path_private_data = create_private_dir(name);
 
@@ -220,4 +224,14 @@ void PasswordForWallet::on_main_network_toggled(bool checked)
         ui->test_network->setEnabled(false);
     else
         ui->test_network->setEnabled(true);
+}
+
+void PasswordForWallet::on_back_clicked()
+{
+    auto mainWindow = new MainWindow();
+    mainWindow->setAttribute( Qt::WA_DeleteOnClose );
+    mainWindow->setWindowTitle("Offline Wallet");
+    mainWindow->show();
+    deleteLater();
+    this->close();
 }

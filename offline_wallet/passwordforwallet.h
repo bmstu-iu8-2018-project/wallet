@@ -31,6 +31,8 @@ class PasswordForWallet : public QWidget
 
     void on_main_network_toggled(bool checked);
 
+    void on_back_clicked();
+
 private:
     Ui::PasswordForWallet *ui;
 
@@ -43,25 +45,25 @@ private:
 
     void finde_usb_device();
 
-    static void device_added(char letter);
+    static void device_added(const char letter);
 
-    QString create_private_dir(QString path);
+    QString create_private_dir(const QString& path);
 
     void change_window();
 
     void on_create_wallet();
 
-    void save_wallet_data(QString name, QString pass);
+    void save_wallet_data(const QString& name, const QString& pass);
 
-    void save_authorization_data(QString path, QString name, QString pass);
+    void save_authorization_data(const QString& path, const QString& name, const QString& pass);
 
-    void save_private_data(QString path, const OfflineWallet& wallet);
+    void save_private_data(const QString& path, const OfflineWallet& wallet);
 
-    void save_public_data(QString path, const OfflineWallet& wallet);
+    void save_public_data(const QString& path, const OfflineWallet& wallet);
 
     QString get_public_data_path();
 
-    void mark_device(QString fileName);
+    void mark_device(const QString& fileName);
 
     bool check_test_network();
 

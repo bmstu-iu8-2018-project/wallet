@@ -25,6 +25,8 @@ private slots:
 
     void on_transactoin_list_doubleClicked(const QModelIndex &index);
 
+    void on_exit_clicked();
+
 private:
     Ui::InformationWindow *ui;
 
@@ -42,11 +44,11 @@ private:
 
     void finde_usb_device();
 
-    static void device_added(char letter);
+    static void device_added(const char letter);
 
     void chek_device();
 
-    void chec_mark_on_device(QString path);
+    void chec_mark_on_device(const QString& path);
 
     QString get_device_path();
 

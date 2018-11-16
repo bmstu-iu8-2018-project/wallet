@@ -31,12 +31,16 @@ class MainWindow : public QMainWindow
 
 private:
     Ui::MainWindow *ui;
+
     InformationWindow *infWindow;
+
     PasswordForWallet *passWindow;
+
     static QString name_;
 
     void change_window();
-    QString load_password(QString path);
+
+    QString load_password(const QString& path);
 };
 
 #endif // MAINWINDOW_H

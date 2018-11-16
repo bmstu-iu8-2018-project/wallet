@@ -51,7 +51,7 @@ void InformationWindow::finde_usb_device()
     mon->start();
 }
 
-void InformationWindow::device_added(char letter)
+void InformationWindow::device_added(const char letter)
 {
     name_device_ = letter;
 }
@@ -60,18 +60,15 @@ void InformationWindow::chek_device()
 {
     std::set<wchar_t> set_device = mon->get_flash_disks(1);
 
-    while (set_device.empty())
-    {
-        if (set_device.empty())
-            QMessageBox::warning(this, "Message", "Insert USB device!");
-
-        set_device = mon->get_flash_disks(1);
-    }
+    if (set_device.empty())
+        QMessageBox::warning(this, "Message", "Insert USB device!");
+    else
+        chec_mark_on_device(get_device_path());
     mon->stop();
-    chec_mark_on_device(get_device_path());
+
 }
 
-void InformationWindow::chec_mark_on_device(QString path)
+void InformationWindow::chec_mark_on_device(const QString& path)
 {
     bool flag = false;
 
@@ -83,9 +80,12 @@ void InformationWindow::chec_mark_on_device(QString path)
 
         if (it.fileName() == "mark.dat")
         {
-            flag = true;
             mark_path_ = it.filePath();
-            break;
+            if (get_name_wallet() ==  ui->name->text())
+            {
+                flag = true;
+                break;
+            }
         }
     }
 
@@ -93,9 +93,7 @@ void InformationWindow::chec_mark_on_device(QString path)
     {
         QMessageBox::warning(this, "Message", "You inserted an incorrect USB flash drive!\nTry again");
         chek_device();
-        chec_mark_on_device(get_device_path());
     }
-
 }
 
 QString InformationWindow::get_name_wallet()
@@ -132,10 +130,6 @@ void InformationWindow::on_update_trans_clicked()
         fs_model_->setRootPath(get_device_path());
         ui->transactoin_list->setModel(fs_model_);
     }
-    else
-    {
-        QMessageBox::warning(this, "Message", "Bad");
-    }
 }
 
 void InformationWindow::on_transactoin_list_doubleClicked(const QModelIndex &index)
@@ -171,3 +165,13 @@ void InformationWindow::on_transactoin_list_doubleClicked(const QModelIndex &ind
      transWindow->setTransaction(path);
      transWindow->show();
  }
+
+void InformationWindow::on_exit_clicked()
+{
+    auto mainWindow = new MainWindow();
+    mainWindow->setAttribute( Qt::WA_DeleteOnClose );
+    mainWindow->setWindowTitle("Offline Wallet");
+    mainWindow->show();
+    deleteLater();
+    this->close();
+}

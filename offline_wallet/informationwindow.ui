@@ -94,6 +94,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item alignment="Qt::AlignLeft">
+      <widget class="QPushButton" name="exit">
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
+     </item>
+     <item alignment="Qt::AlignRight">
       <widget class="QPushButton" name="update_trans">
        <property name="text">
         <string>Update</string>

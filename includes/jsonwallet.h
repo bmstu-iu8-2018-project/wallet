@@ -12,19 +12,19 @@ class JsonWallet
  public:
     JsonWallet() = default;
 
-    static QString get_name(QString fileName);
-    static QString get_address(QString fileName);
-    static QString get_public_key(QString fileName);
+    static QString get_name(const QString& fileName);
+    static QString get_address(const QString& fileName);
+    static QString get_public_key(const QString& fileName);
 
-    static QString get_json(QString fileName);
-    static void record_to_json(QVariantMap map, QString fileName);
+    static QString get_json(const QString& fileName);
+    static void record_to_json(const QVariantMap& map, const QString& fileName);
 
  private:
-    QString get_information(QString fileName, QString info);
+    QString get_information(const QString& fileName, const QString& info);
 
-    QJsonDocument load_json(QString fileName);
+    QJsonDocument load_json(const QString& fileName);
 
-    void save_json(QJsonDocument document, QString fileName);
+    void save_json(const QJsonDocument& document, const QString& fileName);
 };
 
 #endif // JSONWALLET_H

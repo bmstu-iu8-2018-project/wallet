@@ -3,11 +3,12 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
+    QApplication app(argc, argv);
 
-    w.setWindowTitle("Offline wallet");
+    auto mainWindow = new MainWindow;
+    mainWindow->setAttribute( Qt::WA_DeleteOnClose );
+    mainWindow->setWindowTitle("Offline Wallet");
+    mainWindow->show();
 
-    w.show();
-    return a.exec();
+    return app.exec();
 }
