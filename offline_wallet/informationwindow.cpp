@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "includes/jsonwallet.h"
 #include "passwordforwallet.h"
+#include <QDebug>
 
 InformationWindow::InformationWindow(QWidget *parent)
     : QWidget(parent)
@@ -122,11 +123,6 @@ QString InformationWindow::get_transactions_path()
     return path;
 }
 
-void InformationWindow::on_sing_transaction_clicked()
-{
-
-}
-
 void InformationWindow::on_update_trans_clicked()
 {
     finde_usb_device();
@@ -144,7 +140,7 @@ void InformationWindow::on_update_trans_clicked()
 
 void InformationWindow::on_transactoin_list_doubleClicked(const QModelIndex &index)
 {
-    QListView *list_view = (QListView*)sender();
+    QListView *list_view = static_cast<QListView*>(sender());
     QFileInfo file_info = fs_model_->fileInfo(index);
     if (file_info.fileName() == "..")
     {
@@ -160,4 +156,18 @@ void InformationWindow::on_transactoin_list_doubleClicked(const QModelIndex &ind
     {
         list_view->setRootIndex(index);
     }
+    else if (file_info.isFile())
+    {
+        if ((file_info.baseName() == "transaction") &&
+                (file_info.completeSuffix() == "json"))
+            change_window(file_info.filePath());
+    }
 }
+
+ void InformationWindow::change_window(const QString& path)
+ {
+     transWindow = new TransactionWindow();
+     transWindow->setWindowTitle("Transaction");
+     transWindow->setTransaction(path);
+     transWindow->show();
+ }

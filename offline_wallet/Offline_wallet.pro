@@ -44,7 +44,8 @@ SOURCES += \
     includes/Key.cpp \
     includes/OfflineWallet.cpp \
     includes/usb_monitor.cpp \
-    includes/jsonwallet.cpp
+    includes/jsonwallet.cpp \
+    transactionwindow.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -54,13 +55,15 @@ HEADERS += \
     includes/Key.h \
     includes/OfflineWallet.h \
     includes/usb_monitor.h \
-    includes/jsonwallet.h
+    includes/jsonwallet.h \
+    transactionwindow.h
 
 
 FORMS += \
         mainwindow.ui \
     informationwindow.ui \
-    passwordforwallet.ui
+    passwordforwallet.ui \
+    transactionwindow.ui
 
 
 # Default rules for deployment.

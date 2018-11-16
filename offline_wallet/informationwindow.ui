@@ -100,13 +100,6 @@
        </property>
       </widget>
      </item>
-     <item alignment="Qt::AlignRight">
-      <widget class="QPushButton" name="sing_transaction">
-       <property name="text">
-        <string>Sign a transaction</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
   </layout>

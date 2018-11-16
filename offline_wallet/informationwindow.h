@@ -5,6 +5,7 @@
 #include <QListView>
 #include <QFileSystemModel>
 #include <includes/usb_monitor.h>
+#include <transactionwindow.h>
 
 namespace Ui
 {
@@ -20,16 +21,19 @@ class InformationWindow : public QWidget
     ~InformationWindow();
 
 private slots:
-    void on_sing_transaction_clicked();
-
     void on_update_trans_clicked();
 
     void on_transactoin_list_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::InformationWindow *ui;
+
+    TransactionWindow *transWindow;
+
     usb_monitor *mon;
+
     QFileSystemModel *fs_model_;
+
     static QString mark_path_;
 
     static char name_device_;
@@ -49,6 +53,8 @@ private:
     QString get_transactions_path();
 
     static QString get_name_wallet();
+
+    void change_window(const QString& path);
 };
 
 #endif // INFORMATIONWINDOW_H

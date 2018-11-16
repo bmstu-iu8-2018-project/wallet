@@ -16,6 +16,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    static QString get_public_data_path();
 
 private slots:
     void on_make_transaction_clicked();
@@ -25,13 +26,13 @@ private:
     MakeTransactionWindow *transWindow;
     usb_monitor* mon;
 
-    QString mark_path_;
+    static QString mark_path_;
 
     static char name_device_;
 
     void change_window();
 
-    void finde_usb_device();
+    void find_usb_device();
 
     void chek_device();
 
@@ -41,9 +42,8 @@ private:
 
     QString get_device_path();
 
-    QString get_name_wallet();
+    static QString get_name_wallet();
 
-    QString get_public_data_path();
 };
 
 #endif // MAINWINDOW_H

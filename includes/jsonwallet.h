@@ -16,6 +16,7 @@ class JsonWallet
     static QString get_address(QString fileName);
     static QString get_public_key(QString fileName);
 
+    static QString get_json(QString fileName);
     static void record_to_json(QVariantMap map, QString fileName);
 
  private:

@@ -11,14 +11,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    finde_usb_device();
+    find_usb_device();
     chek_device();
     ui->setupUi(this);
 
     QString path_private_data = get_public_data_path();
 
     ui->name->setText(get_name_wallet());
-    ui->addres->setText(JsonWallet::get_address(path_private_data + "/address.dat.json"));
+    ui->address->setText(JsonWallet::get_address(path_private_data + "/address.dat.json"));
     ui->public_key->setText(JsonWallet::get_public_key(path_private_data + "/address.dat.json"));
 }
 
@@ -36,9 +36,9 @@ void MainWindow::chek_device()
         if (set_device.empty())
             QMessageBox::warning(this, "Message", "Insert USB device!");
 
-        set_device = mon->get_flash_disks(1);
+        set_device = mon->get_flash_disks(1);     
     }
-
+    mon->stop();
     chec_mark_on_device(get_device_path());
 }
 
@@ -47,6 +47,7 @@ void MainWindow::chec_mark_on_device(QString path)
     bool flag = false;
 
     QDirIterator it(path, QStringList() << "*.dat", QDir::Files, QDirIterator::Subdirectories);
+
     while (it.hasNext())
     {
         it.next();
@@ -65,10 +66,10 @@ void MainWindow::chec_mark_on_device(QString path)
         chek_device();
         chec_mark_on_device(get_device_path());
     }
+
 }
 
-
-void MainWindow::finde_usb_device()
+void MainWindow::find_usb_device()
 {
     mon = usb_monitor::create();
     mon->on_device_add(device_added);
@@ -78,6 +79,7 @@ void MainWindow::finde_usb_device()
 }
 
 char MainWindow::name_device_;
+QString MainWindow::mark_path_;
 
 void MainWindow::device_added(char letter)
 {
@@ -116,5 +118,4 @@ void MainWindow::change_window()
 void MainWindow::on_make_transaction_clicked()
 {
     change_window();
-    this->close();    // close the main window
 }

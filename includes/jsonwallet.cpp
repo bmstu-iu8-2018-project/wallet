@@ -32,6 +32,13 @@ QString JsonWallet::get_information(QString fileName, QString info)
     return value.toString();
 }
 
+QString JsonWallet::get_json(QString fileName)
+{
+    QFile jsonFile(fileName);
+    jsonFile.open(QFile::ReadOnly);
+    return jsonFile.readAll();
+}
+
 QString JsonWallet::get_name(QString fileName)
 {
     JsonWallet js;
