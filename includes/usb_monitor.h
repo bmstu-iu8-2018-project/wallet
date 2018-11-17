@@ -20,46 +20,47 @@ public:
 class usb_monitor
 {
 public:
-	//Ñîçäàåò åäèíñòâåííûé ýêçåìïëÿð êëàññà usb_monitor
-	//monitor_hard_drives - îïöèÿ îòñëåæèâàíèÿ âíåøíèõ æåñòêèõ äèñêîâ
+    //Creates a single instance of the class usb_monitor
+    //monitor_hard_drives - option to monitor external hard drives
 	static usb_monitor* create(bool monitor_hard_drives = false);
 
-	//Óäàëèòü ýêçåìïëÿð êëàññà èç ïàìÿòè
+    //Remove class instance from memory
 	static void remove();
 
-	//Äîáàâëÿåò êîëëáåê, âûçûâàåìûé ïðè äîáàâëåíèè íîâîãî USB flash-äèñêà
-	//Ôîðìàò êîëëáåêà: void(char letter), ãäå letter - áóêâà äîáàâèâøåãîñÿ äèñêà
+    //Adds a callback called when adding a new USB flash disk
+    //Callback format: void (char letter), where letter is the letter of the added disk
 	template<typename Handler>
 	void on_device_add(Handler handler)
 	{
 		on_device_added_ = handler;
 	}
 
-	//Ôóíêöèè äëÿ óäàëåíèÿ ñóùåñòâóþùèõ êîëëáåêîâ
+    //Options for deleting existing callbacks
 	void on_device_add();
 
-	//Ñòàðòóåò îòñëåæèâàíèå USB
+    //USB tracking starts
 	void start();
-	//Îñòàíàâëèâàåò îòñëåæèâàíèå USB
+    //Stops USB tracking
 	void stop();
-	//Çàïóùåíî ëè îòñëåæèâàíèå USB
+    //USB tracking started
 	bool is_started() const;
 	
-	//Ïîëó÷èòü áóêâû âñåõ USB flash-äèñêîâ, èìåþùèõñÿ â ñèñòåìå â äàííûé ìîìåíò âðåìåíè
-	//Åñëè include_usb_hard_drives == true, òî â ñïèñîê ïîïàäóò áóêâû âíåøíèõ æåñòêèõ äèñêîâ,
-	//â ïðîòèâíîì ñëó÷àå - òîëüêî ôëåøêè
+    //Get the letters of all USB flash drives currently on the system
+    //If include_usb_hard_drives == true,
+    //then the list will contain the letters of external hard drives,
+    //otherwise, only flash drives
 	static std::set<wchar_t> get_flash_disks(bool include_usb_hard_drives);
 	
-	//Âçÿòü ïîä êîíòðîëü ñóùåñòâóþùèå USB-ôëåøêè
-	//Åñëè óñòðîéñòâî óæå áûëî çàìîíòèðîâàíî, íè÷åãî íå ïðîèçîéäåò
-	//Äëÿ êàæäîãî çàìîíòèðîâàííîãî óñòðîéñòâà áóäåò âûçâàí êîëëáåê on_device_add
+    //Take control of existing USB flash drives
+    //If the device has already been mounted, nothing will happen
+    //For each mounted device a callback will be called on_device_add
 	void mount_existing_devices();
 
-	//Âñïîìîãàòåëüíàÿ ôóíêöèÿ äëÿ êîíñîëüíûõ ïðèëîæåíèé
+    //Helper function for console applications
 	static void message_pump();
 
-	//Äåñòðóêòîð
 	~usb_monitor();
+
 private:
 	explicit usb_monitor(bool monitor_hard_drives);
 	usb_monitor(const usb_monitor&);

@@ -139,8 +139,7 @@ void usb_monitor::mount_device(wchar_t letter)
 
 	SetErrorMode(old_mode);
 
-	//Не кидаем эксепшены, так как их все равно WindowProc съест
-	if(device_handle == INVALID_HANDLE_VALUE)
+    if(device_handle == INVALID_HANDLE_VALUE)
 		return;
 
 	DEV_BROADCAST_HANDLE NotificationFilter = {0};
