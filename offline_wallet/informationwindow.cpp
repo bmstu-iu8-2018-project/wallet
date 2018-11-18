@@ -51,7 +51,7 @@ void InformationWindow::finde_usb_device()
     mon->start();
 }
 
-void InformationWindow::device_added(const char letter)
+void InformationWindow::device_added(char letter)
 {
     name_device_ = letter;
 }
@@ -64,12 +64,13 @@ void InformationWindow::chek_device()
         QMessageBox::warning(this, "Message", "Insert USB device!");
     else
         chec_mark_on_device(get_device_path());
-    mon->stop();
-
+    mon->mount_existing_devices();
+  //  mon->stop();
 }
 
 void InformationWindow::chec_mark_on_device(const QString& path)
 {
+    qDebug() << path;
     bool flag = false;
 
     QDirIterator it(path, QStringList() << "*.dat", QDir::Files, QDirIterator::Subdirectories);
@@ -121,14 +122,28 @@ QString InformationWindow::get_transactions_path()
     return path;
 }
 
+bool InformationWindow::transactions_empty()
+{
+    QDir dir(get_transactions_path());
+    if (dir.isEmpty())
+        return true;
+
+    return false;
+}
+
 void InformationWindow::on_update_trans_clicked()
 {
     finde_usb_device();
     chek_device();
     if (get_name_wallet() == ui->name->text())
     {
-        fs_model_->setRootPath(get_device_path());
-        ui->transactoin_list->setModel(fs_model_);
+        if (transactions_empty())
+            QMessageBox::information(this, "Message", "There are no transactions created");
+        else
+        {
+            fs_model_->setRootPath(get_transactions_path());
+            ui->transactoin_list->setModel(fs_model_);
+        }
     }
 }
 
@@ -162,7 +177,7 @@ void InformationWindow::on_transactoin_list_doubleClicked(const QModelIndex &ind
  {
      transWindow = new TransactionWindow();
      transWindow->setWindowTitle("Transaction");
-     transWindow->setTransaction(path);
+     transWindow->set_transaction(path);
      transWindow->show();
  }
 

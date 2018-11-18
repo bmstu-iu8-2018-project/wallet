@@ -90,6 +90,7 @@ QString PasswordForWallet::get_public_data_path()
 
     QString path;
     path.push_back(name_device_);
+    qDebug() << name_device_;
     path += ":/";
 
     QDir dir(path);
@@ -189,7 +190,17 @@ void PasswordForWallet::on_create_wallet()
 
     if (ui->lineEdit_pass1->text() == ui->lineEdit_pass2->text())
     {
-        if (check_network())
+
+        if (ui->lineEdit_name->text().isEmpty())
+        {
+            QMessageBox::warning(this, "Error", "Enter login!");
+        }
+        else if (ui->lineEdit_pass1->text().isEmpty() &&
+                 ui->lineEdit_pass2->text().isEmpty())
+        {
+            QMessageBox::warning(this, "Error", "Enter password!");
+        }
+        else if (check_network())
         {
             save_wallet_data(ui->lineEdit_name->text(), ui->lineEdit_pass1->text());
             this->close();    // close the main window

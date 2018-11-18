@@ -17,7 +17,7 @@ public:
     explicit TransactionWindow(QWidget *parent = nullptr);
     ~TransactionWindow();
 
-    void setTransaction(const QString& path);
+    void set_transaction(const QString& path);
 private slots:
     void on_clouse_clicked();
 

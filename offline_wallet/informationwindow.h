@@ -44,7 +44,7 @@ private:
 
     void finde_usb_device();
 
-    static void device_added(const char letter);
+    static void device_added(char letter);
 
     void chek_device();
 
@@ -57,6 +57,8 @@ private:
     static QString get_name_wallet();
 
     void change_window(const QString& path);
+
+    bool transactions_empty();
 };
 
 #endif // INFORMATIONWINDOW_H

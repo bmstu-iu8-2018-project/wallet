@@ -13,7 +13,7 @@ TransactionWindow::~TransactionWindow()
     delete ui;
 }
 
-void TransactionWindow::setTransaction(const QString& path)
+void TransactionWindow::set_transaction(const QString& path)
 {
     ui->trasaction->setText(JsonWallet::get_json(path));
 }

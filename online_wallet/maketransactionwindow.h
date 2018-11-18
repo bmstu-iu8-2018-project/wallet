@@ -14,6 +14,7 @@ class MakeTransactionWindow : public QWidget
 
 public:
     explicit MakeTransactionWindow(QWidget *parent = nullptr);
+
     ~MakeTransactionWindow();
 
 private slots:

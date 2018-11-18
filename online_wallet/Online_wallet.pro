@@ -38,18 +38,21 @@ SOURCES += \
     maketransactionwindow.cpp \
     includes/usb_monitor.cpp \
     includes/jsonwallet.cpp \
-    includes/CryptoUtils.cpp
+    includes/CryptoUtils.cpp \
+    informationwindow.cpp
 
 HEADERS += \
         mainwindow.h \
     maketransactionwindow.h \
     includes/usb_monitor.h \
     includes/jsonwallet.h \
-    includes/CryptoUtils.h
+    includes/CryptoUtils.h \
+    informationwindow.h
 
 FORMS += \
         mainwindow.ui \
-    maketransactionwindow.ui
+    maketransactionwindow.ui \
+    informationwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

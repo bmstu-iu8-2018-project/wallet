@@ -15,11 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     chek_device();
     ui->setupUi(this);
 
-    QString path_private_data = get_public_data_path();
-
-    ui->name->setText(get_name_wallet());
-    ui->address->setText(JsonWallet::get_address(path_private_data + "/address.dat.json"));
-    ui->public_key->setText(JsonWallet::get_public_key(path_private_data + "/address.dat.json"));
+    ui->wallets->addItem("(select wallet)");
+    ui->wallets->addItems(str_list_);
 }
 
 MainWindow::~MainWindow()
@@ -27,46 +24,34 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::chek_device()
+char MainWindow::name_device_;
+QString MainWindow::mark_path_;
+
+void MainWindow::change_window()
 {
-    std::set<wchar_t> set_device = mon->get_flash_disks(1);
-
-    while (set_device.empty())
-    {
-        if (set_device.empty())
-            QMessageBox::warning(this, "Message", "Insert USB device!");
-
-        set_device = mon->get_flash_disks(1);     
-    }
-    mon->stop();
-    chec_mark_on_device(get_device_path());
+    infWindow = new InformationWindow();
+    infWindow->setWindowTitle("Online wallet");
+    infWindow->set_name(ui->wallets->currentText());
+    infWindow->show();
 }
 
-void MainWindow::chec_mark_on_device(QString path)
+void MainWindow::on_choose_clicked()
 {
-    bool flag = false;
+     if (ui->wallets->currentText() != ui->wallets->itemText(0))
+     {
+         mark_path_ = get_device_path() + ui->wallets->currentText() + '/';
+         change_window();
+         this->close();
+     }
+     else
+         QMessageBox::warning(this, "Message", "Select wallet!");
 
-    QDirIterator it(path, QStringList() << "*.dat", QDir::Files, QDirIterator::Subdirectories);
+     qDebug() << mark_path_;
+}
 
-    while (it.hasNext())
-    {
-        it.next();
-
-        if (it.fileName() == "mark.dat")
-        {
-            flag = true;
-            mark_path_ = it.filePath();
-            break;
-        }
-    }
-
-    if (!flag)
-    {
-        QMessageBox::warning(this, "Message", "You inserted an incorrect USB flash drive!\nTry again");
-        chek_device();
-        chec_mark_on_device(get_device_path());
-    }
-
+void MainWindow::device_added(char letter)
+{
+    name_device_ = letter;
 }
 
 void MainWindow::find_usb_device()
@@ -78,28 +63,6 @@ void MainWindow::find_usb_device()
     mon->start();
 }
 
-char MainWindow::name_device_;
-QString MainWindow::mark_path_;
-
-void MainWindow::device_added(char letter)
-{
-    name_device_ = letter;
-}
-
-QString MainWindow::get_public_data_path()
-{
-    QDir dir(mark_path_);
-    dir.cdUp();
-    return dir.path();
-}
-
-QString MainWindow::get_name_wallet()
-{
-    QDir dir(mark_path_);
-    dir.cdUp();
-    return dir.dirName();
-}
-
 QString MainWindow::get_device_path()
 {
     QString path;
@@ -108,14 +71,49 @@ QString MainWindow::get_device_path()
     return path;
 }
 
-void MainWindow::change_window()
+QString MainWindow::get_public_data_path()
 {
-    transWindow = new MakeTransactionWindow();
-    transWindow->setWindowTitle("Online wallet");
-    transWindow->show();
+    QDir dir(mark_path_);
+    return dir.path();
 }
 
-void MainWindow::on_make_transaction_clicked()
+void MainWindow::chek_device()
 {
-    change_window();
+    std::set<wchar_t> set_device = mon->get_flash_disks(1);
+
+    while (set_device.empty())
+    {
+        if (set_device.empty())
+            QMessageBox::warning(this, "Message", "Insert USB device!");
+
+        set_device = mon->get_flash_disks(1);
+    }
+    mon->stop();
+    chec_mark_on_device(get_device_path());
+}
+
+void MainWindow::chec_mark_on_device(const QString& path)
+{
+    bool flag = false;
+
+    QDirIterator it(path, QStringList() << "*.dat", QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext())
+    {
+        it.next();
+
+        if (it.fileName() == "mark.dat")
+        {
+            flag = true;
+            QDir dir(it.filePath());
+            dir.cdUp();
+            str_list_.push_back(dir.dirName());
+        }
+    }
+
+    if (!flag)
+    {
+        QMessageBox::warning(this, "Message", "You inserted an incorrect USB flash drive!\nTry again");
+        chek_device();
+        chec_mark_on_device(get_device_path());
+    }
 }
