@@ -5,11 +5,12 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;    
-    w.setWindowTitle("Online wallet");
+    QApplication app(argc, argv);
 
-    w.show();
+    auto mainWindow = new MainWindow;
+    mainWindow->setAttribute( Qt::WA_DeleteOnClose );
+    mainWindow->setWindowTitle("Online wallet");
+    mainWindow->show();
 
-    return a.exec();
+    return app.exec();
 }

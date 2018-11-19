@@ -18,6 +18,7 @@ class InformationWindow : public QWidget
 
  public:
     explicit InformationWindow(QWidget *parent = nullptr);
+
     ~InformationWindow();
 
 private slots:

@@ -21,7 +21,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
  public:
     explicit MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow();
+
     static QString get_wallet_name();
 
  private slots:

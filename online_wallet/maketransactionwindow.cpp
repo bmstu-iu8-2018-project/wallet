@@ -82,6 +82,15 @@ void MakeTransactionWindow::build_transaction()
     create_json_transaction(dir);
 }
 
+QString MakeTransactionWindow::get_address()
+{
+    return ui->address->text();
+}
+
+void MakeTransactionWindow::set_json(const QString& str)
+{
+    ui->json_trans->setText(JsonWallet::get_json(str));
+}
 
 void MakeTransactionWindow::on_build_transaction_clicked()
 {

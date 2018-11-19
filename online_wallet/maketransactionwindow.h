@@ -4,7 +4,8 @@
 #include <QWidget>
 #include <QDir>
 
-namespace Ui {
+namespace Ui
+{
 class MakeTransactionWindow;
 }
 
@@ -17,6 +18,10 @@ public:
 
     ~MakeTransactionWindow();
 
+    QString get_address();
+
+    void set_json(const QString& str);
+
 private slots:
     void on_build_transaction_clicked();
 
@@ -27,6 +32,8 @@ private:
 
     size_t number_trans_ = 0;
 
+    QJsonDocument *json_doc_;
+
     void build_transaction();
 
     QString get_path_transaction();
@@ -36,6 +43,7 @@ private:
     QJsonArray create_array_in();
 
     QJsonArray create_array_out();
+
 };
 
 #endif // MAKETRANSACTIONWINDOW_H

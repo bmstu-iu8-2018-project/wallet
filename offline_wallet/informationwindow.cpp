@@ -65,12 +65,12 @@ void InformationWindow::chek_device()
     else
         chec_mark_on_device(get_device_path());
     mon->mount_existing_devices();
-  //  mon->stop();
 }
 
 void InformationWindow::chec_mark_on_device(const QString& path)
 {
     qDebug() << path;
+
     bool flag = false;
 
     QDirIterator it(path, QStringList() << "*.dat", QDir::Files, QDirIterator::Subdirectories);
@@ -143,6 +143,7 @@ void InformationWindow::on_update_trans_clicked()
         {
             fs_model_->setRootPath(get_transactions_path());
             ui->transactoin_list->setModel(fs_model_);
+            ui->transactoin_list->setRootIndex(fs_model_->index(get_transactions_path()));
         }
     }
 }
@@ -150,6 +151,7 @@ void InformationWindow::on_update_trans_clicked()
 void InformationWindow::on_transactoin_list_doubleClicked(const QModelIndex &index)
 {
     QListView *list_view = static_cast<QListView*>(sender());
+
     QFileInfo file_info = fs_model_->fileInfo(index);
     if (file_info.fileName() == "..")
     {
@@ -173,13 +175,13 @@ void InformationWindow::on_transactoin_list_doubleClicked(const QModelIndex &ind
     }
 }
 
- void InformationWindow::change_window(const QString& path)
- {
-     transWindow = new TransactionWindow();
-     transWindow->setWindowTitle("Transaction");
-     transWindow->set_transaction(path);
-     transWindow->show();
- }
+void InformationWindow::change_window(const QString& path)
+{
+    transWindow = new TransactionWindow();
+    transWindow->setWindowTitle("Transaction");
+    transWindow->set_transaction(path);
+    transWindow->show();
+}
 
 void InformationWindow::on_exit_clicked()
 {

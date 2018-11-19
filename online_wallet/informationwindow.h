@@ -31,6 +31,8 @@ public:
 private slots:
     void on_make_transaction_clicked();
 
+    void on_exit_clicked();
+
 private:
     Ui::InformationWindow *ui;
 

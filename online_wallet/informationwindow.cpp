@@ -36,3 +36,12 @@ void InformationWindow::on_make_transaction_clicked()
     change_window();
 }
 
+void InformationWindow::on_exit_clicked()
+{
+    auto mainWindow = new MainWindow();
+    mainWindow->setAttribute( Qt::WA_DeleteOnClose );
+    mainWindow->setWindowTitle("Online Wallet");
+    mainWindow->show();
+    deleteLater();
+    this->close();
+}
