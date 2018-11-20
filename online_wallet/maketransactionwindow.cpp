@@ -7,6 +7,7 @@
 #include <QJsonArray>
 #include <QMessageBox>
 #include <QDirIterator>
+#include <QThread>
 
 MakeTransactionWindow::MakeTransactionWindow(QWidget *parent) :
     QWidget(parent),

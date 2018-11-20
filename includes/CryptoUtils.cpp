@@ -1,4 +1,5 @@
 #include "CryptoUtils.h"
+#include <iostream>
 
 std::vector<byte> cu::from_hex_to_bytes(const std::string& hex)
 {
@@ -245,18 +246,16 @@ std::string cu::signature_to_der(ECDSA_SIG* signature)
     std::string s = BN_bn2hex(signature->s);
     std::string der;
 
-    der += cu::to_hex(DER_HEADLINE);
-
+    der += "30"; //  headline
     int size = (r.size() + s.size()) / 2 + 3;
     std::stringstream oss;
     oss << std::hex << size;
     der += oss.str(); //  length of next data
-
-    der += cu::to_hex(BEGIN_OF_NUM);
-    der.insert(der.end(), r.begin(),r.end());
-    der += cu::to_hex(BEGIN_OF_NUM);
-    der.insert(der.end(), s.begin(),s.end());
-    der += cu::to_hex(SIGHASH_ALL);
+    der += "02"; //  begin of number
+    der += r; //  r
+    der += "02"; //  begin of number
+    der += s; //  s
+    der += "01"; // SIGHASH_ALL = 1; signature is valid for all exits
 
     return der;
 }

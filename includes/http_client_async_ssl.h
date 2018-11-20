@@ -3,7 +3,6 @@
 #define HTTP_CLIENT_ASYNC_SSL_H
 #define _SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING
 
-
 #include <cstdlib>
 #include <functional>
 #include <iostream>

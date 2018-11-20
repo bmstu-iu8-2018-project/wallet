@@ -56,3 +56,26 @@ QString JsonWallet::get_public_key(const QString& fileName)
     JsonWallet js;
     return js.get_information(fileName, "public_key");
 }
+
+QString JsonWallet::get_balance(const QString& address)
+{
+    const auto balance_json_data = get_address_balance(address.toStdString());
+    QJsonDocument json = QJsonDocument::fromJson(balance_json_data.c_str());
+    QJsonObject all_json = json.object();
+    QJsonValue status = all_json.value(QString("status"));
+    if (status.toString() == "success")
+    {
+        QJsonObject data = all_json["data"].toObject();
+        QJsonValue balanse = data.value(QString("confirmed_balance"));
+        return balanse.toString();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Message");
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText("Check internet connection!");
+        msgBox.exec();
+        return "No connection";
+    }
+}

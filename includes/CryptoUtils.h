@@ -22,10 +22,6 @@
 using byte = unsigned char;
 using const_bytes = const unsigned char*;
 const int DIGEST_LENGTH = 32;
-const byte DER_HEADLINE = 0x30;
-const byte BEGIN_OF_NUM = 0x02;
-const byte SIGHASH_ALL = 0x01;  // signature is valid for all exits
-
 
 namespace cu
 {

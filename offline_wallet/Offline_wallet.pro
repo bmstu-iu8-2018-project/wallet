@@ -27,12 +27,14 @@ CONFIG += c++17
 
 LIBS += C:\Temp\openssl\lib\libeay32.lib
 LIBS += C:\Temp\openssl\lib\ssleay32.lib
-LIBS += -L"C:\boost\boost_1_67_0\libs" -lpsapi
-LIBS += -L"C:\boost\boost_1_67_0\stage\lib" -lpsapi
-LIBS += -lhid -lsetupapi
+
+LIBS += "-LC:/boost_1_68_0/boost_mingw_53_32/lib" \
+                -llibboost_system-mgw53-mt-x32-1_68.dll
+
+LIBS += -lhid -lsetupapi -lws2_32
 
 INCLUDEPATH += C:\Temp\openssl\include
-INCLUDEPATH += C:\boost\boost_1_67_0
+INCLUDEPATH += C:\boost_1_68_0
 
 
 SOURCES += \

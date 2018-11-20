@@ -5,6 +5,8 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QVariant>
+#include <QMessageBox>
+#include "includes/NetworkUtils.h"
 
 
 class JsonWallet
@@ -15,10 +17,10 @@ class JsonWallet
     static QString get_name(const QString& fileName);
     static QString get_address(const QString& fileName);
     static QString get_public_key(const QString& fileName);
+    static QString get_balance(const QString& address);
 
     static QString get_json(const QString& fileName);
     static void record_to_json(const QVariantMap& map, const QString& fileName);
-
  private:
     QString get_information(const QString& fileName, const QString& info);
 
