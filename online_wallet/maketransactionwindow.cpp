@@ -1,13 +1,6 @@
 #include "maketransactionwindow.h"
 #include "ui_maketransactionwindow.h"
 #include "mainwindow.h"
-#include "includes/jsonwallet.h"
-#include "includes/CryptoUtils.h"
-#include <QDir>
-#include <QJsonArray>
-#include <QMessageBox>
-#include <QDirIterator>
-#include <QThread>
 
 MakeTransactionWindow::MakeTransactionWindow(QWidget *parent) :
     QWidget(parent),
@@ -65,7 +58,7 @@ void MakeTransactionWindow::create_json_transaction(QDir dir)
     std::string hash = cu::SHA256(cu::SHA256(json_string.toUtf8().constData()));
     raw_transactoin.insert("hash", QString::fromUtf8(hash.c_str()));
 
-    JsonWallet::record_to_json(raw_transactoin, dir.path() + "/transaction.json");
+    ju::record_to_json(raw_transactoin, dir.path() + "/transaction.json");
 }
 
 void MakeTransactionWindow::build_transaction()
@@ -81,16 +74,6 @@ void MakeTransactionWindow::build_transaction()
     dir.cd(tr);
 
     create_json_transaction(dir);
-}
-
-QString MakeTransactionWindow::get_address()
-{
-    return ui->address->text();
-}
-
-void MakeTransactionWindow::set_json(const QString& str)
-{
-    ui->json_trans->setText(JsonWallet::get_json(str));
 }
 
 void MakeTransactionWindow::on_build_transaction_clicked()

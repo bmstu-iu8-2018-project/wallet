@@ -1,6 +1,13 @@
 #ifndef MAKETRANSACTIONWINDOW_H
 #define MAKETRANSACTIONWINDOW_H
 
+#include "includes/JsonUtils.h"
+#include "includes/CryptoUtils.h"
+#include <QDir>
+#include <QJsonArray>
+#include <QMessageBox>
+#include <QDirIterator>
+#include <QThread>
 #include <QWidget>
 #include <QDir>
 
@@ -17,10 +24,6 @@ public:
     explicit MakeTransactionWindow(QWidget *parent = nullptr);
 
     ~MakeTransactionWindow();
-
-    QString get_address();
-
-    void set_json(const QString& str);
 
 private slots:
     void on_build_transaction_clicked();

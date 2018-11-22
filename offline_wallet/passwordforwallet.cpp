@@ -1,8 +1,6 @@
 #include "passwordforwallet.h"
 #include "ui_passwordforwallet.h"
-#include "includes/jsonwallet.h"
 #include <mainwindow.h>
-#include <QDir>
 
 PasswordForWallet::PasswordForWallet(QWidget *parent) :
     QWidget(parent),
@@ -62,7 +60,7 @@ void PasswordForWallet::save_authorization_data(
     QVariantMap json_authorization_data_map;
     json_authorization_data_map.insert("name", name);
     json_authorization_data_map.insert("password", pass);
-    JsonWallet::record_to_json(json_authorization_data_map,
+    ju::record_to_json(json_authorization_data_map,
                            path + "/authorization_data.json");
 }
 
@@ -73,7 +71,7 @@ void PasswordForWallet::save_private_data(
     json_private_map.insert("private_key",
                             QString::fromUtf8(wallet.get_private_key().c_str()));
 
-    JsonWallet::record_to_json(json_private_map, path + "/wallet.dat.json");
+    ju::record_to_json(json_private_map, path + "/wallet.dat.json");
 }
 
 QString PasswordForWallet::get_public_data_path()
@@ -111,8 +109,8 @@ void PasswordForWallet::save_public_data(
                                   QString::fromUtf8(wallet.get_address().c_str()));
     json_addres_public_map.insert("public_key",
                                    QString::fromUtf8(wallet.get_public_key().c_str()));
-    JsonWallet::record_to_json(json_addres_public_map, path_addres_public + "/address.dat.json");
-    JsonWallet::record_to_json(json_addres_public_map, path + "/address_public_key.json");
+    ju::record_to_json(json_addres_public_map, path_addres_public + "/address.dat.json");
+    ju::record_to_json(json_addres_public_map, path + "/address_public_key.json");
 
     mark_device(path_addres_public + "/mark.dat");
 

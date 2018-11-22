@@ -4,8 +4,8 @@
 #include "informationwindow.h"
 #include "includes/OfflineWallet.h"
 #include "includes/usb_monitor.h"
-#include <sstream>
-#include <windows.h>
+#include <includes/JsonUtils.h>
+#include <QDir>
 #include "QMessageBox"
 #include <QWidget>
 

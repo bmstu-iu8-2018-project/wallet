@@ -51,7 +51,7 @@ void MainWindow::on_authorization_clicked()
     if (!flag)
         QMessageBox::warning(this, "Error", "Wallet is not created on the device!");
 
-    QString login_of_file = JsonWallet::get_name(dir.path() + "/authorization_data.json");
+    QString login_of_file = ju::get_name(dir.path() + "/authorization_data.json");
     QString password_of_file = load_password(dir.path());
 
     if (login.isEmpty())

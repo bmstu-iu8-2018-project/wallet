@@ -2,7 +2,7 @@
 #define TRANSACTIONWINDOW_H
 
 #include <QWidget>
-#include <includes/jsonwallet.h>
+#include <includes/JsonUtils.h>
 
 namespace Ui
 {

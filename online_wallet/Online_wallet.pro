@@ -39,21 +39,21 @@ SOURCES += \
         mainwindow.cpp \
     maketransactionwindow.cpp \
     includes/usb_monitor.cpp \
-    includes/jsonwallet.cpp \
     includes/CryptoUtils.cpp \
     informationwindow.cpp \
     includes/http_client_async_ssl.cpp \
-    includes/NetworkUtils.cpp
+    includes/NetworkUtils.cpp \
+    includes/JsonUtils.cpp
 
 HEADERS += \
         mainwindow.h \
     maketransactionwindow.h \
     includes/usb_monitor.h \
-    includes/jsonwallet.h \
     includes/CryptoUtils.h \
     informationwindow.h \
     includes/http_client_async_ssl.h \
-    includes/NetworkUtils.h
+    includes/NetworkUtils.h \
+    includes/JsonUtils.h
 
 FORMS += \
         mainwindow.ui \

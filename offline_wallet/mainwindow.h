@@ -3,7 +3,7 @@
 
 #include <informationwindow.h>
 #include <passwordforwallet.h>
-#include <includes/jsonwallet.h>
+#include <includes/JsonUtils.h>
 #include <QMainWindow>
 #include "QMessageBox"
 #include <QString>

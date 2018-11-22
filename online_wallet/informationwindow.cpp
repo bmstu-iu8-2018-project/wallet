@@ -10,9 +10,9 @@ InformationWindow::InformationWindow(QWidget *parent) :
 
     QString path_private_data = MainWindow::get_public_data_path();
 
-    ui->address->setText(JsonWallet::get_address(path_private_data + "/address.dat.json"));
-    ui->public_key->setText(JsonWallet::get_public_key(path_private_data + "/address.dat.json"));
-    ui->balance->setText(JsonWallet::get_balance(ui->address->text()));
+    ui->address->setText(ju::get_address(path_private_data + "/address.dat.json"));
+    ui->public_key->setText(ju::get_public_key(path_private_data + "/address.dat.json"));
+    ui->balance->setText(ju::get_balance(ui->address->text()));
 }
 
 void InformationWindow::set_name(const QString& name)

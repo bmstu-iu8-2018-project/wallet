@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,6 +25,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++17
 
+INCLUDEPATH += C:\Temp\openssl\include
+INCLUDEPATH += C:\boost_1_68_0\boost_mingw_53_32\include\boost-1_68
+
 LIBS += C:\Temp\openssl\lib\libeay32.lib
 LIBS += C:\Temp\openssl\lib\ssleay32.lib
 
@@ -32,10 +35,6 @@ LIBS += "-LC:/boost_1_68_0/boost_mingw_53_32/lib" \
                 -llibboost_system-mgw53-mt-x32-1_68.dll
 
 LIBS += -lhid -lsetupapi -lws2_32
-
-INCLUDEPATH += C:\Temp\openssl\include
-INCLUDEPATH += C:\boost_1_68_0
-
 
 SOURCES += \
         main.cpp \
@@ -46,8 +45,10 @@ SOURCES += \
     includes/Key.cpp \
     includes/OfflineWallet.cpp \
     includes/usb_monitor.cpp \
-    includes/jsonwallet.cpp \
-    transactionwindow.cpp
+    transactionwindow.cpp \
+    includes/JsonUtils.cpp \
+    includes/http_client_async_ssl.cpp \
+    includes/NetworkUtils.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -57,9 +58,10 @@ HEADERS += \
     includes/Key.h \
     includes/OfflineWallet.h \
     includes/usb_monitor.h \
-    includes/jsonwallet.h \
-    transactionwindow.h
-
+    transactionwindow.h \
+    includes/JsonUtils.h \
+    includes/http_client_async_ssl.h \
+    includes/NetworkUtils.h
 
 FORMS += \
         mainwindow.ui \

@@ -1,5 +1,6 @@
 #ifndef USB_MONITOR_H
 #define USB_MONITOR_H
+#define WIN32_LEAN_AND_MEAN
 
 #pragma once
 #include <memory>

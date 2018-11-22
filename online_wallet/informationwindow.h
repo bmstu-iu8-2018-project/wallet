@@ -9,7 +9,7 @@
 #include <QDirIterator>
 #include <QDebug>
 #include "maketransactionwindow.h"
-#include "includes/jsonwallet.h"
+#include "includes/JsonUtils.h"
 #include "includes/usb_monitor.h"
 
 

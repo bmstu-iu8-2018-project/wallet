@@ -15,7 +15,7 @@ TransactionWindow::~TransactionWindow()
 
 void TransactionWindow::set_transaction(const QString& path)
 {
-    ui->trasaction->setText(JsonWallet::get_json(path));
+    ui->trasaction->setText(ju::get_json(path));
 }
 
 void TransactionWindow::on_clouse_clicked()

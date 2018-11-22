@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "includes/jsonwallet.h"
+#include "includes/JsonUtils.h"
 #include <QMessageBox>
 #include <QString>
 #include <QDir>
@@ -80,16 +80,35 @@ QString MainWindow::get_public_data_path()
 void MainWindow::chek_device()
 {
     std::set<wchar_t> set_device = mon->get_flash_disks(1);
-
+    QMessageBox::StandardButton box;
     while (set_device.empty())
     {
         if (set_device.empty())
-            QMessageBox::warning(this, "Message", "Insert USB device!");
-
+        {
+            box = QMessageBox::warning(this, "Message", "Insert USB device!",
+                                            QMessageBox::Ok | QMessageBox::Close);
+           // if (box == QMessageBox::Close)
+             //   break;
+           // else if (box == QMessageBox::Escape)
+             //   QApplication::quit();
+        }
         set_device = mon->get_flash_disks(1);
     }
-    mon->stop();
-    chec_mark_on_device(get_device_path());
+
+    if (box == QMessageBox::Ok)
+    {
+        mon->stop();
+        chec_mark_on_device(get_device_path());
+    }
+    else if (box == QMessageBox::Close)
+    {
+        QMessageBox::critical(this, "Message", "Missing USB device!");
+        chek_device();
+    }
+    else
+    {
+        chec_mark_on_device(get_device_path());
+    }
 }
 
 void MainWindow::chec_mark_on_device(const QString& path)

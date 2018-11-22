@@ -1,9 +1,8 @@
 #include "informationwindow.h"
 #include "ui_informationwindow.h"
 #include "mainwindow.h"
-#include "includes/jsonwallet.h"
+#include <includes/JsonUtils.h>
 #include "passwordforwallet.h"
-#include <QDebug>
 
 InformationWindow::InformationWindow(QWidget *parent)
     : QWidget(parent)
@@ -16,9 +15,9 @@ InformationWindow::InformationWindow(QWidget *parent)
 
     QString path_private_data = get_path_private_dir();
 
-    ui->name->setText(JsonWallet::get_name(path_private_data + "/authorization_data.json"));
-    ui->addres->setText(JsonWallet::get_address(path_private_data + "/address_public_key.json"));
-    ui->public_key->setText(JsonWallet::get_public_key(path_private_data + "/address_public_key.json"));
+    ui->name->setText(ju::get_name(path_private_data + "/authorization_data.json"));
+    ui->addres->setText(ju::get_address(path_private_data + "/address_public_key.json"));
+    ui->public_key->setText(ju::get_public_key(path_private_data + "/address_public_key.json"));
 }
 
 QString InformationWindow::mark_path_;
