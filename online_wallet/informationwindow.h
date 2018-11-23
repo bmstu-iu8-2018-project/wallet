@@ -44,15 +44,15 @@ class InformationWindow : public QWidget
 
     void change_window();
 
-    struct Requests
+    enum class Requests
     {
-        const QString address_balanse = "address balance";
-        const QString spent_transactions = "spent transactions";
-        const QString unspent_transactions = "unspent transactions";
-        const QString received_transactions = "received transactions";
-        const QString transaction_inputs = "transaction inputs";
-        const QString transaction_outputs = "transaction outputs";
-        const QString transaction = "transaction";
+        address_balanse = 1,
+        spent_transactions,
+        unspent_transactions,
+        received_transactions,
+        transaction_inputs,
+        transaction_outputs,
+        transaction
     };
 };
 

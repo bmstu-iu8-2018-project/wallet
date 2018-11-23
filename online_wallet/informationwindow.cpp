@@ -24,14 +24,13 @@ void InformationWindow::set_name(const QString& name)
 void InformationWindow::init_box_requests()
 {
     ui->boxRequests->addItem("(select requests)");
-    Requests request;
-    ui->boxRequests->addItem(request.address_balanse);
-    ui->boxRequests->addItem(request.spent_transactions);
-    ui->boxRequests->addItem(request.unspent_transactions);
-    ui->boxRequests->addItem(request.received_transactions);
-    ui->boxRequests->addItem(request.transaction_inputs);
-    ui->boxRequests->addItem(request.transaction_outputs);
-    ui->boxRequests->addItem(request.transaction);
+    ui->boxRequests->addItem("address balanse");
+    ui->boxRequests->addItem("spent transactions");
+    ui->boxRequests->addItem("unspent transactions");
+    ui->boxRequests->addItem("received transactions");
+    ui->boxRequests->addItem("transaction inputs");
+    ui->boxRequests->addItem("transaction outputs");
+    ui->boxRequests->addItem("transaction");
 }
 
 InformationWindow::~InformationWindow()
@@ -63,48 +62,47 @@ void InformationWindow::on_exit_clicked()
 
 void InformationWindow::on_request_clicked()
 {
-    Requests request;
     if (ui->boxRequests->currentText() == "(select requests)")
     {
         QMessageBox::warning(this, "Message", "Select requests!");
     }
-    else if (ui->boxRequests->currentText() == request.address_balanse)
+    else if (ui->boxRequests->currentIndex() == static_cast<int>(Requests::address_balanse))
     {
         ui->requestBrowser->clear();
         const auto balance_json_data = nu::get_address_balance(ui->address->text().toStdString());
         ui->requestBrowser->setText(balance_json_data.c_str());
     }
-    else if (ui->boxRequests->currentText() == request.spent_transactions)
+    else if (ui->boxRequests->currentIndex() == static_cast<int>(Requests::spent_transactions))
     {
         ui->requestBrowser->clear();
         const auto spend_trans_json_data = nu::get_spent_transactions(ui->address->text().toStdString());
         ui->requestBrowser->setText(spend_trans_json_data.c_str());
     }
-    else if (ui->boxRequests->currentText() == request.unspent_transactions)
+    else if (ui->boxRequests->currentIndex() == static_cast<int>(Requests::unspent_transactions))
     {
         ui->requestBrowser->clear();
         const auto unspend_trans_json_data = nu::get_unspent_transactions(ui->address->text().toStdString());
         ui->requestBrowser->setText(unspend_trans_json_data.c_str());
     }
-    else if (ui->boxRequests->currentText() == request.received_transactions)
+    else if (ui->boxRequests->currentIndex() == static_cast<int>(Requests::received_transactions))
     {
         ui->requestBrowser->clear();
         const auto received_trans_json_data = nu::get_received_transactions(ui->address->text().toStdString());
         ui->requestBrowser->setText(received_trans_json_data.c_str());
     }
-    else if (ui->boxRequests->currentText() == request.transaction_inputs)
+    else if (ui->boxRequests->currentIndex() == static_cast<int>(Requests::transaction_inputs))
     {
         ui->requestBrowser->clear();
        // const auto input_trans_json_data = nu::get_transaction_inputs("txid");
        // ui->requestBrowser->setText(input_trans_json_data.c_str());
     }
-    else if (ui->boxRequests->currentText() == request.transaction_outputs)
+    else if (ui->boxRequests->currentIndex() == static_cast<int>(Requests::transaction_outputs))
     {
         ui->requestBrowser->clear();
        // const auto output_trans_json_data = nu::get_transaction_outputs("txid");
        // ui->requestBrowser->setText(output_trans_json_data.c_str());
     }
-    else if (ui->boxRequests->currentText() == request.transaction)
+    else if (ui->boxRequests->currentIndex() == static_cast<int>(Requests::transaction))
     {
         ui->requestBrowser->clear();
        // const auto trans_json_data = nu::get_transaction("txid");
