@@ -1,11 +1,12 @@
-#ifndef INFORMATIONWINDOW_H
-#define INFORMATIONWINDOW_H
+#pragma once
+#ifndef INFORMATIONWINDOW_HPP
+#define INFORMATIONWINDOW_HPP
 
 #include <QWidget>
 #include <QListView>
 #include <QFileSystemModel>
-#include <includes/usb_monitor.h>
-#include <transactionwindow.h>
+#include <includes/usb_monitor.hpp>
+#include <transactionwindow.hpp>
 
 namespace Ui
 {
@@ -62,4 +63,4 @@ private:
     bool transactions_empty();
 };
 
-#endif // INFORMATIONWINDOW_H
+#endif // INFORMATIONWINDOW_HPP

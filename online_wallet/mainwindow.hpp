@@ -1,12 +1,13 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
+#ifndef MAINWINDOW_HPP
+#define MAINWINDOW_HPP
 
 #include <QMainWindow>
 #include <QComboBox>
 #include <QStringListModel>
-#include <informationwindow.h>
-#include "maketransactionwindow.h"
-#include "includes/usb_monitor.h"
+#include <informationwindow.hpp>
+#include <maketransactionwindow.hpp>
+#include <includes/usb_monitor.hpp>
 
 namespace Ui
 {
@@ -53,4 +54,4 @@ private:
     QString get_device_path();
 };
 
-#endif // MAINWINDOW_H
+#endif // MAINWINDOW_HPP

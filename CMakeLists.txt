@@ -8,7 +8,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -45,12 +45,13 @@ set(APP_NAME "ss-qt5")
 
 add_definitions(-DAPP_VERSION="${PROJECT_VERSION}")
 
+set(INCLUDES
+	includes/
+)
+
 set(SOURCE
-    offline_wallet/
-        main.cpp
-        mainwindow.cpp
-        informationwindow.cpp
-    )
+	src/
+)
 
 if (WIN32)
     list(APPEND SOURCE ss-qt5.rc)

@@ -32,7 +32,7 @@ LIBS += C:\Temp\openssl\lib\libeay32.lib
 LIBS += C:\Temp\openssl\lib\ssleay32.lib
 
 LIBS += "-LC:/boost_1_68_0/boost_mingw_53_32/lib" \
-                -llibboost_system-mgw53-mt-x32-1_68.dll
+                -llibboost_system-mgw53-mt-d-x32-1_68.dll
 
 LIBS += -lhid -lsetupapi -lws2_32
 
@@ -51,17 +51,17 @@ SOURCES += \
     includes/NetworkUtils.cpp
 
 HEADERS += \
-        mainwindow.h \
-    informationwindow.h \
-    passwordforwallet.h \
-    includes/CryptoUtils.h \
-    includes/Key.h \
-    includes/OfflineWallet.h \
-    includes/usb_monitor.h \
-    transactionwindow.h \
-    includes/JsonUtils.h \
-    includes/http_client_async_ssl.h \
-    includes/NetworkUtils.h
+    includes/CryptoUtils.hpp \
+    includes/http_client_async_ssl.hpp \
+    includes/JsonUtils.hpp \
+    includes/Key.hpp \
+    includes/NetworkUtils.hpp \
+    includes/OfflineWallet.hpp \
+    includes/usb_monitor.hpp \
+    informationwindow.hpp \
+    mainwindow.hpp \
+    passwordforwallet.hpp \
+    transactionwindow.hpp
 
 FORMS += \
         mainwindow.ui \

@@ -1,5 +1,6 @@
-#ifndef INFORMATIONWINDOW_H
-#define INFORMATIONWINDOW_H
+#pragma once
+#ifndef INFORMATIONWINDOW_HPP
+#define INFORMATIONWINDOW_HPP
 
 #include <QDebug>
 #include <QDir>
@@ -8,9 +9,9 @@
 #include <QMessageBox>
 #include <QString>
 #include <QWidget>
-#include "includes/JsonUtils.h"
-#include "includes/usb_monitor.h"
-#include "maketransactionwindow.h"
+#include <includes/JsonUtils.hpp>
+#include <includes/usb_monitor.hpp>
+#include <maketransactionwindow.hpp>
 
 namespace Ui
 {
@@ -56,4 +57,4 @@ class InformationWindow : public QWidget
     };
 };
 
-#endif  // INFORMATIONWINDOW_H
+#endif  // INFORMATIONWINDOW_HPP

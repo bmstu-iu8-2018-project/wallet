@@ -1,9 +1,10 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
+#ifndef MAINWINDOW_HPP
+#define MAINWINDOW_HPP
 
-#include <informationwindow.h>
-#include <passwordforwallet.h>
-#include <includes/JsonUtils.h>
+#include <informationwindow.hpp>
+#include <passwordforwallet.hpp>
+#include <includes/JsonUtils.hpp>
 #include <QMainWindow>
 #include "QMessageBox"
 #include <QString>
@@ -45,4 +46,4 @@ private:
     QString load_password(const QString& path);
 };
 
-#endif // MAINWINDOW_H
+#endif // MAINWINDOW_HPP

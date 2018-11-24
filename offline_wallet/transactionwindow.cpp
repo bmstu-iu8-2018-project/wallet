@@ -1,5 +1,5 @@
-#include "transactionwindow.h"
-#include "ui_transactionwindow.h"
+#include <transactionwindow.hpp>
+#include <ui_transactionwindow.h>
 
 TransactionWindow::TransactionWindow(QWidget *parent) :
     QWidget(parent),

@@ -1,8 +1,8 @@
 #pragma once
-#ifndef KEY_H
-#define KEY_H
+#ifndef KEY_HPP
+#define KEY_HPP
 
-#include "CryptoUtils.h"
+#include <includes/CryptoUtils.hpp>
 
 const byte MAIN_NETWORK = 0x00;
 const byte TEST_NETWORK = 0x6f;
@@ -35,4 +35,5 @@ class Key
 
     static Key create_wallet_key(const byte type_network);
 };
-#endif
+
+#endif // KEY_HPP

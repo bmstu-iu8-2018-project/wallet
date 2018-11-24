@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HTTP_CLIENT_ASYNC_SSL_H
-#define HTTP_CLIENT_ASYNC_SSL_H
+#ifndef HTTP_CLIENT_ASYNC_SSL_HPP
+#define HTTP_CLIENT_ASYNC_SSL_HPP
 #define _SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING
 
 #include <cstdlib>
@@ -63,4 +63,4 @@ public:
     std::string get_body();
 };
 
-#endif
+#endif // HTTP_CLIENT_ASYNC_SSL_HPP

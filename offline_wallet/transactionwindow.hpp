@@ -1,8 +1,9 @@
-#ifndef TRANSACTIONWINDOW_H
-#define TRANSACTIONWINDOW_H
+#pragma once
+#ifndef TRANSACTIONWINDOW_HPP
+#define TRANSACTIONWINDOW_HPP
 
 #include <QWidget>
-#include <includes/JsonUtils.h>
+#include <includes/JsonUtils.hpp>
 
 namespace Ui
 {
@@ -25,4 +26,4 @@ private:
     Ui::TransactionWindow *ui;
 };
 
-#endif // TRANSACTIONWINDOW_H
+#endif // TRANSACTIONWINDOW_HPP

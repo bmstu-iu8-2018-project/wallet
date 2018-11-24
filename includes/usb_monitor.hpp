@@ -1,5 +1,6 @@
-#ifndef USB_MONITOR_H
-#define USB_MONITOR_H
+#pragma once
+#ifndef USB_MONITOR_HPP
+#define USB_MONITOR_HPP
 #define WIN32_LEAN_AND_MEAN
 
 #pragma once
@@ -96,4 +97,4 @@ private:
 	static const std::wstring class_name;
 };
 
-#endif // USB_MONITOR_H
+#endif // USB_MONITOR_HPP

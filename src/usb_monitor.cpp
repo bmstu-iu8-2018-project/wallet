@@ -11,7 +11,7 @@
 #include <ntddstor.h>
 #include <devguid.h>
 #include <winioctl.h>
-#include "usb_monitor.h"
+#include <includes/usb_monitor.hpp>
 
 #pragma comment(lib, "SetupAPI")
 

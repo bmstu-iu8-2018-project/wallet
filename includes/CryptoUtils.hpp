@@ -1,6 +1,6 @@
 #pragma once
-#ifndef CRYPTO_UTILS_H
-#define CRYPTO_UTILS_H
+#ifndef CRYPTO_UTILS_HPP
+#define CRYPTO_UTILS_HPP
 
 #include <cassert>
 #include <cstring>
@@ -64,5 +64,7 @@ namespace cu
     std::string signature_to_der(ECDSA_SIG* signature);
 
     ECDSA_SIG* from_der_to_sig(const std::string& scriptSig);
-}
-#endif
+
+} // namespace cu
+
+#endif // CRYPTO_UTILS_HPP

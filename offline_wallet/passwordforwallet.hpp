@@ -1,12 +1,13 @@
-#ifndef PASSWORDFORWALLET_H
-#define PASSWORDFORWALLET_H
+#pragma once
+#ifndef PASSWORDFORWALLET_HPP
+#define PASSWORDFORWALLET_HPP
 
-#include "informationwindow.h"
-#include "includes/OfflineWallet.h"
-#include "includes/usb_monitor.h"
-#include <includes/JsonUtils.h>
+#include <informationwindow.hpp>
+#include <includes/OfflineWallet.hpp>
+#include <includes/usb_monitor.hpp>
+#include <includes/JsonUtils.hpp>
 #include <QDir>
-#include "QMessageBox"
+#include <QMessageBox>
 #include <QWidget>
 
 namespace Ui
@@ -72,4 +73,4 @@ private:
     bool check_network();
 };
 
-#endif // PASSWORDFORWALLET_H
+#endif // PASSWORDFORWALLET_HPP

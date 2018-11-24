@@ -1,6 +1,6 @@
-#include "informationwindow.h"
-#include "ui_informationwindow.h"
-#include <mainwindow.h>
+#include <informationwindow.hpp>
+#include <ui_informationwindow.h>
+#include <mainwindow.hpp>
 
 InformationWindow::InformationWindow(QWidget *parent) :
     QWidget(parent),

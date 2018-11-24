@@ -1,6 +1,6 @@
-#include "maketransactionwindow.h"
-#include "ui_maketransactionwindow.h"
-#include "mainwindow.h"
+#include <maketransactionwindow.hpp>
+#include <ui_maketransactionwindow.h>
+#include <mainwindow.hpp>
 
 MakeTransactionWindow::MakeTransactionWindow(QWidget *parent) :
     QWidget(parent),

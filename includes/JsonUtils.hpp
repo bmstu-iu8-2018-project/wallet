@@ -1,12 +1,13 @@
-#ifndef JSONUTILS_H
-#define JSONUTILS_H
+#pragma once
+#ifndef JSONUTILS_HPP
+#define JSONUTILS_HPP
 
 #include <QFileDialog>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QVariant>
 #include <QMessageBox>
-#include "includes/NetworkUtils.h"
+#include <includes/NetworkUtils.hpp>
 
 namespace ju
 {
@@ -30,4 +31,4 @@ namespace ju
 
 } // namespace ju
 
-#endif // JSONUTILS_H
+#endif // JSONUTILS_HPP

@@ -1,6 +1,6 @@
-#include "passwordforwallet.h"
-#include "ui_passwordforwallet.h"
-#include <mainwindow.h>
+#include <passwordforwallet.hpp>
+#include <ui_passwordforwallet.h>
+#include <mainwindow.hpp>
 
 PasswordForWallet::PasswordForWallet(QWidget *parent) :
     QWidget(parent),

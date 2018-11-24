@@ -1,6 +1,6 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "includes/JsonUtils.h"
+#include <mainwindow.hpp>
+#include <ui_mainwindow.h>
+#include <includes/JsonUtils.hpp>
 #include <QMessageBox>
 #include <QString>
 #include <QDir>

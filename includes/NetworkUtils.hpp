@@ -1,23 +1,23 @@
-#ifndef NETWORK_UTILS_H
-#define NETWORK_UTILS_H
 #pragma once
+#ifndef NETWORK_UTILS_HPP
+#define NETWORK_UTILS_HPP
 
-#include "http_client_async_ssl.h"
+#include <includes/http_client_async_ssl.hpp>
 
-auto const host = "chain.so";
-auto const port = "443";
-auto const version = 11;
+auto const HOST = "chain.so";
+auto const PORT = "443";
+auto const VERSION = 11;
 
-const std::string btctest_network = "BTCTEST/";
-const std::string root = "/api/v2/";
-const std::string balance = "get_address_balance/";
-const std::string get_tx = "get_tx/";
-const std::string get_tx_spent = "get_tx_spent/";
-const std::string get_tx_unspent = "get_tx_unspent/";
-const std::string get_tx_received = "get_tx_received/";
-const std::string get_tx_inputs = "get_tx_inputs/";
-const std::string get_tx_outputs = "get_tx_outputs/";
-const std::string send_tx = "send_tx/";
+const std::string BTCTEST_NETWORK = "BTCTEST/";
+const std::string ROOT = "/api/v2/";
+const std::string BALANCE = "get_address_balance/";
+const std::string GET_TX = "get_tx/";
+const std::string GET_TX_SPENT = "get_tx_spent/";
+const std::string GET_TX_UNSPENT = "get_tx_unspent/";
+const std::string GET_TX_RECEIVED = "get_tx_received/";
+const std::string GET_TX_INPUTS = "get_tx_inputs/";
+const std::string GET_TX_OUTPUTS = "get_tx_outputs/";
+const std::string SEND_TX = "send_tx/";
 
 namespace nu
 {
@@ -42,6 +42,7 @@ namespace nu
     std::string get_transaction(const std::string& txid);
 
     std::string send_transaction(const std::string& tx_hex);
+
 } // namespace nu
 
-#endif
+#endif // NETWORK_UTILS_HPP

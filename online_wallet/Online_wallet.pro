@@ -46,14 +46,14 @@ SOURCES += \
     includes/JsonUtils.cpp
 
 HEADERS += \
-        mainwindow.h \
-    maketransactionwindow.h \
-    includes/usb_monitor.h \
-    includes/CryptoUtils.h \
-    informationwindow.h \
-    includes/http_client_async_ssl.h \
-    includes/NetworkUtils.h \
-    includes/JsonUtils.h
+    includes/CryptoUtils.hpp \
+    includes/http_client_async_ssl.hpp \
+    includes/JsonUtils.hpp \
+    includes/NetworkUtils.hpp \
+    includes/usb_monitor.hpp \
+    informationwindow.hpp \
+    mainwindow.hpp \
+    maketransactionwindow.hpp
 
 FORMS += \
         mainwindow.ui \

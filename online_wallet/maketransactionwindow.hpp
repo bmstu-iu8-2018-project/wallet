@@ -1,8 +1,9 @@
-#ifndef MAKETRANSACTIONWINDOW_H
-#define MAKETRANSACTIONWINDOW_H
+#pragma once
+#ifndef MAKETRANSACTIONWINDOW_HPP
+#define MAKETRANSACTIONWINDOW_HPP
 
-#include "includes/JsonUtils.h"
-#include "includes/CryptoUtils.h"
+#include <includes/JsonUtils.hpp>
+#include <includes/CryptoUtils.hpp>
 #include <QDir>
 #include <QJsonArray>
 #include <QMessageBox>
@@ -49,4 +50,4 @@ private:
 
 };
 
-#endif // MAKETRANSACTIONWINDOW_H
+#endif // MAKETRANSACTIONWINDOW_HPP

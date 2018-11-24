@@ -1,4 +1,4 @@
-#include "OfflineWallet.h"
+#include <includes/OfflineWallet.hpp>
 
 void OfflineWallet::create_wallet(const byte type_network)
 {

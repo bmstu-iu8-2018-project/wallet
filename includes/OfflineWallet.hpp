@@ -1,8 +1,8 @@
 #pragma once
-#ifndef OFFLINE_WALLET_H
-#define OFFLINE_WALLET_H
+#ifndef OFFLINE_WALLET_HPP
+#define OFFLINE_WALLET_HPP
 
-#include "Key.h"
+#include <includes/Key.hpp>
 
 class OfflineWallet
 {
@@ -21,4 +21,5 @@ public:
 
     std::string get_address() const noexcept;
 };
-#endif
+
+#endif // OFFLINE_WALLET_HPP
