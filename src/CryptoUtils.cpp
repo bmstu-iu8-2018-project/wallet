@@ -11,15 +11,31 @@ std::vector<byte> cu::from_hex_to_bytes(const std::string& hex)
     return vector_of_bytes;
 };
 
+std::string cu::to_hex(uint32_t s)
+{
+    std::stringstream ss;
+    ss << std::hex << std::setw(8) << std::setfill('0') << static_cast<int>(s);
+
+    return ss.str();
+}
+
 std::string cu::to_hex(byte s)
 {
     std::stringstream ss;
     ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(s);
 
     return ss.str();
-};
+}
 
-std::string cu::from_bytes_to_hex(const unsigned char* bytes, int length)
+std::string cu::to_hex(int32_t s)
+{
+    std::stringstream ss;
+    ss << std::hex << std::setw(8) << std::setfill('0') << static_cast<int>(s);
+
+    return ss.str();
+}
+
+std::string cu::from_bytes_to_hex(const_bytes bytes, int length)
 {
     std::string hex;
     for (int i = 0; i < length; i++)
@@ -28,6 +44,52 @@ std::string cu::from_bytes_to_hex(const unsigned char* bytes, int length)
     }
     return hex;
 };
+
+std::vector<byte> cu::to_varint(uint64_t n)
+{
+    std::vector<byte> var_int;
+    size_t storage_length;
+
+    if (n < 0xfd)
+    {
+        var_int.push_back(n);
+        return var_int;
+    }
+    else if (n <= 0xffff)
+    {
+        var_int.push_back('\xfd');
+        storage_length = 3;
+    }
+    else if (n <= 0xffffffff)
+    {
+        var_int.push_back('\xfe');
+        storage_length = 5;
+    }
+    else
+    {
+        var_int.push_back('\xff');
+        storage_length = 9;
+    }
+
+    var_int.resize(storage_length);
+
+    for (byte i = 1; i < storage_length; ++i)
+        var_int[i] = (n >> ((i - 1) * 8)) % 256;
+
+    return var_int;
+}
+
+std::string cu::to_littleendian_format(const std::string& string)
+{
+    auto bytes = cu::from_hex_to_bytes(string);
+    std::reverse(bytes.begin(), bytes.end());
+    return cu::from_bytes_to_hex(bytes); // littleendian format
+}
+
+void cu::to_littleendian_format(std::vector<byte>& bytes)
+{
+    std::reverse(bytes.begin(), bytes.end());
+}
 
 std::string cu::from_bytes_to_hex(const std::vector<byte>& bytes)
 {
@@ -253,9 +315,9 @@ std::string cu::signature_to_der(ECDSA_SIG* signature)
     der += oss.str(); //  length of next data
 
     der += cu::to_hex(BEGIN_OF_NUM);
-    der.insert(der.end(), r.begin(),r.end());
+    der.insert(der.end(), r.begin(), r.end());
     der += cu::to_hex(BEGIN_OF_NUM);
-    der.insert(der.end(), s.begin(),s.end());
+    der.insert(der.end(), s.begin(), s.end());
     der += cu::to_hex(SIGHASH_ALL);
 
     return der;

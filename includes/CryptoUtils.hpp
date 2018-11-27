@@ -3,6 +3,7 @@
 #define CRYPTO_UTILS_HPP
 
 #include <cassert>
+#include <cstdint>
 #include <cstring>
 #include <exception>
 #include <iomanip>
@@ -18,9 +19,9 @@
 #include <openssl/ripemd.h>
 #include <openssl/sha.h>
 
-
 using byte = unsigned char;
 using const_bytes = const unsigned char*;
+
 const int DIGEST_LENGTH = 32;
 const byte DER_HEADLINE = 0x30;
 const byte BEGIN_OF_NUM = 0x02;
@@ -29,6 +30,9 @@ const byte SIGHASH_ALL = 0x01;  // signature is valid for all exits
 
 namespace cu
 {
+    template <typename T>
+    std::vector<byte> to_bytes(T i);
+
     static const char* Base58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
     std::vector<byte> from_hex_to_bytes(const std::string& hex);
@@ -37,8 +41,18 @@ namespace cu
 
     std::string from_bytes_to_hex(const std::vector<byte>& bytes);
 
+    std::string to_hex(int32_t s);
+
+    std::string to_hex(uint32_t s);
+
     std::string to_hex(byte s);
 
+    std::vector<byte> to_varint(uint64_t n);
+
+    std::string to_littleendian_format(const std::string& string);
+
+    void to_littleendian_format(std::vector<byte>& bytes);
+    
     std::string SHA256(const std::string& string);
 
     std::string RIPEMD160(const std::string& string);
@@ -64,6 +78,23 @@ namespace cu
     std::string signature_to_der(ECDSA_SIG* signature);
 
     ECDSA_SIG* from_der_to_sig(const std::string& scriptSig);
+
+    template<typename T>
+    std::vector<byte> to_bytes(T i)
+    {
+        std::vector<byte> a(sizeof(i));
+        std::memcpy(&a[0], &i, sizeof(i));
+        return a;
+    }
+
+    template<typename T, class It>
+    T to_type(It begin, It end)
+    {
+        T x;
+        auto size = std::distance(begin, end);
+        std::memcpy(&x, &(*begin), size);
+        return x;
+    }
 
 } // namespace cu
 
