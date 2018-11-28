@@ -1,4 +1,4 @@
-#include "Script.hpp"
+#include <Script.hpp>
 #include <iostream>
 
 
@@ -8,6 +8,10 @@ Script::Script(Script&& other)
 
 Script::Script(const Script& other)
     : script_(other.script_)
+{}
+
+Script::Script(const std::vector<byte>& bytes)
+    : script_(bytes)
 {}
 
 Script& Script::operator=(Script&& other)

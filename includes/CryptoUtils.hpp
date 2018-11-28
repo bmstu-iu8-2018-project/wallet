@@ -21,6 +21,7 @@
 
 using byte = unsigned char;
 using const_bytes = const unsigned char*;
+using iterator = std::vector<byte>::iterator;
 
 const int DIGEST_LENGTH = 32;
 const byte DER_HEADLINE = 0x30;
@@ -47,11 +48,13 @@ namespace cu
 
     std::string to_hex(byte s);
 
-    std::vector<byte> to_varint(uint64_t n);
-
     std::string to_littleendian_format(const std::string& string);
 
     void to_littleendian_format(std::vector<byte>& bytes);
+
+    std::vector<byte> to_varint_byte(size_t n);
+
+    uint64_t to_varint(size_t size);
     
     std::string SHA256(const std::string& string);
 

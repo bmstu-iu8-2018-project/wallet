@@ -4,10 +4,11 @@
 
 #include <cstdint>
 #include <vector>
-#include <includes/CryptoUtils.hpp>
-#include <includes/Script.hpp>
+#include <CryptoUtils.hpp>
+#include <Script.hpp>
 
 const double SATOSHI_COEF = 100000000;
+const size_t LENGTH_OUTPUT = 34;
 
 class TxOut
 {
@@ -26,11 +27,12 @@ public:
 
     std::vector<byte> get_byte_output() const;
 
+    static TxOut from_data(const std::vector<byte>& bytes);
+
     ~TxOut() = default;
 
 private:
     uint64_t value_;
-
     Script pk_script_;
 };
 

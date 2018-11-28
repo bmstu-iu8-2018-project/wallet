@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 #include <cstdint>
-#include <includes/CryptoUtils.hpp>
+#include <CryptoUtils.hpp>
 
 const byte OP_DUP = 0x76;
 const byte OP_HASH160 = 0xa9;
@@ -24,6 +24,8 @@ public:
     Script(Script&& other);
 
     Script(const Script& other);
+
+    Script(const std::vector<byte>& bytes);
 
     Script& operator=(Script&& other);
 

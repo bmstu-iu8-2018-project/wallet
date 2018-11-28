@@ -2,11 +2,12 @@
 #ifndef TRANSACTION_HPP
 #define TRANSACTION_HPP
 
+#include <algorithm>
 #include <fstream>
 #include <string>
-#include <includes/Script.hpp>
-#include <includes/TxIn.hpp>
-#include <includes/TxOut.hpp>
+#include <Script.hpp>
+#include <TxIn.hpp>
+#include <TxOut.hpp>
 
 using outputs = std::vector<TxOut>;
 using inputs = std::vector<TxIn>;
@@ -34,8 +35,7 @@ public:
 
     std::vector<byte> get_byte_tx() const;
 
-    Transaction& parse(const std::string& file_name);
-
+    static Transaction parse(const std::string& file_name);
 private:
     int32_t version_;
 

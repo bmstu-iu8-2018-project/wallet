@@ -1,4 +1,4 @@
-#include <includes/TxOut.hpp>
+#include <TxOut.hpp>
 
 TxOut::TxOut(double value, Script&& pk_script)
 {
@@ -34,11 +34,18 @@ std::vector<byte> TxOut::get_byte_output() const
     const auto value = cu::to_bytes(get_value());
     bytes.insert(bytes.end(), value.begin(), value.end());
 
-    const auto script_lth = cu::to_varint(static_cast<uint64_t>(pk_script_.get_length()));
+    const auto script_lth = cu::to_varint_byte(static_cast<uint64_t>(pk_script_.get_length()));
     bytes.insert(bytes.end(), script_lth.begin(), script_lth.end());
 
     const auto script = pk_script_.data();
     bytes.insert(bytes.end(), script.begin(), script.end());
 
     return bytes;
+}
+
+TxOut TxOut::from_data(const std::vector<byte>& bytes)
+{
+    uint64_t value = cu::to_type<uint64_t>(bytes.begin(), bytes.begin() + sizeof(uint64_t));
+    Script pk_script = std::vector<byte>(bytes.begin() + 9, bytes.end());
+    return TxOut(value / SATOSHI_COEF, pk_script);
 }
