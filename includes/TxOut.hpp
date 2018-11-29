@@ -4,8 +4,8 @@
 
 #include <cstdint>
 #include <vector>
-#include <CryptoUtils.hpp>
-#include <Script.hpp>
+#include <includes/CryptoUtils.hpp>
+#include <includes/Script.hpp>
 
 const double SATOSHI_COEF = 100000000;
 const size_t LENGTH_OUTPUT = 34;

@@ -43,7 +43,11 @@ SOURCES += \
     informationwindow.cpp \
     includes/http_client_async_ssl.cpp \
     includes/NetworkUtils.cpp \
-    includes/JsonUtils.cpp
+    includes/JsonUtils.cpp \
+    includes/Script.cpp \
+    includes/Transaction.cpp \
+    includes/TxIn.cpp \
+    includes/TxOut.cpp
 
 HEADERS += \
     includes/CryptoUtils.hpp \
@@ -53,7 +57,11 @@ HEADERS += \
     includes/usb_monitor.hpp \
     informationwindow.hpp \
     mainwindow.hpp \
-    maketransactionwindow.hpp
+    maketransactionwindow.hpp \
+    includes/Script.hpp \
+    includes/Transaction.hpp \
+    includes/TxIn.hpp \
+    includes/TxOut.hpp
 
 FORMS += \
         mainwindow.ui \

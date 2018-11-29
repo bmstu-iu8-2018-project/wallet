@@ -4,8 +4,11 @@
 
 #include <includes/JsonUtils.hpp>
 #include <includes/CryptoUtils.hpp>
+#include <includes/Transaction.hpp>
 #include <QDir>
-#include <QJsonArray>
+#include <QInputDialog>
+#include <QDialogButtonBox>
+#include <QFormLayout>
 #include <QMessageBox>
 #include <QDirIterator>
 #include <QThread>
@@ -31,23 +34,28 @@ private slots:
 
     void on_clouse_clicked();
 
+    void on_create_input_clicked();
+
+    void on_create_output_clicked();
+
 private:
     Ui::MakeTransactionWindow *ui;
 
     size_t number_trans_ = 0;
 
-    QJsonDocument *json_doc_;
-
     void build_transaction();
 
     QString get_path_transaction();
 
-    void create_json_transaction(QDir dir);
+    void init_inputs_table();
 
-    QJsonArray create_array_in();
+    void init_outputs_table();
 
-    QJsonArray create_array_out();
+    void create_transaction(QDir dir);
 
+    outputs vec_outputs_;
+
+    inputs vec_inputs_;
 };
 
 #endif // MAKETRANSACTIONWINDOW_HPP

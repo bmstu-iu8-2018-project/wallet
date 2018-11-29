@@ -14,6 +14,15 @@ InformationWindow::InformationWindow(QWidget *parent) :
     ui->public_key->setText(ju::get_public_key(path_private_data + "/address.dat.json"));
     ui->balance->setText(ju::get_balance(ui->address->text()));
     init_box_requests();
+
+    address_ = ui->address->text();
+}
+
+QString InformationWindow::address_;
+
+QString InformationWindow::get_address()
+{
+    return address_;
 }
 
 void InformationWindow::set_name(const QString& name)

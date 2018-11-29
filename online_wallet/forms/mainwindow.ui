@@ -42,13 +42,6 @@
         <item>
          <widget class="QComboBox" name="wallets"/>
         </item>
-        <item>
-         <widget class="QPushButton" name="choose">
-          <property name="text">
-           <string>Сhoose</string>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>

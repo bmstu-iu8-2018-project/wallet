@@ -5,9 +5,9 @@
 #include <algorithm>
 #include <fstream>
 #include <string>
-#include <Script.hpp>
-#include <TxIn.hpp>
-#include <TxOut.hpp>
+#include <includes/Script.hpp>
+#include <includes/TxIn.hpp>
+#include <includes/TxOut.hpp>
 
 using outputs = std::vector<TxOut>;
 using inputs = std::vector<TxIn>;

@@ -6,7 +6,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include <Script.hpp>
+#include <includes/Script.hpp>
 
 const uint32_t DEFAULT_SEQUANCE = 0xFFFFFFFF;
 const size_t SEQUANCE_SIZE = sizeof(uint32_t);

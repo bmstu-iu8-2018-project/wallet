@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 #include <cstdint>
-#include <CryptoUtils.hpp>
+#include <includes/CryptoUtils.hpp>
 
 const byte OP_DUP = 0x76;
 const byte OP_HASH160 = 0xa9;

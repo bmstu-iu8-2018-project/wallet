@@ -26,7 +26,8 @@ public:
     static QString get_public_data_path();
 
 private slots:
-    void on_choose_clicked();
+
+    void on_wallets_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
