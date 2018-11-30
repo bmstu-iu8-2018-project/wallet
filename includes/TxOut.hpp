@@ -23,6 +23,8 @@ public:
 
     Script get_script() const;
 
+    std::string get_addres() const;
+
     std::string get_hex_output() const;
 
     std::vector<byte> get_byte_output() const;

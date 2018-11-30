@@ -2,6 +2,7 @@
 #ifndef CRYPTO_UTILS_HPP
 #define CRYPTO_UTILS_HPP
 
+#include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <cstring>

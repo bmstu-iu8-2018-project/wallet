@@ -33,12 +33,15 @@ public:
 
     void create_pkh_script(const std::string& address);
 
+    std::string get_address() const;
+
     std::vector<byte> data() const;
 
     byte get_length() const;
 
 private:
     std::vector<byte> script_;
+    std::string address_;
 };
 
 #endif // SCRIPT_HPP
