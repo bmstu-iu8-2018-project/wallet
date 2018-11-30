@@ -72,7 +72,7 @@ std::string nu::get_transaction(const std::string& txid)
 
 std::string nu::send_transaction(const std::string& tx_hex)
 {
-    //Takes a signed transaction in hex format and sends it to the specified network.This is a POST(!) method.
+    // Takes a signed transaction in hex format and sends it to the specified network.This is a POST(!) method.
     auto const target = ROOT + SEND_TX + BTCTEST_NETWORK;
     return nu::post_request_from_target(target, tx_hex);
 }

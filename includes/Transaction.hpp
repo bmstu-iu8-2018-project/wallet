@@ -49,9 +49,11 @@ private:
     int32_t version_;
 
     uint64_t tx_in_count_;
+
     inputs tx_in_;
 
     uint64_t tx_out_count_;
+
     outputs tx_out_;
 
     uint32_t lock_time_;

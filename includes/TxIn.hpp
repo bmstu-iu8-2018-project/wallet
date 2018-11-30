@@ -29,7 +29,9 @@ private:
     };
 
     OutPoint previous_output_; // The previous output transaction reference, as an OutPoint structure.
+
     Script script_;
+
     uint32_t sequance_;
 
 public:

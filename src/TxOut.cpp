@@ -17,11 +17,6 @@ int64_t TxOut::get_value() const
     return value_;
 }
 
-std::string TxOut::get_addres() const
-{
-    return pk_script_.get_address();
-}
-
 Script TxOut::get_script() const
 {
     return pk_script_;

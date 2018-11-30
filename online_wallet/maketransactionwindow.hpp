@@ -17,7 +17,7 @@
 
 namespace Ui
 {
-class MakeTransactionWindow;
+    class MakeTransactionWindow;
 }
 
 class MakeTransactionWindow : public QWidget

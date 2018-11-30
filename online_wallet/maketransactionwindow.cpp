@@ -3,9 +3,9 @@
 #include <mainwindow.hpp>
 #include <informationwindow.hpp>
 
-MakeTransactionWindow::MakeTransactionWindow(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::MakeTransactionWindow)
+MakeTransactionWindow::MakeTransactionWindow(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::MakeTransactionWindow)
 {
     ui->setupUi(this);
     init_inputs_table();

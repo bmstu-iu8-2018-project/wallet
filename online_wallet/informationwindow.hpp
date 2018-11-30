@@ -15,7 +15,7 @@
 
 namespace Ui
 {
-class InformationWindow;
+    class InformationWindow;
 }
 
 class InformationWindow : public QWidget
@@ -39,6 +39,8 @@ class InformationWindow : public QWidget
     void on_boxRequests_currentIndexChanged(int index);
 
 private:
+    static QString address_;
+
     Ui::InformationWindow* ui;
 
     MakeTransactionWindow* transWindow;
@@ -46,8 +48,6 @@ private:
     void init_box_requests();
 
     void change_window();
-
-    static QString address_;
 
     enum class Requests
     {

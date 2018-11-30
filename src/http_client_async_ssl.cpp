@@ -10,7 +10,8 @@ void session::run(char const* host, char const* port,
 {
     if (!SSL_set_tlsext_host_name(stream_.native_handle(), host))
     {
-        boost::system::error_code ec{ static_cast<int>(::ERR_get_error()), boost::asio::error::get_ssl_category() };
+        boost::system::error_code ec{ static_cast<int>(::ERR_get_error()),
+                    boost::asio::error::get_ssl_category() };
         std::cerr << ec.message() << "\n";
         return;
     }
@@ -32,7 +33,8 @@ void session::run(char const* host, char const* port,
 {
     if (!SSL_set_tlsext_host_name(stream_.native_handle(), host))
     {
-        boost::system::error_code ec{ static_cast<int>(::ERR_get_error()), boost::asio::error::get_ssl_category() };
+        boost::system::error_code ec{ static_cast<int>(::ERR_get_error()),
+                    boost::asio::error::get_ssl_category() };
         std::cerr << ec.message() << "\n";
         return;
     }

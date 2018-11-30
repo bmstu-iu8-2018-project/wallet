@@ -2,16 +2,16 @@
 #include <ui_passwordforwallet.h>
 #include <mainwindow.hpp>
 
-PasswordForWallet::PasswordForWallet(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::PasswordForWallet)
+QString PasswordForWallet::name_;
+char PasswordForWallet::name_device_;
+
+PasswordForWallet::PasswordForWallet(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::PasswordForWallet)
 {
     ui->setupUi(this);
     finde_usb_device();
 }
-
-QString PasswordForWallet::name_;
-char PasswordForWallet::name_device_;
 
 PasswordForWallet::~PasswordForWallet()
 {

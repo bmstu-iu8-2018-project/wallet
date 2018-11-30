@@ -35,14 +35,15 @@ class PasswordForWallet : public QWidget
     void on_back_clicked();
 
 private:
+    static QString name_;
+
+    static char name_device_;
+
     Ui::PasswordForWallet *ui;
 
     InformationWindow *infWindow;
 
     usb_monitor* mon;
-
-    static QString name_;
-    static char name_device_;
 
     void finde_usb_device();
 

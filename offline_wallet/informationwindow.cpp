@@ -4,6 +4,8 @@
 #include <ui_informationwindow.h>
 #include <includes/JsonUtils.hpp>
 
+QString InformationWindow::mark_path_;
+char InformationWindow::name_device_;
 
 InformationWindow::InformationWindow(QWidget *parent)
     : QWidget(parent)
@@ -20,9 +22,6 @@ InformationWindow::InformationWindow(QWidget *parent)
     ui->addres->setText(ju::get_address(path_private_data + "/address_public_key.json"));
     ui->public_key->setText(ju::get_public_key(path_private_data + "/address_public_key.json"));
 }
-
-QString InformationWindow::mark_path_;
-char InformationWindow::name_device_;
 
 QString InformationWindow::get_path_private_dir()
 {
@@ -69,8 +68,6 @@ void InformationWindow::chek_device()
 
 void InformationWindow::chec_mark_on_device(const QString& path)
 {
-    qDebug() << path;
-
     bool flag = false;
 
     QDirIterator it(path, QStringList() << "*.dat", QDir::Files, QDirIterator::Subdirectories);
@@ -112,74 +109,29 @@ QString InformationWindow::get_device_path()
     return path;
 }
 
-QString InformationWindow::get_transactions_path()
+QDir InformationWindow::get_transactions_dir()
 {
     QString path;
     QDir dir(mark_path_);
     dir.cdUp();
-    path = dir.path();
-    path += "/Transactions/";
-    return path;
+    dir.cd("Transactions");
+    return dir;
 }
 
 bool InformationWindow::transactions_empty()
 {
-    QDir dir(get_transactions_path());
+    QDir dir(get_transactions_dir());
     if (dir.isEmpty())
         return true;
 
     return false;
 }
 
-void InformationWindow::on_update_trans_clicked()
-{
-    finde_usb_device();
-    chek_device();
-    if (get_name_wallet() == ui->name->text())
-    {
-        if (transactions_empty())
-            QMessageBox::information(this, "Message", "There are no transactions created");
-        else
-        {
-            fs_model_->setRootPath(get_transactions_path());
-            ui->transactoin_list->setModel(fs_model_);
-            ui->transactoin_list->setRootIndex(fs_model_->index(get_transactions_path()));
-        }
-    }
-}
-
-void InformationWindow::on_transactoin_list_doubleClicked(const QModelIndex &index)
-{
-    QListView *list_view = static_cast<QListView*>(sender());
-
-    QFileInfo file_info = fs_model_->fileInfo(index);
-    if (file_info.fileName() == "..")
-    {
-        QDir dir = file_info.dir();
-        dir.cdUp();
-        list_view->setRootIndex(fs_model_->index(dir.absolutePath()));
-    }
-    else if (file_info.fileName() == ".")
-    {
-        list_view->setRootIndex(fs_model_->index(get_transactions_path()));
-    }
-    else if (file_info.isDir())
-    {
-        list_view->setRootIndex(index);
-    }
-    else if (file_info.isFile())
-    {
-        if ((file_info.baseName() == "transaction") &&
-                (file_info.completeSuffix() == "json"))
-            change_window(file_info.filePath());
-    }
-}
-
-void InformationWindow::change_window(const QString& path)
+void InformationWindow::change_window(const QDir& dir)
 {
     transWindow = new TransactionWindow();
     transWindow->setWindowTitle("Transaction");
-    transWindow->set_transaction(path);
+    transWindow->setTxIdBox(dir);
     transWindow->show();
 }
 
@@ -191,4 +143,11 @@ void InformationWindow::on_exit_clicked()
     mainWindow->show();
     deleteLater();
     this->close();
+}
+
+void InformationWindow::on_view_tx_clicked()
+{
+    finde_usb_device();
+    chek_device();
+    change_window(get_transactions_dir());
 }

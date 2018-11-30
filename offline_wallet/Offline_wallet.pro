@@ -48,7 +48,11 @@ SOURCES += \
     transactionwindow.cpp \
     includes/JsonUtils.cpp \
     includes/http_client_async_ssl.cpp \
-    includes/NetworkUtils.cpp
+    includes/NetworkUtils.cpp \
+    includes/Script.cpp \
+    includes/Transaction.cpp \
+    includes/TxIn.cpp \
+    includes/TxOut.cpp
 
 HEADERS += \
     includes/CryptoUtils.hpp \
@@ -61,7 +65,11 @@ HEADERS += \
     informationwindow.hpp \
     mainwindow.hpp \
     passwordforwallet.hpp \
-    transactionwindow.hpp
+    transactionwindow.hpp \
+    includes/Script.hpp \
+    includes/Transaction.hpp \
+    includes/TxIn.hpp \
+    includes/TxOut.hpp
 
 FORMS += \
         mainwindow.ui \

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>600</height>
+    <width>780</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,52 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTextBrowser" name="trasaction"/>
+    <widget class="QLabel" name="label_tx_id">
+     <property name="text">
+      <string>Transaction ID :</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="tx_id_box"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_status">
+       <property name="text">
+        <string>Status :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="status">
+       <property name="text">
+        <string>Unknown</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_inputs">
+     <property name="text">
+      <string>Inputs (0)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="inputs"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_outputs">
+     <property name="text">
+      <string>Outputs (0)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="outputs"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -29,7 +74,7 @@
      <item alignment="Qt::AlignRight">
       <widget class="QPushButton" name="sign">
        <property name="text">
-        <string>Sign a transaction</string>
+        <string>Sign</string>
        </property>
       </widget>
      </item>

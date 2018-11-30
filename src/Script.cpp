@@ -14,15 +14,15 @@ Script::Script(const std::vector<byte>& bytes)
 
 Script& Script::operator=(Script&& other)
 {
-    if(&other != this)
-        script_ = std::move(other.script_);
+    script_ = std::move(other.script_);
     return *this;
 }
 
 Script& Script::operator=(const Script& other)
 {
     if (&other != this)
-        script_ = other.script_;
+            script_ = other.script_;
+
     return *this;
 }
 
@@ -38,7 +38,6 @@ void Script::create_pkh_script(const std::string& address)
         decode_address.begin() + 1, decode_address.begin() + 21);
 
     script_ = pkh_script;
-    address_ = address;
 }
 
 std::vector<byte> Script::data() const
@@ -46,18 +45,12 @@ std::vector<byte> Script::data() const
     return script_;
 }
 
-std::string Script::get_address() const
-{
-    return address_;
-}
-
-
 byte Script::get_length() const
 {
     return static_cast<byte>(script_.size());
 }
 
-void add_signature(const std::vector<byte>& sign)
+void Script::add_signature(const std::vector<byte>& sign)
 {
     if (!script_.empty())
     {

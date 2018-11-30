@@ -7,6 +7,9 @@
 #include <QDirIterator>
 #include <QDebug>
 
+char MainWindow::name_device_;
+QString MainWindow::mark_path_;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -24,9 +27,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-char MainWindow::name_device_;
-QString MainWindow::mark_path_;
 
 void MainWindow::change_window()
 {

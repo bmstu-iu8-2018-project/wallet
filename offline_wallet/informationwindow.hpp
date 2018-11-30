@@ -23,13 +23,16 @@ class InformationWindow : public QWidget
     ~InformationWindow();
 
 private slots:
-    void on_update_trans_clicked();
-
-    void on_transactoin_list_doubleClicked(const QModelIndex &index);
 
     void on_exit_clicked();
 
+    void on_view_tx_clicked();
+
 private:
+    static QString mark_path_;
+
+    static char name_device_;
+
     Ui::InformationWindow *ui;
 
     TransactionWindow *transWindow;
@@ -37,10 +40,6 @@ private:
     usb_monitor *mon;
 
     QFileSystemModel *fs_model_;
-
-    static QString mark_path_;
-
-    static char name_device_;
 
     QString get_path_private_dir();
 
@@ -54,11 +53,11 @@ private:
 
     QString get_device_path();
 
-    QString get_transactions_path();
+    QDir get_transactions_dir();
 
     static QString get_name_wallet();
 
-    void change_window(const QString& path);
+    void change_window(const QDir& dir);
 
     bool transactions_empty();
 };

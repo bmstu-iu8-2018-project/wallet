@@ -35,6 +35,7 @@ public:
 
 private:
     uint64_t value_;
+
     Script pk_script_;
 };
 

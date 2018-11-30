@@ -2,6 +2,8 @@
 #include <ui_informationwindow.h>
 #include <mainwindow.hpp>
 
+QString InformationWindow::address_;
+
 InformationWindow::InformationWindow(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::InformationWindow)
@@ -17,8 +19,6 @@ InformationWindow::InformationWindow(QWidget *parent)
 
     address_ = ui->address->text();
 }
-
-QString InformationWindow::address_;
 
 QString InformationWindow::get_address()
 {

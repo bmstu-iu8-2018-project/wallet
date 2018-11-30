@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>600</height>
+    <width>655</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,38 +15,40 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QSplitter" name="splitter">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <widget class="QLabel" name="lable_wall_name">
-      <property name="text">
-       <string>Wallet name :</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="name">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="lable_wall_name">
+       <property name="text">
+        <string>Wallet name :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="name">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QSplitter" name="splitter_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <widget class="QLabel" name="label_addres">
-      <property name="text">
-       <string>Addres :</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="addres">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_addres">
+       <property name="text">
+        <string>Addres :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="addres">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_pub_key">
@@ -75,23 +77,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_transactions">
-     <property name="text">
-      <string>Transactions :</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QListView" name="transactoin_list">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>242</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item alignment="Qt::AlignLeft">
       <widget class="QPushButton" name="exit">
@@ -101,9 +86,9 @@
       </widget>
      </item>
      <item alignment="Qt::AlignRight">
-      <widget class="QPushButton" name="update_trans">
+      <widget class="QPushButton" name="view_tx">
        <property name="text">
-        <string>Update</string>
+        <string>View transactions</string>
        </property>
       </widget>
      </item>

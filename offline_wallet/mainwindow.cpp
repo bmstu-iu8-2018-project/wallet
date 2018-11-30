@@ -1,6 +1,8 @@
 #include <mainwindow.hpp>
 #include <ui_mainwindow.h>
 
+QString MainWindow:: name_;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -12,8 +14,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-QString MainWindow:: name_;
 
 void MainWindow::on_authorization_clicked()
 {
@@ -70,7 +70,7 @@ void MainWindow::on_authorization_clicked()
         infWindow->setWindowTitle("Wallet information");
         infWindow->show();
 
-        this->close();    // close the main window
+        this->close();  // close the main window
     }
     else
     {
@@ -103,5 +103,5 @@ void MainWindow::change_window()
 void MainWindow::on_go_to_create_wallet_clicked()
 {
     change_window();
-    this->close();    // close the main window
+    this->close();  // close the main window
 }

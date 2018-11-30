@@ -29,7 +29,6 @@ const byte DER_HEADLINE = 0x30;
 const byte BEGIN_OF_NUM = 0x02;
 const byte SIGHASH_ALL = 0x01;  // signature is valid for all exits
 
-
 namespace cu
 {
     template <typename T>
@@ -50,6 +49,8 @@ namespace cu
     std::vector<byte> to_varint_byte(size_t n);
 
     uint64_t to_varint(size_t size);
+
+    std::string get_addres_from_script(const std::vector<byte>& bytes);
     
     std::string SHA256(const std::string& string);
 
