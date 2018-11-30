@@ -16,13 +16,15 @@ Script::Script(const std::vector<byte>& bytes)
 
 Script& Script::operator=(Script&& other)
 {
-    script_ = std::move(other.script_);
+    if(&other != this)
+        script_ = std::move(other.script_);
     return *this;
 }
 
 Script& Script::operator=(const Script& other)
 {
-    script_ = other.script_;
+    if (&other != this)
+        script_ = other.script_;
     return *this;
 }
 
@@ -48,4 +50,12 @@ std::vector<byte> Script::data() const
 byte Script::get_length() const
 {
     return static_cast<byte>(script_.size());
+}
+
+void add_signature(const std::vector<byte>& sign)
+{
+    if (!script_.empty())
+    {
+        script_.insert(script_.begin(), sign.begin(), sign.end());
+    }
 }
