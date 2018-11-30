@@ -35,16 +35,19 @@ public:
 
     std::vector<byte> get_byte_tx() const;
 
+    void sign(const std::string& private_key_wif);
+
+    bool is_signed() const;
+
     static Transaction parse(const std::string& file_name);
+
 private:
     int32_t version_;
 
     uint64_t tx_in_count_;
-
     inputs tx_in_;
 
     uint64_t tx_out_count_;
-
     outputs tx_out_;
 
     uint32_t lock_time_;

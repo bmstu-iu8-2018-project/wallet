@@ -3,9 +3,8 @@
 #define TXIN_HPP
 
 #include <cstdint>
-#include <vector>
 #include <fstream>
-#include <iostream>
+#include <vector>
 #include <includes/Script.hpp>
 
 const uint32_t DEFAULT_SEQUANCE = 0xFFFFFFFF;
@@ -60,8 +59,12 @@ public:
 
     static TxIn from_data(const std::vector<byte>& data);
 
-    ~TxIn() = default;
+    void sign_by(const std::string& private_key_wif,
+        const std::vector<byte>& tx);
 
+    size_t get_script_length() const;
+
+    ~TxIn() = default;
 };
 
 #endif // TXIN_HPP

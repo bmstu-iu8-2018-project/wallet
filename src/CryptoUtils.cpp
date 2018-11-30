@@ -1,5 +1,6 @@
 #include <includes/CryptoUtils.hpp>
 
+
 namespace cu
 {
     std::vector<byte> from_hex_to_bytes(const std::string& hex)
@@ -13,36 +14,12 @@ namespace cu
         return vector_of_bytes;
     };
 
-    std::string to_hex(uint32_t s)
-    {
-        std::stringstream ss;
-        ss << std::hex << std::setw(8) << std::setfill('0') << static_cast<int>(s);
-
-        return ss.str();
-    }
-
-    std::string to_hex(byte s)
-    {
-        std::stringstream ss;
-        ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(s);
-
-        return ss.str();
-    }
-
-    std::string to_hex(int32_t s)
-    {
-        std::stringstream ss;
-        ss << std::hex << std::setw(8) << std::setfill('0') << static_cast<int>(s);
-
-        return ss.str();
-    }
-
     std::string from_bytes_to_hex(const_bytes bytes, int length)
     {
         std::string hex;
         for (int i = 0; i < length; i++)
         {
-            hex += cu::to_hex(bytes[i]);
+            hex += to_hex(bytes[i]);
         }
         return hex;
     };
@@ -83,7 +60,7 @@ namespace cu
 
     uint64_t to_varint(size_t size)
     {
-        std::vector<uint8_t> buf = cu::to_bytes(size);
+        std::vector<uint8_t> buf = to_bytes(size);
         if (size > 8 && buf[0] == 0xff)
         {
             buf.resize(9);
@@ -119,9 +96,9 @@ namespace cu
 
     std::string to_littleendian_format(const std::string& string)
     {
-        auto bytes = cu::from_hex_to_bytes(string);
+        auto bytes = from_hex_to_bytes(string);
         std::reverse(bytes.begin(), bytes.end());
-        return cu::from_bytes_to_hex(bytes); // littleendian format
+        return from_bytes_to_hex(bytes); // littleendian format
     }
 
     void to_littleendian_format(std::vector<byte>& bytes)
@@ -131,25 +108,17 @@ namespace cu
 
     std::string from_bytes_to_hex(const std::vector<byte>& bytes)
     {
-        return cu::from_bytes_to_hex(&bytes[0], bytes.size());
+        return from_bytes_to_hex(&bytes[0], bytes.size());
     };
 
     std::string SHA256(const std::string& string)
     {
-        auto byte_string = cu::from_hex_to_bytes(string);
-
-        byte hash[SHA256_DIGEST_LENGTH];
-        SHA256_CTX sha256;
-        SHA256_Init(&sha256);
-        SHA256_Update(&sha256, &byte_string[0], byte_string.size());
-        SHA256_Final(hash, &sha256);
-
-        return cu::from_bytes_to_hex(hash, SHA256_DIGEST_LENGTH);
+        return from_bytes_to_hex(SHA256(from_hex_to_bytes(string)));
     };
 
     std::string RIPEMD160(const std::string& string)
     {
-        auto byte_string = cu::from_hex_to_bytes(string);
+        const auto byte_string = from_hex_to_bytes(string);
 
         byte hash[RIPEMD160_DIGEST_LENGTH];
         RIPEMD160_CTX ripemd160;
@@ -157,7 +126,35 @@ namespace cu
         RIPEMD160_Update(&ripemd160, &byte_string[0], byte_string.size());
         RIPEMD160_Final(hash, &ripemd160);
 
-        return  cu::from_bytes_to_hex(hash, RIPEMD160_DIGEST_LENGTH);
+        return  from_bytes_to_hex(hash, RIPEMD160_DIGEST_LENGTH);
+    };
+
+    std::vector<byte> SHA256(const std::vector<byte>& byte_string)
+    {
+        byte hash[SHA256_DIGEST_LENGTH];
+        SHA256_CTX sha256;
+        SHA256_Init(&sha256);
+        SHA256_Update(&sha256, &byte_string[0], byte_string.size());
+        SHA256_Final(hash, &sha256);
+
+        std::vector<byte> a(SHA256_DIGEST_LENGTH);
+        std::memcpy(&a[0], &hash, SHA256_DIGEST_LENGTH);
+
+        return a;
+    };
+
+    std::vector<byte> RIPEMD160(const std::vector<byte>& byte_string)
+    {
+        byte hash[RIPEMD160_DIGEST_LENGTH];
+        RIPEMD160_CTX ripemd160;
+        RIPEMD160_Init(&ripemd160);
+        RIPEMD160_Update(&ripemd160, &byte_string[0], byte_string.size());
+        RIPEMD160_Final(hash, &ripemd160);
+
+        std::vector<byte> a(RIPEMD160_DIGEST_LENGTH);
+        std::memcpy(&a[0], &hash, RIPEMD160_DIGEST_LENGTH);
+
+        return a;
     };
 
     std::string to_base58(const_bytes pbegin, const_bytes pend)
@@ -194,13 +191,13 @@ namespace cu
         str.reserve(zeroes + (b58.end() - it));
         str.assign(zeroes, '1');
         while (it != b58.end())
-            str += cu::Base58[*(it++)];
+            str += Base58[*(it++)];
         return str;
     };
 
     std::string to_base58(const std::vector<byte>& vch)
     {
-        return cu::to_base58(&vch[0], &vch[0] + vch.size());
+        return to_base58(&vch[0], &vch[0] + vch.size());
     };
 
     bool from_base58(const char *psz, std::vector<byte>& vch)
@@ -256,26 +253,27 @@ namespace cu
         return from_base58(str.c_str(), vchRet);
     };
 
-    BIGNUM* get_private_key(const std::string& private_key)
+    BIGNUM* get_private_key_from_wif(const std::string& private_key_wif)
     {
         BIGNUM* prv_key = BN_new();
         std::vector<byte> private_k;
-
-        if (!cu::from_base58(private_key, private_k))
+        if (!from_base58(private_key_wif, private_k))
         {
             throw std::runtime_error("wrong format of private key");
         }
 
         private_k.erase(private_k.begin(), private_k.begin() + 1);
-        BN_hex2bn(&prv_key, cu::from_bytes_to_hex(private_k).c_str());
+        private_k.erase(private_k.end() - 4, private_k.end());
+
+        BN_hex2bn(&prv_key, from_bytes_to_hex(private_k).c_str());
 
         return prv_key;
     };
 
-    EC_KEY* get_ec_key_from_private(const std::string& private_key)
+    EC_KEY* get_ec_key_from_private(const std::string& private_key_wif)
     {
         EC_KEY* ec_key = EC_KEY_new_by_curve_name(NID_secp256k1);
-        BIGNUM* prv_key = get_private_key(private_key);
+        BIGNUM* prv_key = get_private_key_from_wif(private_key_wif);
         EC_KEY_set_private_key(ec_key, prv_key);
 
         BN_CTX* ctx = BN_CTX_new();
@@ -311,11 +309,12 @@ namespace cu
         return ec_key;
     };
 
-    ECDSA_SIG* sign(const std::string& private_key, const std::string& text)
+    ECDSA_SIG* sign(const std::string& private_key, const std::vector<byte>& text)
     {
-        auto hash = cu::from_hex_to_bytes(cu::SHA256(cu::SHA256(text)));
+        const auto hash = SHA256(SHA256(text));
 
         EC_KEY* ec_key = get_ec_key_from_private(private_key);
+
         ECDSA_SIG* signature = ECDSA_do_sign(&hash[0], hash.size(), ec_key);
         if (signature == NULL)
         {
@@ -327,38 +326,46 @@ namespace cu
         return signature;
     };
 
-    bool is_validate_signature(const std::string& public_key, const ECDSA_SIG* signature, const std::string& text)
+    bool is_validate_signature(const std::string& public_key, const ECDSA_SIG* signature, const std::vector<byte>& text)
     {
-        auto hash = cu::from_hex_to_bytes(cu::SHA256(cu::SHA256(text)));
-
+        const auto hash = RIPEMD160(SHA256(text));
+        
         EC_KEY* ec_key = get_ec_key_from_public(public_key);
-        auto flag = ECDSA_do_verify(&hash[0], hash.size(), signature, ec_key);
-
+        const auto flag = ECDSA_do_verify(&hash[0], hash.size(), signature, ec_key);
         EC_KEY_free(ec_key);
 
         return flag == 1;
     };
 
-    std::string signature_to_der(ECDSA_SIG* signature)
+    std::string signature_to_der(const ECDSA_SIG* signature)
     {
-        std::string r = BN_bn2hex(signature->r);
-        std::string s = BN_bn2hex(signature->s);
+        const std::string r = BN_bn2hex(signature->r);
+        const std::string s = BN_bn2hex(signature->s);
+
+        std::cout << "r=    " << BN_bn2hex(signature->r) << std::endl;
+        std::cout << "s=    " << BN_bn2hex(signature->s) << std::endl;
+
         std::string der;
 
-        der += cu::to_hex(DER_HEADLINE);
+        der += to_hex(DER_HEADLINE);
 
         int size = (r.size() + s.size()) / 2 + 3;
         std::stringstream oss;
         oss << std::hex << size;
         der += oss.str(); //  length of next data
 
-        der += cu::to_hex(BEGIN_OF_NUM);
+        der += to_hex(BEGIN_OF_NUM);
         der.insert(der.end(), r.begin(), r.end());
-        der += cu::to_hex(BEGIN_OF_NUM);
+        der += to_hex(BEGIN_OF_NUM);
         der.insert(der.end(), s.begin(), s.end());
-        der += cu::to_hex(SIGHASH_ALL);
+        der += to_hex(SIGHASH_ALL);
 
         return der;
+    }
+
+    std::vector<byte> signature_to_der_byted(const ECDSA_SIG* signature)
+    {
+        return from_hex_to_bytes(signature_to_der(signature));
     }
 
     ECDSA_SIG* from_der_to_sig(const std::string& scriptSig)

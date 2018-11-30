@@ -1,5 +1,5 @@
 #include <includes/Script.hpp>
-#include <iostream>
+
 
 
 Script::Script(Script&& other)

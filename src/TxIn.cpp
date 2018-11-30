@@ -1,5 +1,6 @@
 #include <includes/TxIn.hpp>
 
+
 TxIn::TxIn(const OutPoint& point, const Script& script)
 {
     previous_output_ = point;
@@ -120,4 +121,28 @@ std::vector<byte> TxIn::get_byte_input() const
     bytes.insert(bytes.end(), sequance.begin(), sequance.end());
 
     return bytes;
+}
+
+void  TxIn::sign_by(const std::string& private_key_wif,
+    const std::vector<byte>& tx)
+{
+    auto sig =
+        cu::signature_to_der_byted(cu::sign(private_key_wif, tx));
+
+    const auto ec_key = cu::get_ec_key_from_private(private_key_wif);
+    const EC_POINT* pub = EC_KEY_get0_public_key(ec_key);
+    BN_CTX* ctx = BN_CTX_new();
+    const EC_GROUP* group = EC_KEY_get0_group(ec_key);
+    const auto public_key = cu::from_hex_to_bytes(
+        EC_POINT_point2hex(group, pub, POINT_CONVERSION_UNCOMPRESSED, ctx));
+
+    sig.push_back((byte)public_key.size());
+    sig.insert(sig.end(), public_key.begin(), public_key.end());
+
+    script_.add_signature(sig);
+}
+
+size_t TxIn::get_script_length() const
+{
+    return static_cast<size_t>(script_.get_length());
 }

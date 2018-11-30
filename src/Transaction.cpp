@@ -35,25 +35,29 @@ Transaction::Transaction(const std::string& file_name)
 
 Transaction& Transaction::operator=(Transaction&& other)
 {
-    version_ = std::move(other.version_);
-    lock_time_ = std::move(other.lock_time_);
-    tx_in_ = std::move(other.tx_in_);
-    tx_in_count_ = std::move(other.tx_in_count_);
-    tx_out_ = std::move(other.tx_out_);
-    tx_out_count_ = std::move(other.tx_out_count_);
-
+    if (&other != this)
+    {
+        version_ = std::move(other.version_);
+        lock_time_ = std::move(other.lock_time_);
+        tx_in_ = std::move(other.tx_in_);
+        tx_in_count_ = std::move(other.tx_in_count_);
+        tx_out_ = std::move(other.tx_out_);
+        tx_out_count_ = std::move(other.tx_out_count_);
+    }
     return *this;
 }
 
 Transaction& Transaction::operator=(const Transaction& other)
 {
-    version_ = other.version_;
-    lock_time_ = other.lock_time_;
-    tx_in_ = other.tx_in_;
-    tx_in_count_ = other.tx_in_count_;
-    tx_out_ = other.tx_out_;
-    tx_out_count_ = other.tx_out_count_;
-
+    if (&other != this)
+    {
+        version_ = other.version_;
+        lock_time_ = other.lock_time_;
+        tx_in_ = other.tx_in_;
+        tx_in_count_ = other.tx_in_count_;
+        tx_out_ = other.tx_out_;
+        tx_out_count_ = other.tx_out_count_;
+    }
     return *this;
 }
 
@@ -93,20 +97,20 @@ std::vector<byte> Transaction::get_byte_tx() const
 Transaction Transaction::parse(const std::string& file_name)
 {
     std::ifstream ifs(file_name);
-
     std::string data;
     std::getline(ifs, data);
+    ifs.close();
 
-    auto bytes = cu::from_hex_to_bytes(data);
+    const auto bytes = cu::from_hex_to_bytes(data);
 
     int32_t version = cu::to_type<int32_t>(bytes.begin(), bytes.begin() + sizeof(int32_t));
 
-    auto iter_in_count = bytes.begin() + sizeof(int32_t);
+    const auto iter_in_count = bytes.begin() + sizeof(int32_t);
+
     uint64_t tx_in_count = cu::to_varint(static_cast<size_t>(*iter_in_count));
   
     inputs tx_in;
     auto iter_first_in = iter_in_count + 1;
-
     for (size_t i = 0; i < tx_in_count; ++i)
     {
         auto last = std::search_n(iter_first_in, bytes.end(), SEQUANCE_SIZE, 0xFF);
@@ -133,4 +137,22 @@ Transaction Transaction::parse(const std::string& file_name)
 
     return Transaction(version, lock_time, tx_in, tx_out);
 }
-    
+
+void Transaction::sign(const std::string& private_key_wif)
+{
+    if (tx_in_.size() == 0)
+        return;
+    for (auto& input : tx_in_)
+    {
+        // every input must sign hash which include previous signed input
+        const auto raw_tx = get_byte_tx();
+        input.sign_by(private_key_wif, raw_tx);
+    }
+}
+
+bool Transaction::is_signed() const
+{
+    if (tx_in_.size() == 0)
+        return false;
+    return tx_in_[0].get_script_length() > 25;
+}
