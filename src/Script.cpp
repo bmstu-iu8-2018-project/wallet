@@ -1,7 +1,5 @@
 #include <includes/Script.hpp>
 
-
-
 Script::Script(Script&& other)
     : script_(std::move(other.script_))
 {}
@@ -40,12 +38,19 @@ void Script::create_pkh_script(const std::string& address)
         decode_address.begin() + 1, decode_address.begin() + 21);
 
     script_ = pkh_script;
+    address_ = address;
 }
 
 std::vector<byte> Script::data() const
 {
     return script_;
 }
+
+std::string Script::get_address() const
+{
+    return address_;
+}
+
 
 byte Script::get_length() const
 {

@@ -57,9 +57,9 @@ void MakeTransactionWindow::create_transaction(QDir dir)
     Transaction tx(1, 0, vec_inputs_, vec_outputs_);
     auto raw_tx = tx.get_hex_tx();
 
-    QFile jsonFile(dir.path() + "/tx.dat");
-    jsonFile.open(QFile::WriteOnly);
-    jsonFile.write(raw_tx.c_str());
+    QFile file_tx(dir.path() + "/tx.dat");
+    file_tx.open(QFile::WriteOnly);
+    file_tx.write(raw_tx.c_str());
 }
 
 void MakeTransactionWindow::build_transaction()
@@ -80,8 +80,10 @@ void MakeTransactionWindow::on_build_transaction_clicked()
 {
     build_transaction();
     QMessageBox::information(this, "Message", "Transaction successfully created!");
-    ui->inputs->clear();
-    ui->outputs->clear();
+    ui->inputs->setRowCount(0);
+    ui->outputs->setRowCount(0);
+    ui->input_label->setText(QString("Inputs (%1)").arg(0));
+    ui->output_label->setText(QString("Outputs (%1)").arg(0));
 }
 
 void MakeTransactionWindow::on_clouse_clicked()
@@ -139,7 +141,6 @@ void MakeTransactionWindow::on_create_input_clicked()
         ui->inputs->resizeColumnsToContents();
         ui->inputs->item(rowNumber, 0)->setTextAlignment(Qt::AlignCenter);
         ui->inputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
-
         ui->input_label->setText(QString("Inputs (%1)").arg(vec_inputs_.size()));
     }
 
@@ -193,7 +194,6 @@ void MakeTransactionWindow::on_create_output_clicked()
         ui->outputs->setItem(rowNumber,1, new QTableWidgetItem(ammount->text()));
         ui->outputs->item(rowNumber, 0)->setTextAlignment(Qt::AlignCenter);
         ui->outputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
-
         ui->output_label->setText(QString("Outputs (%1)").arg(vec_outputs_.size()));
     }
 

@@ -140,13 +140,6 @@
            <item>
             <widget class="QComboBox" name="boxRequests"/>
            </item>
-           <item>
-            <widget class="QPushButton" name="request">
-             <property name="text">
-              <string>Request</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </item>
          <item>

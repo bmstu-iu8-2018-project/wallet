@@ -36,9 +36,9 @@ class InformationWindow : public QWidget
 
     void on_exit_clicked();
 
-    void on_request_clicked();
+    void on_boxRequests_currentIndexChanged(int index);
 
- private:
+private:
     Ui::InformationWindow* ui;
 
     MakeTransactionWindow* transWindow;

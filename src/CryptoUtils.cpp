@@ -342,9 +342,6 @@ namespace cu
         const std::string r = BN_bn2hex(signature->r);
         const std::string s = BN_bn2hex(signature->s);
 
-        std::cout << "r=    " << BN_bn2hex(signature->r) << std::endl;
-        std::cout << "s=    " << BN_bn2hex(signature->s) << std::endl;
-
         std::string der;
 
         der += to_hex(DER_HEADLINE);

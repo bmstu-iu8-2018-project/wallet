@@ -41,6 +41,10 @@ public:
 
     static Transaction parse(const std::string& file_name);
 
+    std::vector<TxIn> get_inputs() const;
+
+    std::vector<TxOut> get_outputs() const;
+
 private:
     int32_t version_;
 

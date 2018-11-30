@@ -49,6 +49,8 @@ public:
 
     uint32_t get_index() const;
 
+    std::string get_prev_tx_hash() const;
+
     Script get_script() const;
 
     uint32_t get_sequance() const;

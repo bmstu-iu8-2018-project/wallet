@@ -27,7 +27,7 @@ public:
 
 private slots:
 
-    void on_wallets_currentIndexChanged(const QString &arg1);
+    void on_wallets_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

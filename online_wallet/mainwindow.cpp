@@ -106,9 +106,9 @@ void MainWindow::chec_mark_on_device(const QString& path)
     }
 }
 
-void MainWindow::on_wallets_currentIndexChanged(const QString &arg1)
+void MainWindow::on_wallets_currentIndexChanged(int index)
 {
-    if (arg1 != ui->wallets->itemText(0))
+    if (index != 0)
     {
         mark_path_ = get_device_path() + ui->wallets->currentText() + '/';
         change_window();
