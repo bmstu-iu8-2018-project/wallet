@@ -16,17 +16,17 @@
 #pragma comment(lib, "SetupAPI")
 
 usb_monitor_exception::usb_monitor_exception(const std::string& message)
-    : std::runtime_error(message)
+	:std::runtime_error(message)
 {}
 
 std::auto_ptr<usb_monitor> usb_monitor::instanse_;
 const std::wstring usb_monitor::class_name(L"UsbMonWinClass");
 
 usb_monitor::usb_monitor(bool monitor_hard_drives)
-    : started_(false)
-    , safe_remove_on_timeout_(true)
-    , monitor_hard_drives_(monitor_hard_drives)
-    , mon_hwnd_(NULL)
+	:started_(false),
+	safe_remove_on_timeout_(true),
+	monitor_hard_drives_(monitor_hard_drives),
+	mon_hwnd_(NULL)
 {
 	WNDCLASSEXW wndClass = {0};
 
@@ -156,7 +156,7 @@ void usb_monitor::mount_device(wchar_t letter)
 
 	existing_notifications_.insert(std::make_pair(reinterpret_cast<size_t>(device_handle), std::make_pair(token, letter)));
 
-	if(!on_device_added_.empty())
+    if(!on_device_added_.empty())
 		on_device_added_(static_cast<char>(letter));
 }
 

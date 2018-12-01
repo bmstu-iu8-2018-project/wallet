@@ -156,13 +156,3 @@ bool Transaction::is_signed() const
         return false;
     return tx_in_[0].get_script_length() > 25;
 }
-
-std::vector<TxIn> Transaction::get_inputs() const
-{
-    return tx_in_;
-}
-
-std::vector<TxOut> Transaction::get_outputs() const
-{
-    return tx_out_;
-}

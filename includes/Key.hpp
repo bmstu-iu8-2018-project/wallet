@@ -1,4 +1,3 @@
-#pragma once
 #ifndef KEY_HPP
 #define KEY_HPP
 
@@ -9,13 +8,11 @@ const byte TEST_NETWORK = 0x6f;
 const byte NAMECOIN_NETWORK = 0x34;
 const byte PRIVATE_PREFIX = 0x80;
 
-using namespace cu;
-
 class Key
 {
  private:
-    std::pair<std::string, std::string> _Keys;
-    std::string _Address;
+    std::pair<std::string, std::string> keys_;
+    std::string address_;
 
     void make_address(const byte type_network);
 

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SCRIPT_HPP
 #define SCRIPT_HPP
 
@@ -21,23 +20,23 @@ public:
 
     ~Script() = default;
 
-    Script(Script&& other);
+    Script(Script&& other) = default;
 
     Script(const Script& other);
 
     Script(const std::vector<byte>& bytes);
 
+    Script(std::vector<byte>&& bytes);
+
     Script& operator=(Script&& other);
 
-    Script& operator=(const Script& other);
+    Script& operator=(const Script& other) = default;
 
     void create_pkh_script(const std::string& address);
 
     std::vector<byte> data() const;
 
     byte get_length() const;
-
-    void add_signature(const std::vector<byte>& sign);
 
 private:
     std::vector<byte> script_;

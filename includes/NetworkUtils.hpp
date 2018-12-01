@@ -1,4 +1,3 @@
-#pragma once
 #ifndef NETWORK_UTILS_HPP
 #define NETWORK_UTILS_HPP
 

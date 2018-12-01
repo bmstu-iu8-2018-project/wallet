@@ -45,7 +45,7 @@ std::vector<byte> TxOut::get_byte_output() const
 
 TxOut TxOut::from_data(const std::vector<byte>& bytes)
 {
-    uint64_t value = cu::to_type<uint64_t>(bytes.begin(), bytes.begin() + sizeof(uint64_t));
+    double value = cu::to_type<uint64_t>(bytes.begin(), bytes.begin() + sizeof(uint64_t));
     Script pk_script = std::vector<byte>(bytes.begin() + 9, bytes.end());
     return TxOut(value / SATOSHI_COEF, pk_script);
 }

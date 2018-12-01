@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TXIN_HPP
 #define TXIN_HPP
 
@@ -29,9 +28,7 @@ private:
     };
 
     OutPoint previous_output_; // The previous output transaction reference, as an OutPoint structure.
-
     Script script_;
-
     uint32_t sequance_;
 
 public:
@@ -50,8 +47,6 @@ public:
     void set_pkh_script(const Script& pkh_script);
 
     uint32_t get_index() const;
-
-    std::string get_prev_tx_hash() const;
 
     Script get_script() const;
 

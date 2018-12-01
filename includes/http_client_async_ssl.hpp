@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HTTP_CLIENT_ASYNC_SSL_HPP
 #define HTTP_CLIENT_ASYNC_SSL_HPP
 #define _SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING
@@ -17,11 +16,9 @@
 #include <boost/asio/ssl/error.hpp>
 #include <boost/asio/ssl/stream.hpp>
 
-
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
 namespace http = boost::beast::http;    // from <boost/beast/http.hpp>
-
 
 void fail(boost::system::error_code ec, char const* what);
 
@@ -36,8 +33,7 @@ public:
     explicit session(boost::asio::io_context& ioc, ssl::context& ctx)
         : resolver_(ioc)
         , stream_(ioc, ctx)
-    {
-    }
+    {}
 
     void run(char const* host, char const* port,
         char const* target, int version);

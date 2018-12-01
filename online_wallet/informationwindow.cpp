@@ -71,46 +71,56 @@ void InformationWindow::on_exit_clicked()
 
 void InformationWindow::on_boxRequests_currentIndexChanged(int index)
 {
-    if (index == static_cast<int>(Requests::address_balanse))
+    switch (index)
     {
-        ui->requestBrowser->clear();
-        const auto balance_json_data = nu::get_address_balance(ui->address->text().toStdString());
-        ui->requestBrowser->setText(balance_json_data.c_str());
-    }
-    else if (index == static_cast<int>(Requests::spent_transactions))
-    {
-        ui->requestBrowser->clear();
-        const auto spend_trans_json_data = nu::get_spent_transactions(ui->address->text().toStdString());
-        ui->requestBrowser->setText(spend_trans_json_data.c_str());
-    }
-    else if (index == static_cast<int>(Requests::unspent_transactions))
-    {
-        ui->requestBrowser->clear();
-        const auto unspend_trans_json_data = nu::get_unspent_transactions(ui->address->text().toStdString());
-        ui->requestBrowser->setText(unspend_trans_json_data.c_str());
-    }
-    else if (index == static_cast<int>(Requests::received_transactions))
-    {
-        ui->requestBrowser->clear();
-        const auto received_trans_json_data = nu::get_received_transactions(ui->address->text().toStdString());
-        ui->requestBrowser->setText(received_trans_json_data.c_str());
-    }
-    else if (index == static_cast<int>(Requests::transaction_inputs))
-    {
-        ui->requestBrowser->clear();
-       // const auto input_trans_json_data = nu::get_transaction_inputs("txid");
-       // ui->requestBrowser->setText(input_trans_json_data.c_str());
-    }
-    else if (index == static_cast<int>(Requests::transaction_outputs))
-    {
-        ui->requestBrowser->clear();
-       // const auto output_trans_json_data = nu::get_transaction_outputs("txid");
-       // ui->requestBrowser->setText(output_trans_json_data.c_str());
-    }
-    else if (index == static_cast<int>(Requests::transaction))
-    {
-        ui->requestBrowser->clear();
-       // const auto trans_json_data = nu::get_transaction("txid");
-       // ui->requestBrowser->setText(trans_json_data.c_str());
+        case (static_cast<int>(Requests::address_balanse)):
+        {
+            ui->requestBrowser->clear();
+            const auto balance_json_data = nu::get_address_balance(ui->address->text().toStdString());
+            ui->requestBrowser->setText(balance_json_data.c_str());
+            break;
+        }
+        case (static_cast<int>(Requests::spent_transactions)):
+        {
+            ui->requestBrowser->clear();
+            const auto spend_trans_json_data = nu::get_spent_transactions(ui->address->text().toStdString());
+            ui->requestBrowser->setText(spend_trans_json_data.c_str());
+            break;
+        }
+        case (static_cast<int>(Requests::unspent_transactions)):
+        {
+            ui->requestBrowser->clear();
+            const auto unspend_trans_json_data = nu::get_unspent_transactions(ui->address->text().toStdString());
+            ui->requestBrowser->setText(unspend_trans_json_data.c_str());
+            break;
+        }
+        case (static_cast<int>(Requests::received_transactions)):
+        {
+            ui->requestBrowser->clear();
+            const auto received_trans_json_data = nu::get_received_transactions(ui->address->text().toStdString());
+            ui->requestBrowser->setText(received_trans_json_data.c_str());
+            break;
+        }
+        case (static_cast<int>(Requests::transaction_inputs)):
+        {
+            ui->requestBrowser->clear();
+            // const auto input_trans_json_data = nu::get_transaction_inputs("txid");
+            // ui->requestBrowser->setText(input_trans_json_data.c_str());
+            break;
+        }
+        case (static_cast<int>(Requests::transaction_outputs)):
+        {
+            ui->requestBrowser->clear();
+            // const auto output_trans_json_data = nu::get_transaction_outputs("txid");
+            // ui->requestBrowser->setText(output_trans_json_data.c_str());
+            break;
+        }
+        case (static_cast<int>(Requests::transaction)):
+        {
+            ui->requestBrowser->clear();
+            // const auto trans_json_data = nu::get_transaction("txid");
+            // ui->requestBrowser->setText(trans_json_data.c_str());
+            break;
+        }
     }
 }

@@ -1,5 +1,4 @@
 #include <includes/CryptoUtils.hpp>
-#include <includes/Key.hpp>
 
 namespace cu
 {
@@ -104,18 +103,6 @@ namespace cu
     void to_littleendian_format(std::vector<byte>& bytes)
     {
         std::reverse(bytes.begin(), bytes.end());
-    }
-
-    std::string get_addres_from_script(const std::vector<byte>& bytes)
-    {
-        std::vector<byte> address;
-        address.push_back(TEST_NETWORK);
-        address.insert(address.end(), bytes.begin() + 3, bytes.begin() + 23);
-
-        auto tmp_vec = SHA256(SHA256(address));
-        address.insert(address.end(), tmp_vec.begin(), tmp_vec.begin() + 4);
-
-        return to_base58(address);
     }
 
     std::string from_bytes_to_hex(const std::vector<byte>& bytes)

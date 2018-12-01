@@ -1,4 +1,3 @@
-#pragma once
 #ifndef CRYPTO_UTILS_HPP
 #define CRYPTO_UTILS_HPP
 
@@ -22,19 +21,18 @@
 
 using byte = unsigned char;
 using const_bytes = const unsigned char*;
-using iterator = std::vector<byte>::iterator;
 
 const int DIGEST_LENGTH = 32;
 const byte DER_HEADLINE = 0x30;
 const byte BEGIN_OF_NUM = 0x02;
 const byte SIGHASH_ALL = 0x01;  // signature is valid for all exits
+// if not static the file is included more than once and occurs multiple definition
+static const char* Base58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
 namespace cu
 {
     template <typename T>
     std::vector<byte> to_bytes(T i);
-
-    static const char* Base58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
     std::vector<byte> from_hex_to_bytes(const std::string& hex);
 
@@ -49,8 +47,6 @@ namespace cu
     std::vector<byte> to_varint_byte(size_t n);
 
     uint64_t to_varint(size_t size);
-
-    std::string get_addres_from_script(const std::vector<byte>& bytes);
     
     std::string SHA256(const std::string& string);
 

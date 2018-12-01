@@ -1,4 +1,3 @@
-#pragma once
 #ifndef OFFLINE_WALLET_HPP
 #define OFFLINE_WALLET_HPP
 
@@ -7,7 +6,7 @@
 class OfflineWallet
 {
 private:
-    Key _Keys;
+    Key keys_;
 public:
     OfflineWallet() = default;
 

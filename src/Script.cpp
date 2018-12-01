@@ -1,9 +1,5 @@
 #include <includes/Script.hpp>
 
-Script::Script(Script&& other)
-    : script_(std::move(other.script_))
-{}
-
 Script::Script(const Script& other)
     : script_(other.script_)
 {}
@@ -12,17 +8,13 @@ Script::Script(const std::vector<byte>& bytes)
     : script_(bytes)
 {}
 
+Script::Script(std::vector<byte>&& bytes)
+    : script_(std::move(bytes))
+{}
+
 Script& Script::operator=(Script&& other)
 {
     script_ = std::move(other.script_);
-    return *this;
-}
-
-Script& Script::operator=(const Script& other)
-{
-    if (&other != this)
-            script_ = other.script_;
-
     return *this;
 }
 
@@ -48,12 +40,4 @@ std::vector<byte> Script::data() const
 byte Script::get_length() const
 {
     return static_cast<byte>(script_.size());
-}
-
-void Script::add_signature(const std::vector<byte>& sign)
-{
-    if (!script_.empty())
-    {
-        script_.insert(script_.begin(), sign.begin(), sign.end());
-    }
 }

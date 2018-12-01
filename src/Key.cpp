@@ -2,22 +2,22 @@
 
 void Key::make_address(const byte type_network)
 {
-    std::string address = to_hex(type_network) + RIPEMD160(SHA256(get_public_key()));
+    std::string address = cu::to_hex(type_network) + cu::RIPEMD160(cu::SHA256(get_public_key()));
 
-    auto checksum = SHA256(SHA256(address));
+    auto checksum = cu::SHA256(cu::SHA256(address));
     address.insert(address.end(), checksum.begin(), checksum.begin() + 8);
 
-    _Address = to_base58(from_hex_to_bytes(address));
+    address_ = cu::to_base58(cu::from_hex_to_bytes(address));
 };
 
 std::string Key::private_to_wif(const std::string& key)
 {
-    std::string private_key = to_hex(PRIVATE_PREFIX) + key;
+    std::string private_key = cu::to_hex(PRIVATE_PREFIX) + key;
 
-    auto checksum = SHA256(SHA256(private_key));
+    auto checksum = cu::SHA256(cu::SHA256(private_key));
     private_key.insert(private_key.end(), checksum.begin(), checksum.begin() + 8);
 
-    return to_base58(from_hex_to_bytes(private_key));
+    return cu::to_base58(cu::from_hex_to_bytes(private_key));
 };
 
 void Key::generate_keys()
@@ -45,7 +45,7 @@ void Key::generate_keys()
     char* private_key = BN_bn2hex(prv);
 
     auto wif_privet_key = private_to_wif(private_key);
-    _Keys = std::make_pair(wif_privet_key, public_key);
+    keys_ = std::make_pair(wif_privet_key, public_key);
 
     EC_KEY_free(ec_key);
     BN_CTX_free(ctx);
@@ -53,17 +53,17 @@ void Key::generate_keys()
 
 std::string Key::get_public_key() const noexcept
 {
-    return _Keys.second;
+    return keys_.second;
 };
 
 std::string Key::get_private_key() const noexcept
 {
-    return _Keys.first;
+    return keys_.first;
 };
 
 std::string Key::get_address() const noexcept
 {
-    return _Address;
+    return address_;
 };
 
 Key Key::create_wallet_key(const byte type_network)

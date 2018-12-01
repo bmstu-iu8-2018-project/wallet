@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TXOUT_HPP
 #define TXOUT_HPP
 
@@ -23,8 +22,6 @@ public:
 
     Script get_script() const;
 
-    std::string get_addres() const;
-
     std::string get_hex_output() const;
 
     std::vector<byte> get_byte_output() const;
@@ -35,7 +32,6 @@ public:
 
 private:
     uint64_t value_;
-
     Script pk_script_;
 };
 

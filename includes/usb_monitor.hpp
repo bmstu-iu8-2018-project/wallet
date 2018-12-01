@@ -1,9 +1,7 @@
-#pragma once
 #ifndef USB_MONITOR_HPP
 #define USB_MONITOR_HPP
 #define WIN32_LEAN_AND_MEAN
 
-#pragma once
 #include <memory>
 #include <stdexcept>
 #include <set>
@@ -22,43 +20,43 @@ public:
 class usb_monitor
 {
 public:
-    //Creates a single instance of the class usb_monitor
-    //monitor_hard_drives - option to monitor external hard drives
+    // Creates a single instance of the class usb_monitor
+    // monitor_hard_drives - option to monitor external hard drives
 	static usb_monitor* create(bool monitor_hard_drives = false);
 
-    //Remove class instance from memory
+    // Remove class instance from memory
 	static void remove();
 
-    //Adds a callback called when adding a new USB flash disk
-    //Callback format: void (char letter), where letter is the letter of the added disk
+    // Adds a callback called when adding a new USB flash disk
+    // Callback format: void (char letter), where letter is the letter of the added disk
 	template<typename Handler>
 	void on_device_add(Handler handler)
 	{
 		on_device_added_ = handler;
 	}
 
-    //Options for deleting existing callbacks
+    // Options for deleting existing callbacks
 	void on_device_add();
 
-    //USB tracking starts
+    // USB tracking starts
 	void start();
-    //Stops USB tracking
+    // Stops USB tracking
 	void stop();
-    //USB tracking started
+    // USB tracking started
 	bool is_started() const;
 	
-    //Get the letters of all USB flash drives currently on the system
-    //If include_usb_hard_drives == true,
-    //then the list will contain the letters of external hard drives,
-    //otherwise, only flash drives
+    // Get the letters of all USB flash drives currently on the system
+    // If include_usb_hard_drives == true,
+    // then the list will contain the letters of external hard drives,
+    // otherwise, only flash drives
 	static std::set<wchar_t> get_flash_disks(bool include_usb_hard_drives);
 	
-    //Take control of existing USB flash drives
-    //If the device has already been mounted, nothing will happen
-    //For each mounted device a callback will be called on_device_add
+    // Take control of existing USB flash drives
+    // If the device has already been mounted, nothing will happen
+    // For each mounted device a callback will be called on_device_add
 	void mount_existing_devices();
 
-    //Helper function for console applications
+    // Helper function for console applications
 	static void message_pump();
 
 	~usb_monitor();
@@ -92,7 +90,7 @@ private:
 
 	static const device_info get_device_info(char letter);
 
-	boost::function<void(char)> on_device_added_;
+    boost::function<void(char)> on_device_added_;
 
 	static const std::wstring class_name;
 };
