@@ -1,4 +1,3 @@
-#pragma once
 #ifndef INFORMATIONWINDOW_HPP
 #define INFORMATIONWINDOW_HPP
 

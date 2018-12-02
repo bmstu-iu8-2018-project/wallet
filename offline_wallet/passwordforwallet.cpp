@@ -10,7 +10,7 @@ PasswordForWallet::PasswordForWallet(QWidget *parent)
     , ui(new Ui::PasswordForWallet)
 {
     ui->setupUi(this);
-    finde_usb_device();
+    find_usb_device();
 }
 
 PasswordForWallet::~PasswordForWallet()
@@ -18,7 +18,7 @@ PasswordForWallet::~PasswordForWallet()
     delete ui;
 }
 
-void PasswordForWallet::finde_usb_device()
+void PasswordForWallet::find_usb_device()
 {
     mon = usb_monitor::create();
     mon->on_device_add(device_added);
@@ -34,9 +34,10 @@ void PasswordForWallet::device_added(char letter)
 
 QString PasswordForWallet::create_private_dir(const QString& name)
 {
-    QDir dir(QDir::currentPath());
-    dir.mkdir("Private data");
-    dir.cd("Private data");
+    QDir dir(QDir::homePath() + QDir::separator() + "Private data");
+    if (!dir.exists())
+        dir.mkpath(".");
+
     dir.mkdir(name);
     dir.cd(name);
     return dir.path();
@@ -61,7 +62,7 @@ void PasswordForWallet::save_authorization_data(
     json_authorization_data_map.insert("name", name);
     json_authorization_data_map.insert("password", pass);
     ju::record_to_json(json_authorization_data_map,
-                           path + "/authorization_data.json");
+                           path + QDir::separator() + "authorization_data.json");
 }
 
 void PasswordForWallet::save_private_data(
@@ -71,7 +72,7 @@ void PasswordForWallet::save_private_data(
     json_private_map.insert("private_key",
                             QString::fromUtf8(wallet.get_private_key().c_str()));
 
-    ju::record_to_json(json_private_map, path + "/wallet.dat.json");
+    ju::record_to_json(json_private_map, path + QDir::separator() + "wallet.dat.json");
 }
 
 QString PasswordForWallet::get_public_data_path()
@@ -86,16 +87,7 @@ QString PasswordForWallet::get_public_data_path()
         set_device = mon->get_flash_disks(1);
     }
 
-    QString path;
-    path.push_back(name_device_);
-    qDebug() << name_device_;
-    path += ":/";
-
-    QDir dir(path);
-    dir.mkdir(ui->lineEdit_name->text());
-    dir.cd(ui->lineEdit_name->text());
-
-    return dir.path();
+    return QDir::drives().last().dir().path();
 }
 
 void PasswordForWallet::save_public_data(
@@ -109,10 +101,10 @@ void PasswordForWallet::save_public_data(
                                   QString::fromUtf8(wallet.get_address().c_str()));
     json_addres_public_map.insert("public_key",
                                    QString::fromUtf8(wallet.get_public_key().c_str()));
-    ju::record_to_json(json_addres_public_map, path_addres_public + "/address.dat.json");
-    ju::record_to_json(json_addres_public_map, path + "/address_public_key.json");
+    ju::record_to_json(json_addres_public_map, path_addres_public + QDir::separator() + "address.dat.json");
+    ju::record_to_json(json_addres_public_map, path + QDir::separator() + "address_public_key.json");
 
-    mark_device(path_addres_public + "/mark.dat");
+    mark_device(path_addres_public + QDir::separator() + "mark.dat");
 
     QDir dir(path_addres_public);
     dir.mkdir("Transactions");

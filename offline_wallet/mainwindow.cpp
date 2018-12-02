@@ -20,67 +20,51 @@ void MainWindow::on_authorization_clicked()
     QString login = ui->login->text();
     QString password = ui->pass->text();
 
-    QDir dir(QDir::currentPath());
-
-    QDirIterator it(dir.path(), QDir::Dirs, QDirIterator::Subdirectories);
-
-    bool flag = false;
-    while (it.hasNext())
-    {
-        it.next();
-
-        if (it.fileName() == "Private data")
-        {
-            flag = true;
-            dir.cd("Private data");
-
-            QDirIterator iter(dir.path(), QDir::Dirs, QDirIterator::Subdirectories);
-            while (iter.hasNext())
-            {
-                iter.next();
-
-                if (iter.fileName() == login)
-                {
-                    dir.cd(login);
-                    break;
-                }
-            }
-        }
-    }
-
-    if (!flag)
+    QDir dir(QDir::homePath() + QDir::separator() + "Private data");
+    if (!dir.exists())
         QMessageBox::warning(this, "Error", "Wallet is not created on the device!");
 
-    QString login_of_file = ju::get_name(dir.path() + "/authorization_data.json");
-    QString password_of_file = load_password(dir.path());
+    QStringList list_dir = dir.entryList(QDir::Dirs | QDir::AllDirs | QDir::NoDotAndDotDot);
+    auto it = qFind(list_dir.begin(), list_dir.end(), login);
 
-    if (login.isEmpty())
+    if (it != list_dir.end())
     {
-        QMessageBox::warning(this, "Error", "Enter login!");
-    }
-    else if (password.isEmpty())
-    {
-        QMessageBox::warning(this, "Error", "Enter password!");
-    }
-    else if ((login == login_of_file) && (password == password_of_file))
-    {
-        name_ = login_of_file;
-        // Open window with wallet information
-        infWindow = new InformationWindow();
-        infWindow->setWindowTitle("Wallet information");
-        infWindow->show();
+        dir.cd(login);
+        QString login_of_file = ju::get_name(dir.path() + QDir::separator() + "authorization_data.json");
+        QString password_of_file = load_password(dir.path());
 
-        this->close();  // close the main window
+        if (login.isEmpty())
+        {
+            QMessageBox::warning(this, "Error", "Enter login!");
+        }
+        else if (password.isEmpty())
+        {
+            QMessageBox::warning(this, "Error", "Enter password!");
+        }
+        else if ((login == login_of_file) && (password == password_of_file))
+        {
+            name_ = login_of_file;
+            // Open window with wallet information
+            infWindow = new InformationWindow();
+            infWindow->setWindowTitle("Wallet information");
+            infWindow->show();
+
+            this->close();  // close the main window
+        }
+        else
+        {
+            QMessageBox::warning(this, "Error", "The authorization data do not match, try again!");
+        }
     }
     else
     {
-        QMessageBox::warning(this, "Error", "The authorization data do not match, try again!");
+        QMessageBox::warning(this, "Error", "Wallet is not created on the device!");
     }
 }
 
 QString MainWindow::load_password(const QString& path)
 {
-    QFile jsonFile(path + "/authorization_data.json");
+    QFile jsonFile(path + QDir::separator() + "authorization_data.json");
     jsonFile.open(QFile::ReadOnly);
     QJsonDocument document = QJsonDocument().fromJson(jsonFile.readAll());
     QJsonObject name = document.object();

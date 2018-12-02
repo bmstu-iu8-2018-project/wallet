@@ -1,11 +1,6 @@
 #include <mainwindow.hpp>
 #include <ui_mainwindow.h>
 #include <includes/JsonUtils.hpp>
-#include <QMessageBox>
-#include <QString>
-#include <QDir>
-#include <QDirIterator>
-#include <QDebug>
 
 char MainWindow::name_device_;
 QString MainWindow::mark_path_;
@@ -52,10 +47,7 @@ void MainWindow::find_usb_device()
 
 QString MainWindow::get_device_path()
 {
-    QString path;
-    path.push_back(name_device_);
-    path += ":/";
-    return path;
+    return QDir::drives().last().dir().path();
 }
 
 QString MainWindow::get_public_data_path()
@@ -110,7 +102,7 @@ void MainWindow::on_wallets_currentIndexChanged(int index)
 {
     if (index != 0)
     {
-        mark_path_ = get_device_path() + ui->wallets->currentText() + '/';
+        mark_path_ = get_device_path() + ui->wallets->currentText() + QDir::separator();
         change_window();
         this->close();
     }

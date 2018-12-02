@@ -127,15 +127,15 @@ void TransactionWindow::on_tx_id_box_currentIndexChanged(int index)
 
 QString TransactionWindow::get_private_key()
 {
-    QDir dir(QDir::currentPath());
-    dir.cd("Private data");
+    QDir dir(QDir::homePath() + QDir::separator() + "Private data");
     dir.cd(MainWindow::get_wallet_name());
-    return ju::get_information(dir.path() + "/wallet.dat.json", "private_key");
+    return ju::get_information(dir.path() + QDir::separator() + "wallet.dat.json", "private_key");
 }
 
 void TransactionWindow::update_signed_tx()
 {
-    QString path = tx_dir_.path() + '/' + ui->tx_id_box->currentText() + "/tx.dat";
+    QString path = tx_dir_.path() + QDir::separator() +
+            ui->tx_id_box->currentText() + QDir::separator() + "tx.dat";
     QFile file_tx(path);
     file_tx.open(QFile::WriteOnly);
     file_tx.write(tx.get_hex_tx().c_str());

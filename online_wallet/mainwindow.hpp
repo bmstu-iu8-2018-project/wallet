@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
@@ -8,6 +7,10 @@
 #include <informationwindow.hpp>
 #include <maketransactionwindow.hpp>
 #include <includes/usb_monitor.hpp>
+#include <QMessageBox>
+#include <QString>
+#include <QDir>
+#include <QDirIterator>
 
 namespace Ui
 {

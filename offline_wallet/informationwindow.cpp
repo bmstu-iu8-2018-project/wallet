@@ -18,15 +18,14 @@ InformationWindow::InformationWindow(QWidget *parent)
 
     QString path_private_data = get_path_private_dir();
 
-    ui->name->setText(ju::get_name(path_private_data + "/authorization_data.json"));
-    ui->addres->setText(ju::get_address(path_private_data + "/address_public_key.json"));
-    ui->public_key->setText(ju::get_public_key(path_private_data + "/address_public_key.json"));
+    ui->name->setText(ju::get_name(path_private_data + QDir::separator() + "authorization_data.json"));
+    ui->addres->setText(ju::get_address(path_private_data + QDir::separator() + "address_public_key.json"));
+    ui->public_key->setText(ju::get_public_key(path_private_data + QDir::separator() + "address_public_key.json"));
 }
 
 QString InformationWindow::get_path_private_dir()
-{
-    QDir dir(QDir::currentPath());
-    dir.cd("Private data");
+{    
+    QDir dir(QDir::homePath() + QDir::separator() + "Private data");
 
     if (PasswordForWallet::get_wallet_name().isEmpty())
         dir.cd(MainWindow::get_wallet_name());
@@ -103,15 +102,11 @@ QString InformationWindow::get_name_wallet()
 
 QString InformationWindow::get_device_path()
 {
-    QString path;
-    path.push_back(name_device_);
-    path += ":/";
-    return path;
+    return QDir::drives().last().dir().path();
 }
 
 QDir InformationWindow::get_transactions_dir()
 {
-    QString path;
     QDir dir(mark_path_);
     dir.cdUp();
     dir.cd("Transactions");

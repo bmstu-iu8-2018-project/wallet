@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
@@ -6,7 +5,8 @@
 #include <passwordforwallet.hpp>
 #include <includes/JsonUtils.hpp>
 #include <QMainWindow>
-#include "QMessageBox"
+#include <QMessageBox>
+#include <QtAlgorithms>
 #include <QString>
 #include <QtDebug>
 #include <QDir>

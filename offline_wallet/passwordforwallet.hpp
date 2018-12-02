@@ -1,4 +1,3 @@
-#pragma once
 #ifndef PASSWORDFORWALLET_HPP
 #define PASSWORDFORWALLET_HPP
 
@@ -45,7 +44,7 @@ private:
 
     usb_monitor* mon;
 
-    void finde_usb_device();
+    void find_usb_device();
 
     static void device_added(const char letter);
 

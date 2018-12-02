@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TRANSACTIONWINDOW_HPP
 #define TRANSACTIONWINDOW_HPP
 

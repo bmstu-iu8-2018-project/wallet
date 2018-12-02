@@ -12,8 +12,8 @@ InformationWindow::InformationWindow(QWidget *parent)
 
     QString path_private_data = MainWindow::get_public_data_path();
 
-    ui->address->setText(ju::get_address(path_private_data + "/address.dat.json"));
-    ui->public_key->setText(ju::get_public_key(path_private_data + "/address.dat.json"));
+    ui->address->setText(ju::get_address(path_private_data + QDir::separator() + "address.dat.json"));
+    ui->public_key->setText(ju::get_public_key(path_private_data + QDir::separator() + "address.dat.json"));
     ui->balance->setText(ju::get_balance(ui->address->text()));
     init_box_requests();
 
@@ -73,6 +73,11 @@ void InformationWindow::on_boxRequests_currentIndexChanged(int index)
 {
     switch (index)
     {
+        case (0):
+        {
+            ui->requestBrowser->clear();
+            break;
+        }
         case (static_cast<int>(Requests::address_balance)):
         {
             ui->requestBrowser->clear();
