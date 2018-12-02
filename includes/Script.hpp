@@ -38,6 +38,8 @@ public:
 
     byte get_length() const;
 
+    void add_signature(const std::vector<byte>& sign);
+
 private:
     std::vector<byte> script_;
 };

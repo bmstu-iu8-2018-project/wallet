@@ -5,6 +5,7 @@
 #include <includes/JsonUtils.hpp>
 #include <includes/CryptoUtils.hpp>
 #include <includes/Transaction.hpp>
+#include <memory>
 #include <QDir>
 #include <QInputDialog>
 #include <QDialogButtonBox>

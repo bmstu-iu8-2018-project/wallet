@@ -73,7 +73,7 @@ void InformationWindow::on_boxRequests_currentIndexChanged(int index)
 {
     switch (index)
     {
-        case (static_cast<int>(Requests::address_balanse)):
+        case (static_cast<int>(Requests::address_balance)):
         {
             ui->requestBrowser->clear();
             const auto balance_json_data = nu::get_address_balance(ui->address->text().toStdString());

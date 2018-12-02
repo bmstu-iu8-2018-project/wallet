@@ -93,7 +93,8 @@ TxIn TxIn::from_data(const std::vector<byte>& data)
     }
     else
     {
-        script.insert(script.end(), data.begin() + 37, data.begin() + 37 + (int)script_lth);
+        script.insert(script.end(), data.begin() + 37,
+                      data.begin() + 37 + static_cast<int>(script_lth));
     }
 
     return TxIn(out_point, Script(script));
@@ -138,10 +139,15 @@ void  TxIn::sign_by(const std::string& private_key_wif,
     sig.push_back((byte)public_key.size());
     sig.insert(sig.end(), public_key.begin(), public_key.end());
 
-   // script_.add_signature(sig);
+    script_.add_signature(sig);
 }
 
 size_t TxIn::get_script_length() const
 {
     return static_cast<size_t>(script_.get_length());
+}
+
+std::string TxIn::get_prev_tx_hash() const
+{
+    return cu::from_bytes_to_hex(previous_output_.hash_);
 }

@@ -51,7 +51,7 @@ private:
 
     enum class Requests
     {
-        address_balanse = 1,
+        address_balance = 1,
         spent_transactions,
         unspent_transactions,
         received_transactions,

@@ -41,3 +41,11 @@ byte Script::get_length() const
 {
     return static_cast<byte>(script_.size());
 }
+
+void Script::add_signature(const std::vector<byte>& sign)
+{
+    if (!script_.empty())
+    {
+        script_.insert(script_.begin(), sign.begin(), sign.end());
+    }
+}

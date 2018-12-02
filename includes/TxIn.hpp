@@ -63,6 +63,8 @@ public:
 
     size_t get_script_length() const;
 
+    std::string get_prev_tx_hash() const;
+
     ~TxIn() = default;
 };
 

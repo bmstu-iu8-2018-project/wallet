@@ -47,6 +47,8 @@ namespace cu
     std::vector<byte> to_varint_byte(size_t n);
 
     uint64_t to_varint(size_t size);
+
+    std::string get_addres_from_script(const std::vector<byte>& bytes);
     
     std::string SHA256(const std::string& string);
 
@@ -83,6 +85,8 @@ namespace cu
     template<typename T>
     std::vector<byte> to_bytes(T i)
     {
+        static_assert(std::is_fundamental<T>::value, "not a fundamental type");
+
         std::vector<byte> a(sizeof(i));
         std::memcpy(&a[0], &i, sizeof(i));
         return a;
@@ -100,6 +104,8 @@ namespace cu
     template<typename T, class It>
     T to_type(It begin, It end)
     {
+        static_assert(std::is_fundamental<T>::value, "not a fundamental type");
+
         T x;
         auto size = std::distance(begin, end);
         std::memcpy(&x, &(*begin), size);

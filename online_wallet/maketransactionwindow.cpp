@@ -96,11 +96,11 @@ void MakeTransactionWindow::on_create_input_clicked()
     QDialog dialog(this);
     QFormLayout form(&dialog);
 
-    QLineEdit *previous_output = new QLineEdit(&dialog);
-    form.addRow("Previous output :", previous_output);
+    std::unique_ptr<QLineEdit> previous_output (new QLineEdit(&dialog));
+    form.addRow("Previous output :", previous_output.get());
 
-    QLineEdit *index = new QLineEdit(&dialog);
-    form.addRow("Index :", index);
+    std::unique_ptr<QLineEdit> index (new QLineEdit(&dialog));
+    form.addRow("Index :", index.get());
 
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
                                Qt::Horizontal, &dialog);
@@ -143,9 +143,6 @@ void MakeTransactionWindow::on_create_input_clicked()
         ui->inputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
         ui->input_label->setText(QString("Inputs (%1)").arg(vec_inputs_.size()));
     }
-
-    delete previous_output;
-    delete index;
 }
 
 void MakeTransactionWindow::on_create_output_clicked()
@@ -153,11 +150,11 @@ void MakeTransactionWindow::on_create_output_clicked()
     QDialog dialog(this);
     QFormLayout form(&dialog);
 
-    QLineEdit *address = new QLineEdit(&dialog);
-    form.addRow("Address :", address);
+    std::unique_ptr<QLineEdit> address (new QLineEdit(&dialog));
+    form.addRow("Address :", address.get());
 
-    QLineEdit *ammount = new QLineEdit(&dialog);
-    form.addRow("Ammount :", ammount);
+    std::unique_ptr<QLineEdit> ammount (new QLineEdit(&dialog));
+    form.addRow("Ammount :", ammount.get());
 
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
                                Qt::Horizontal, &dialog);
@@ -196,7 +193,4 @@ void MakeTransactionWindow::on_create_output_clicked()
         ui->outputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
         ui->output_label->setText(QString("Outputs (%1)").arg(vec_outputs_.size()));
     }
-
-    delete address;
-    delete ammount;
 }
