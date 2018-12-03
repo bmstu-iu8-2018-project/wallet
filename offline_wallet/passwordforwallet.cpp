@@ -3,7 +3,6 @@
 #include <mainwindow.hpp>
 
 QString PasswordForWallet::name_;
-char PasswordForWallet::name_device_;
 
 PasswordForWallet::PasswordForWallet(QWidget *parent)
     : QWidget(parent)
@@ -21,15 +20,8 @@ PasswordForWallet::~PasswordForWallet()
 void PasswordForWallet::find_usb_device()
 {
     mon = usb_monitor::create();
-    mon->on_device_add(device_added);
-
     mon->mount_existing_devices();
     mon->start();
-}
-
-void PasswordForWallet::device_added(char letter)
-{
-    name_device_ = letter;
 }
 
 QString PasswordForWallet::create_private_dir(const QString& name)

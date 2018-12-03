@@ -5,7 +5,6 @@
 #include <includes/JsonUtils.hpp>
 
 QString InformationWindow::mark_path_;
-char InformationWindow::name_device_;
 
 InformationWindow::InformationWindow(QWidget *parent)
     : QWidget(parent)
@@ -43,15 +42,8 @@ InformationWindow::~InformationWindow()
 void InformationWindow::finde_usb_device()
 {
     mon = usb_monitor::create();
-    mon->on_device_add(device_added);
-
     mon->mount_existing_devices();
     mon->start();
-}
-
-void InformationWindow::device_added(char letter)
-{
-    name_device_ = letter;
 }
 
 void InformationWindow::chek_device()

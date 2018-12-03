@@ -2,7 +2,6 @@
 #include <ui_mainwindow.h>
 #include <includes/JsonUtils.hpp>
 
-char MainWindow::name_device_;
 QString MainWindow::mark_path_;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -31,16 +30,9 @@ void MainWindow::change_window()
     infWindow->show();
 }
 
-void MainWindow::device_added(char letter)
-{
-    name_device_ = letter;
-}
-
 void MainWindow::find_usb_device()
 {
     mon = usb_monitor::create();
-    mon->on_device_add(device_added);
-
     mon->mount_existing_devices();
     mon->start();
 }

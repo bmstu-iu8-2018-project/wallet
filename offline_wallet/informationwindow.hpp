@@ -30,8 +30,6 @@ private slots:
 private:
     static QString mark_path_;
 
-    static char name_device_;
-
     Ui::InformationWindow *ui;
 
     TransactionWindow *transWindow;
@@ -43,8 +41,6 @@ private:
     QString get_path_private_dir();
 
     void finde_usb_device();
-
-    static void device_added(char letter);
 
     void chek_device();
 

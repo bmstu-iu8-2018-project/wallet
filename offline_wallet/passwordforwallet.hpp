@@ -36,8 +36,6 @@ class PasswordForWallet : public QWidget
 private:
     static QString name_;
 
-    static char name_device_;
-
     Ui::PasswordForWallet *ui;
 
     InformationWindow *infWindow;
@@ -45,8 +43,6 @@ private:
     usb_monitor* mon;
 
     void find_usb_device();
-
-    static void device_added(const char letter);
 
     QString create_private_dir(const QString& path);
 

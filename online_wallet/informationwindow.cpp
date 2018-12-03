@@ -37,8 +37,6 @@ void InformationWindow::init_box_requests()
     ui->boxRequests->addItem("spent transactions");
     ui->boxRequests->addItem("unspent transactions");
     ui->boxRequests->addItem("received transactions");
-    ui->boxRequests->addItem("transaction inputs");
-    ui->boxRequests->addItem("transaction outputs");
     ui->boxRequests->addItem("transaction");
 }
 
@@ -106,25 +104,36 @@ void InformationWindow::on_boxRequests_currentIndexChanged(int index)
             ui->requestBrowser->setText(received_trans_json_data.c_str());
             break;
         }
-        case (static_cast<int>(Requests::transaction_inputs)):
-        {
-            ui->requestBrowser->clear();
-            // const auto input_trans_json_data = nu::get_transaction_inputs("txid");
-            // ui->requestBrowser->setText(input_trans_json_data.c_str());
-            break;
-        }
-        case (static_cast<int>(Requests::transaction_outputs)):
-        {
-            ui->requestBrowser->clear();
-            // const auto output_trans_json_data = nu::get_transaction_outputs("txid");
-            // ui->requestBrowser->setText(output_trans_json_data.c_str());
-            break;
-        }
         case (static_cast<int>(Requests::transaction)):
         {
             ui->requestBrowser->clear();
-            // const auto trans_json_data = nu::get_transaction("txid");
-            // ui->requestBrowser->setText(trans_json_data.c_str());
+
+            QDialog dialog(this);
+            QFormLayout form(&dialog);
+
+            std::unique_ptr<QLineEdit> tx_id (new QLineEdit(&dialog));
+            form.addRow("Transaction id :", tx_id.get());
+
+            QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                                       Qt::Horizontal, &dialog);
+
+            form.addRow(&buttonBox);
+            QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+            QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+            dialog.setLayout(&form);
+            dialog.setMinimumSize(710, 150);
+            dialog.exec();
+
+            if (buttonBox.Ok && tx_id->text().isEmpty())
+            {
+                QMessageBox::warning(this, "Message", "Enter transaction id!");
+            }
+            else
+            {
+                 const auto trans_json_data = nu::get_transaction(tx_id->text().toStdString());
+                 ui->requestBrowser->setText(trans_json_data.c_str());
+            }
             break;
         }
     }

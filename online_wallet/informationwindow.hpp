@@ -54,8 +54,6 @@ private:
         spent_transactions,
         unspent_transactions,
         received_transactions,
-        transaction_inputs,
-        transaction_outputs,
         transaction
     };
 };

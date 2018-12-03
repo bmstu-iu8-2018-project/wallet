@@ -35,8 +35,6 @@ private slots:
 private:
     static QString mark_path_;
 
-    static char name_device_;
-
     Ui::MainWindow *ui;
 
     usb_monitor *mon;
