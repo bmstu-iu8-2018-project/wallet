@@ -92,6 +92,7 @@ namespace cu
             buf.resize(1);
             return buf[0];
         }
+        return 0;
     }
 
     std::string to_littleendian_format(const std::string& string)
@@ -349,30 +350,42 @@ namespace cu
 
     std::string signature_to_der(const ECDSA_SIG* signature)
     {
-        const std::string r = BN_bn2hex(signature->r);
-        const std::string s = BN_bn2hex(signature->s);
-
-        std::string der;
-
-        der += to_hex(DER_HEADLINE);
-
-        int size = (r.size() + s.size()) / 2 + 3;
-        std::stringstream oss;
-        oss << std::hex << size;
-        der += oss.str(); //  length of next data
-
-        der += to_hex(BEGIN_OF_NUM);
-        der.insert(der.end(), r.begin(), r.end());
-        der += to_hex(BEGIN_OF_NUM);
-        der.insert(der.end(), s.begin(), s.end());
-        der += to_hex(SIGHASH_ALL);
-
-        return der;
+        return "";
     }
 
     std::vector<byte> signature_to_der_byted(const ECDSA_SIG* signature)
     {
-        return from_hex_to_bytes(signature_to_der(signature));
+        std::vector<byte> r(DIGEST_LENGTH);
+        BN_bn2bin(signature->r, &r[0]);
+        if (r[0] > 0x7f)
+        {
+            r.insert(r.begin(), 0x00);
+        }
+        std::vector<byte> s(DIGEST_LENGTH);
+        BN_bn2bin(signature->s, &s[0]);
+        if (s[0] > 0x7f)
+        {
+            s.insert(s.begin(), 0x00);
+        }
+
+        // after 0x30
+        const int size_of_data = r.size() + s.size() + 4; // 2 BEGIN_OF_NUM + 2 Size of numbers
+        const int size_of_sig = size_of_data + 3; // SIGHASH_ALL + 0x30 + size_of_data
+        
+        std::vector<byte> der_sign = { static_cast<byte>(size_of_sig),
+            DER_HEADLINE , static_cast<byte>(size_of_data) };
+
+        der_sign.push_back(BEGIN_OF_NUM);
+        der_sign.push_back(static_cast<byte>(r.size()));
+        der_sign.insert(der_sign.end(), r.begin(), r.end());
+
+        der_sign.push_back(BEGIN_OF_NUM);
+        der_sign.push_back(static_cast<byte>(s.size()));
+        der_sign.insert(der_sign.end(), s.begin(), s.end());
+
+        der_sign.push_back(SIGHASH_ALL);
+
+        return der_sign;
     }
 
     ECDSA_SIG* from_der_to_sig(const std::string& scriptSig)

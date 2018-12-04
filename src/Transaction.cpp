@@ -1,5 +1,6 @@
 #include <includes/Transaction.hpp>
 
+
 Transaction::Transaction(const Transaction& other)
     : version_(other.version_)
     , lock_time_(other.lock_time_)
@@ -18,7 +19,7 @@ Transaction::Transaction(Transaction&& other)
     , tx_out_count_(std::move(other.tx_out_count_))
 {};
 
-Transaction::Transaction(int32_t version, uint32_t lock_time, const inputs& input, const outputs& output)
+Transaction::Transaction(int32_t version, const inputs& input, const outputs& output, uint32_t lock_time)
     : version_(version)
     , lock_time_(lock_time)
     , tx_in_(input)
@@ -135,7 +136,7 @@ Transaction Transaction::parse(const std::string& file_name)
 
     uint32_t lock_time = cu::to_type<int32_t>(iter_first_out, bytes.end());
 
-    return Transaction(version, lock_time, tx_in, tx_out);
+    return Transaction(version, tx_in, tx_out, lock_time);
 }
 
 void Transaction::sign(const std::string& private_key_wif)
@@ -145,7 +146,10 @@ void Transaction::sign(const std::string& private_key_wif)
     for (auto& input : tx_in_)
     {
         // every input must sign hash which include previous signed input
-        const auto raw_tx = get_byte_tx();
+        auto raw_tx = get_byte_tx();
+        const std::vector<byte> hash_code = { 0x01,0x00,0x00,0x00 };
+        raw_tx.insert(raw_tx.end(), hash_code.begin(), hash_code.end());
+
         input.sign_by(private_key_wif, raw_tx);
     }
 }

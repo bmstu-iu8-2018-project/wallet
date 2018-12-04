@@ -20,7 +20,7 @@ public:
 
     Transaction(const std::string& file_name);
 
-    Transaction(int32_t version, uint32_t lock_time, const inputs& input, const outputs& output);
+    Transaction(int32_t version, const inputs& input, const outputs& output, uint32_t lock_time);
 
     Transaction(Transaction&& other);
 
@@ -47,10 +47,10 @@ public:
 private:
     int32_t version_;
 
-    uint64_t tx_in_count_;
+    byte tx_in_count_;
     inputs tx_in_;
 
-    uint64_t tx_out_count_;
+    byte tx_out_count_;
     outputs tx_out_;
 
     uint32_t lock_time_;

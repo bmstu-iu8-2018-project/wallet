@@ -3,9 +3,10 @@
 
 #include <includes/http_client_async_ssl.hpp>
 
-auto const HOST = "chain.so";
-auto const PORT = "443";
-auto const VERSION = 11;
+const auto HOST = "chain.so";
+const auto POST_HOST = "api.blockcypher.com";
+const auto PORT = "443";
+const auto VERSION = 11;
 
 const std::string BTCTEST_NETWORK = "BTCTEST/";
 const std::string ROOT = "/api/v2/";
@@ -16,7 +17,8 @@ const std::string GET_TX_UNSPENT = "get_tx_unspent/";
 const std::string GET_TX_RECEIVED = "get_tx_received/";
 const std::string GET_TX_INPUTS = "get_tx_inputs/";
 const std::string GET_TX_OUTPUTS = "get_tx_outputs/";
-const std::string SEND_TX = "send_tx/";
+const std::string POST_TARGET = "/v1/bcy/test/txs/push?token=YOURTOKEN";
+
 
 namespace nu
 {

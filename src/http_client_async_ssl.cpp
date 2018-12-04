@@ -37,6 +37,9 @@ void session::run(char const* host, char const* port,
         return;
     }
 
+    std::string json = "{\"tx\" : \"\"}";
+    json.insert(json.begin() + 9, body.begin(), body.end());
+
     // Requere
     req_.version(version);
     req_.method(http::verb::post);
@@ -44,8 +47,7 @@ void session::run(char const* host, char const* port,
     req_.set(http::field::host, host);
     req_.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
     req_.set(http::field::content_type, "application/json");
-    auto data = "tx_hex=" + body + '\n';
-    req_.set(http::field::body, data);
+    req_.set(http::field::body, json);
 
     resolver_.async_resolve(host, port,
         std::bind(&session::on_resolve, shared_from_this(),

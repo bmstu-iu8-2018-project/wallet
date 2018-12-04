@@ -139,7 +139,7 @@ void  TxIn::sign_by(const std::string& private_key_wif,
     sig.push_back((byte)public_key.size());
     sig.insert(sig.end(), public_key.begin(), public_key.end());
 
-    script_.add_signature(sig);
+    script_.add_signature(std::move(sig));
 }
 
 size_t TxIn::get_script_length() const
