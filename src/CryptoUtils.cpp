@@ -168,6 +168,13 @@ namespace cu
         return a;
     };
 
+    std::string to_hex(byte s)
+    {
+        std::stringstream ss;
+        ss << std::hex << std::setw(2 * sizeof(byte)) << std::setfill('0') << static_cast<int>(s);
+        return ss.str();
+    };
+
     std::string to_base58(const_bytes pbegin, const_bytes pend)
     {
         // Skip & count leading zeroes.

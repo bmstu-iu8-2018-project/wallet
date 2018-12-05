@@ -55,6 +55,8 @@ namespace cu
 
     std::vector<byte> RIPEMD160(const std::vector<byte>& string);
 
+    std::string to_hex(byte s);
+
     std::string to_base58(const_bytes pbegin, const_bytes pend);
 
     std::string to_base58(const std::vector<byte>& vch);
@@ -87,16 +89,6 @@ namespace cu
         std::vector<byte> a(sizeof(i));
         std::memcpy(&a[0], &i, sizeof(i));
         return a;
-    }
-
-    template<typename T>
-    std::string to_hex(T s)
-    {
-        static_assert(std::is_fundamental<T>::value, "not a fundamental type");
-
-        std::stringstream ss;
-        ss << std::hex << std::setw(2 * sizeof(T)) << std::setfill('0') << static_cast<int>(s);
-        return ss.str();
     }
 
     template<typename T, class It>
