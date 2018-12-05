@@ -339,7 +339,7 @@ namespace cu
 
     bool is_validate_signature(const std::string& public_key, const ECDSA_SIG* signature, const std::vector<byte>& text)
     {
-        const auto hash = RIPEMD160(SHA256(text));
+        const auto hash = SHA256(SHA256(text));
         
         EC_KEY* ec_key = get_ec_key_from_public(public_key);
         const auto flag = ECDSA_do_verify(&hash[0], hash.size(), signature, ec_key);
@@ -350,7 +350,7 @@ namespace cu
 
     std::string signature_to_der(const ECDSA_SIG* signature)
     {
-        return "";
+        return from_bytes_to_hex(signature_to_der_byted(signature));
     }
 
     std::vector<byte> signature_to_der_byted(const ECDSA_SIG* signature)

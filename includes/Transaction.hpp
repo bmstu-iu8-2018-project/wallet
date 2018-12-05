@@ -44,6 +44,13 @@ public:
 
     std::vector<TxOut> get_outputs() const;
 
+    int32_t get_version() const;
+
+    uint32_t get_locktime() const;
+
+    byte get_in_count() const;
+
+    byte get_out_count() const;
 private:
     int32_t version_;
 
@@ -53,7 +60,7 @@ private:
     byte tx_out_count_;
     outputs tx_out_;
 
-    uint32_t lock_time_;
+    uint32_t locktime_;
 };
 
 #endif // TRANSACTION_HPP

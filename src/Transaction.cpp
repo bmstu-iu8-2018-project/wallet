@@ -3,7 +3,7 @@
 
 Transaction::Transaction(const Transaction& other)
     : version_(other.version_)
-    , lock_time_(other.lock_time_)
+    , locktime_(other.locktime_)
     , tx_in_(other.tx_in_)
     , tx_in_count_(other.tx_in_count_)
     , tx_out_(other.tx_out_)
@@ -12,7 +12,7 @@ Transaction::Transaction(const Transaction& other)
 
 Transaction::Transaction(Transaction&& other)
     : version_(std::move(other.version_))
-    , lock_time_(std::move(other.lock_time_))
+    , locktime_(std::move(other.locktime_))
     , tx_in_(std::move(other.tx_in_))
     , tx_in_count_(std::move(other.tx_in_count_))
     , tx_out_(std::move(other.tx_out_))
@@ -21,7 +21,7 @@ Transaction::Transaction(Transaction&& other)
 
 Transaction::Transaction(int32_t version, const inputs& input, const outputs& output, uint32_t lock_time)
     : version_(version)
-    , lock_time_(lock_time)
+    , locktime_(lock_time)
     , tx_in_(input)
     , tx_out_(output)
 {
@@ -39,7 +39,7 @@ Transaction& Transaction::operator=(Transaction&& other)
     if (&other != this)
     {
         version_ = std::move(other.version_);
-        lock_time_ = std::move(other.lock_time_);
+        locktime_ = std::move(other.locktime_);
         tx_in_ = std::move(other.tx_in_);
         tx_in_count_ = std::move(other.tx_in_count_);
         tx_out_ = std::move(other.tx_out_);
@@ -53,7 +53,7 @@ Transaction& Transaction::operator=(const Transaction& other)
     if (&other != this)
     {
         version_ = other.version_;
-        lock_time_ = other.lock_time_;
+        locktime_ = other.locktime_;
         tx_in_ = other.tx_in_;
         tx_in_count_ = other.tx_in_count_;
         tx_out_ = other.tx_out_;
@@ -89,7 +89,7 @@ std::vector<byte> Transaction::get_byte_tx() const
         bytes.insert(bytes.end(), output.begin(), output.end());
     }
 
-    const auto lock_time = cu::to_bytes(lock_time_);
+    const auto lock_time = cu::to_bytes(locktime_);
     bytes.insert(bytes.end(), lock_time.begin(), lock_time.end());
 
     return bytes;
@@ -169,4 +169,24 @@ std::vector<TxIn> Transaction::get_inputs() const
 std::vector<TxOut> Transaction::get_outputs() const
 {
     return tx_out_;
+}
+
+int32_t Transaction::get_version() const
+{
+    return version_;
+}
+
+uint32_t Transaction::get_locktime() const
+{
+    return locktime_;
+}
+
+byte  Transaction::get_in_count() const
+{
+    return tx_in_count_;
+}
+
+byte  Transaction::get_out_count() const
+{
+    return tx_out_count_;
 }

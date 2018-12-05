@@ -31,9 +31,6 @@ static const char* Base58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrs
 
 namespace cu
 {
-    template <typename T>
-    std::vector<byte> to_bytes(T i);
-
     std::vector<byte> from_hex_to_bytes(const std::string& hex);
 
     std::string from_bytes_to_hex(const_bytes bytes, int length);
@@ -95,9 +92,10 @@ namespace cu
     template<typename T>
     std::string to_hex(T s)
     {
+        static_assert(std::is_fundamental<T>::value, "not a fundamental type");
+
         std::stringstream ss;
         ss << std::hex << std::setw(2 * sizeof(T)) << std::setfill('0') << static_cast<int>(s);
-
         return ss.str();
     }
 
@@ -105,6 +103,9 @@ namespace cu
     T to_type(It begin, It end)
     {
         static_assert(std::is_fundamental<T>::value, "not a fundamental type");
+        using this_type = std::remove_reference<decltype(*begin)>::type;
+        using data = std::remove_const<this_type>::type;
+        static_assert(std::is_same<data, byte>::value, "not a chunk");
 
         T x;
         auto size = std::distance(begin, end);
