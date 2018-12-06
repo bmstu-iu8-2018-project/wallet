@@ -53,6 +53,14 @@ class MakeTransactionWindow : public QWidget
 
     void create_transaction(QDir dir);
 
+    TxIn create_input(const QString& txid, unsigned int index);
+
+    void update_inputs_table(const QString& txid, const QString& index);
+
+    TxOut create_output(const QString& value, const QString& address);
+
+    void update_outputs_table(const QString& value, const QString& address);
+
     outputs vec_outputs_;
 
     inputs vec_inputs_;

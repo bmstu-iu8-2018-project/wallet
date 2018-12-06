@@ -75,3 +75,40 @@ QString ju::get_balance(const QString& address)
         return "No connection";
     }
 }
+
+QPair<QStringList, QVector<QPair<int, QString>>> ju::get_unload_inputs(const QString& address)
+{
+    const auto unspend_trans_json_data = nu::get_unspent_transactions(address.toStdString());
+    QJsonDocument json = QJsonDocument::fromJson(unspend_trans_json_data.c_str());
+
+    QJsonObject all_json = json.object();
+    QJsonValue status = all_json.value(QString("status"));
+
+    QStringList str_list;
+    QVector<QPair<int, QString>> vec_info;
+
+    if (status.toString() == "success")
+    {
+        QJsonObject data = all_json["data"].toObject();
+        QJsonArray txs = data["txs"].toArray();
+
+        for (const auto& it : txs)
+        {
+            QJsonObject tmp = it.toObject();
+            str_list.push_back(tmp.value(QString("txid")).toString());
+            QJsonDocument doc(tmp);
+            vec_info.push_back(qMakePair(tmp.value(QString("output_no")).toInt(),
+                                     tmp.value(QString("value")).toString()));
+        }
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Message");
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText("Check internet connection!");
+        msgBox.exec();
+    }
+    return qMakePair(str_list, vec_info);
+}
+

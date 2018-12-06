@@ -6,6 +6,9 @@
 #include <QJsonDocument>
 #include <QVariant>
 #include <QMessageBox>
+#include <QJsonArray>
+#include <QVector>
+#include <QPair>
 #include <includes/NetworkUtils.hpp>
 
 namespace ju
@@ -27,6 +30,8 @@ namespace ju
     QJsonDocument load_json(const QString& fileName);
 
     void save_json(const QJsonDocument& document, const QString& fileName);
+
+    QPair<QStringList, QVector<QPair<int, QString>>> get_unload_inputs(const QString& address);
 
 } // namespace ju
 

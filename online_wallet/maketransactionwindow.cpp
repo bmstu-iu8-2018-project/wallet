@@ -99,11 +99,28 @@ void MakeTransactionWindow::on_create_input_clicked()
     QDialog dialog(this);
     QFormLayout form(&dialog);
 
-    std::unique_ptr<QLineEdit> previous_output (new QLineEdit(&dialog));
-    form.addRow("Previous output :", previous_output.get());
+    auto unspend_inputs = ju::get_unload_inputs(InformationWindow::get_address());
+    QStringList str_list = unspend_inputs.first;
+    QVector<QPair<int, QString>> vec_info = unspend_inputs.second;
 
-    std::unique_ptr<QLineEdit> index (new QLineEdit(&dialog));
-    form.addRow("Index :", index.get());
+    // not smart pointers because they cannot be used in connect
+    QComboBox *previous_output = new QComboBox(&dialog);
+    form.addRow("Previous output :", previous_output);
+
+    previous_output->addItems(str_list);
+    previous_output->setCurrentIndex(-1);
+
+    QLabel *index_tx = new QLabel(&dialog);
+    form.addRow("Index :", index_tx);
+
+    QLabel *value = new QLabel(&dialog);
+    form.addRow("Value :", value);
+
+    connect(previous_output, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        [=](int index){
+            index_tx->setText(QString::number(vec_info[previous_output->currentIndex()].first));
+            value->setText(vec_info[previous_output->currentIndex()].second);
+    });
 
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
                                Qt::Horizontal, &dialog);
@@ -114,41 +131,53 @@ void MakeTransactionWindow::on_create_input_clicked()
 
     dialog.setLayout(&form);
     dialog.setMinimumSize(710, 150);
-    dialog.exec();
+    int rc = dialog.exec();
 
-    if (buttonBox.Ok && previous_output->text().isEmpty())
-    {
-        QMessageBox::warning(this, "Message", "Enter previous output!");
-        qWarning(logWarning()) << "Previous output not entered";
-    }
-    else if (buttonBox.Ok && index->text().isEmpty())
-    {
-        QMessageBox::warning(this, "Message", "Enter index!");
-        qWarning(logWarning()) << "Index not entered";
-    }
-    else
+    if ((rc == QDialog::Accepted) && (previous_output->currentIndex() != -1))
     {
         // create input
-        TxIn input;
-        input.set_previous_output(previous_output->text().toStdString(), index->text().toUInt());
-        input.set_default_sequance();
-        Script input_script;
-        input_script.create_pkh_script(InformationWindow::get_address().toStdString());
-        input.set_pkh_script(input_script);
-
+        TxIn input = create_input(previous_output->currentText(),
+                                  index_tx->text().toUInt());
         vec_inputs_.push_back(input);
 
         // filling the table
-        int rowNumber = ui->inputs->rowCount();
-        ui->inputs->insertRow(rowNumber);
-        ui->inputs->setItem(rowNumber, 0, new QTableWidgetItem(previous_output->text()));
-        ui->inputs->setItem(rowNumber, 1, new QTableWidgetItem(index->text()));
-        ui->inputs->resizeColumnsToContents();
-        ui->inputs->item(rowNumber, 0)->setTextAlignment(Qt::AlignCenter);
-        ui->inputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
-        ui->input_label->setText(QString("Inputs (%1)").arg(vec_inputs_.size()));   
-        qInfo(logInfo()) << "Create input: " << vec_inputs_.size();
+        update_inputs_table(previous_output->currentText(), index_tx->text());
     }
+    else if ((rc == QDialog::Accepted) && (previous_output->currentIndex() == -1))
+    {
+        QMessageBox::warning(this, "Message", "Select previous output!");
+        qWarning(logWarning()) << "Previous output not selected";
+    }
+
+    delete previous_output;
+    delete index_tx;
+    delete value;
+}
+
+TxIn MakeTransactionWindow::create_input(const QString& txid, unsigned int index)
+{
+    TxIn input;
+    input.set_previous_output(txid.toStdString(), index);
+    input.set_default_sequance();
+    Script input_script;
+    input_script.create_pkh_script(InformationWindow::get_address().toStdString());
+    input.set_pkh_script(input_script);
+
+    return input;
+}
+
+void MakeTransactionWindow::update_inputs_table(const QString& txid,
+                                                const QString& index)
+{
+    int rowNumber = ui->inputs->rowCount();
+    ui->inputs->insertRow(rowNumber);
+    ui->inputs->setItem(rowNumber, 0, new QTableWidgetItem(txid));
+    ui->inputs->setItem(rowNumber, 1, new QTableWidgetItem(index));
+    ui->inputs->resizeColumnsToContents();
+    ui->inputs->item(rowNumber, 0)->setTextAlignment(Qt::AlignCenter);
+    ui->inputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
+    ui->input_label->setText(QString("Inputs (%1)").arg(vec_inputs_.size()));
+    qInfo(logInfo()) << "Create input: " << vec_inputs_.size();
 }
 
 void MakeTransactionWindow::on_create_output_clicked()
@@ -171,14 +200,14 @@ void MakeTransactionWindow::on_create_output_clicked()
 
     dialog.setLayout(&form);
     dialog.setMinimumSize(710, 150);
-    dialog.exec();
+    int rc = dialog.exec();
 
-    if (buttonBox.Ok && address->text().isEmpty())
+    if ((rc == QDialog::Accepted) && address->text().isEmpty())
     {
         QMessageBox::warning(this, "Message", "Enter address!");
         qWarning(logWarning()) << "Address not entered";
     }
-    else if (buttonBox.Ok && ammount->text().isEmpty())
+    else if ((rc == QDialog::Accepted) && ammount->text().isEmpty())
     {
         QMessageBox::warning(this, "Message", "Enter ammount!");
         qWarning(logWarning()) << "Ammount not entered";
@@ -186,20 +215,31 @@ void MakeTransactionWindow::on_create_output_clicked()
     else
     {
         // create output
-        Script output_script;
-        output_script.create_pkh_script(address->text().toStdString());
-        TxOut output(ammount->text().toDouble(), output_script);
-
+        TxOut output = create_output(ammount->text(), address->text());
         vec_outputs_.push_back(output);
 
         // filling the table
-        int rowNumber = ui->outputs->rowCount();
-        ui->outputs->insertRow(rowNumber);
-        ui->outputs->setItem(rowNumber,0, new QTableWidgetItem(address->text()));
-        ui->outputs->setItem(rowNumber,1, new QTableWidgetItem(ammount->text()));
-        ui->outputs->item(rowNumber, 0)->setTextAlignment(Qt::AlignCenter);
-        ui->outputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
-        ui->output_label->setText(QString("Outputs (%1)").arg(vec_outputs_.size()));
-        qInfo(logInfo()) << "Create output: " << vec_outputs_.size();
+        update_outputs_table(ammount->text(), address->text());
     }
+}
+
+TxOut MakeTransactionWindow::create_output(const QString& value, const QString& address)
+{
+    Script output_script;
+    output_script.create_pkh_script(address.toStdString());
+    TxOut output(value.toDouble(), output_script);
+
+    return output;
+}
+
+void MakeTransactionWindow::update_outputs_table(const QString& value, const QString& address)
+{
+    int rowNumber = ui->outputs->rowCount();
+    ui->outputs->insertRow(rowNumber);
+    ui->outputs->setItem(rowNumber,0, new QTableWidgetItem(address));
+    ui->outputs->setItem(rowNumber,1, new QTableWidgetItem(value));
+    ui->outputs->item(rowNumber, 0)->setTextAlignment(Qt::AlignCenter);
+    ui->outputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
+    ui->output_label->setText(QString("Outputs (%1)").arg(vec_outputs_.size()));
+    qInfo(logInfo()) << "Create output: " << vec_outputs_.size();
 }

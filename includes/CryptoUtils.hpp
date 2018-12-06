@@ -7,6 +7,7 @@
 #include <cstring>
 #include <exception>
 #include <iomanip>
+#include <type_traits>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -95,8 +96,8 @@ namespace cu
     T to_type(It begin, It end)
     {
         static_assert(std::is_fundamental<T>::value, "not a fundamental type");
-        using this_type = std::remove_reference<decltype(*begin)>::type;
-        using data = std::remove_const<this_type>::type;
+        using this_type = typename std::remove_reference<decltype(*begin)>::type;
+        using data = typename std::remove_const<this_type>::type;
         static_assert(std::is_same<data, byte>::value, "not a chunk");
 
         T x;

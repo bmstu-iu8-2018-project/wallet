@@ -154,6 +154,7 @@ void TransactionWindow::on_sign_clicked()
         tx.sign(get_private_key().toStdString());
         update_signed_tx();
         ui->status->setText("Signed");
+        QMessageBox::information(this, "Message", "Transaction is successfully signed!");
         qInfo(logInfo()) << "This transaction is signed";
     }
     else if (ui->tx_id_box->currentIndex() == 0)
