@@ -9,7 +9,7 @@
 
 namespace Ui
 {
-class TransactionWindow;
+    class TransactionWindow;
 }
 
 class TransactionWindow : public QWidget
@@ -27,7 +27,7 @@ class TransactionWindow : public QWidget
 
     void on_tx_id_box_currentIndexChanged(int index);
 
-    void on_sign_clicked();
+    void on_send_clicked();
 
  private:
     Ui::TransactionWindow *ui;
@@ -46,9 +46,6 @@ class TransactionWindow : public QWidget
 
     void setOutputs(const std::vector<TxOut>& outputs);
 
-    QString get_private_key();
-
-    void update_signed_tx();
 };
 
 #endif // TRANSACTIONWINDOW_HPP

@@ -6,6 +6,7 @@
 #include <QFileSystemModel>
 #include <includes/usb_monitor.hpp>
 #include <transactionwindow.hpp>
+#include <includes/LoggingCategories.hpp>
 
 namespace Ui
 {
@@ -21,13 +22,13 @@ class InformationWindow : public QWidget
 
     ~InformationWindow();
 
-private slots:
+ private slots:
 
     void on_exit_clicked();
 
     void on_view_tx_clicked();
 
-private:
+ private:
     static QString mark_path_;
 
     Ui::InformationWindow *ui;
@@ -42,9 +43,9 @@ private:
 
     void finde_usb_device();
 
-    void chek_device();
+    bool chek_device();
 
-    void chec_mark_on_device(const QString& path);
+    bool chec_mark_on_device(const QString& path);
 
     QString get_device_path();
 

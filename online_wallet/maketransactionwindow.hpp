@@ -24,12 +24,12 @@ class MakeTransactionWindow : public QWidget
 {
     Q_OBJECT
 
-public:
+ public:
     explicit MakeTransactionWindow(QWidget *parent = nullptr);
 
     ~MakeTransactionWindow();
 
-private slots:
+ private slots:
     void on_build_transaction_clicked();
 
     void on_clouse_clicked();
@@ -38,7 +38,7 @@ private slots:
 
     void on_create_output_clicked();
 
-private:
+ private:
     Ui::MakeTransactionWindow *ui;
 
     size_t number_trans_ = 0;

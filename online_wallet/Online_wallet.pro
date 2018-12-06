@@ -47,7 +47,9 @@ SOURCES += \
     includes/Script.cpp \
     includes/Transaction.cpp \
     includes/TxIn.cpp \
-    includes/TxOut.cpp
+    includes/TxOut.cpp \
+    transactionwindow.cpp \
+    includes/LoggingCategories.cpp
 
 HEADERS += \
     includes/CryptoUtils.hpp \
@@ -61,12 +63,15 @@ HEADERS += \
     includes/Script.hpp \
     includes/Transaction.hpp \
     includes/TxIn.hpp \
-    includes/TxOut.hpp
+    includes/TxOut.hpp \
+    transactionwindow.hpp \
+    includes/LoggingCategories.hpp
 
 FORMS += \
         mainwindow.ui \
     maketransactionwindow.ui \
-    informationwindow.ui
+    informationwindow.ui \
+    transactionwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

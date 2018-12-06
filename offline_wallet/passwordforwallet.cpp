@@ -1,6 +1,7 @@
 #include <passwordforwallet.hpp>
 #include <ui_passwordforwallet.h>
 #include <mainwindow.hpp>
+#include <includes/LoggingCategories.hpp>
 
 QString PasswordForWallet::name_;
 
@@ -9,6 +10,7 @@ PasswordForWallet::PasswordForWallet(QWidget *parent)
     , ui(new Ui::PasswordForWallet)
 {
     ui->setupUi(this);
+    qInfo(logInfo()) << "Initialize create wallet window";
     find_usb_device();
 }
 
@@ -22,6 +24,7 @@ void PasswordForWallet::find_usb_device()
     mon = usb_monitor::create();
     mon->mount_existing_devices();
     mon->start();
+    qInfo(logInfo()) << "Find usb device ...";
 }
 
 QString PasswordForWallet::create_private_dir(const QString& name)
@@ -74,10 +77,14 @@ QString PasswordForWallet::get_public_data_path()
     while (set_device.empty())
     {
         if (set_device.empty())
+        {
             QMessageBox::warning(this, "Message", "Insert USB device!");
+            qWarning(logWarning()) << "Insert USB device";
+        }
 
         set_device = mon->get_flash_disks(1);
     }
+    qInfo(logInfo()) << "Usb device found" << QDir::drives().last().dir().Name;
 
     return QDir::drives().last().dir().path();
 }
@@ -86,7 +93,11 @@ void PasswordForWallet::save_public_data(
         const QString& path, const OfflineWallet& wallet)
 {
     // get path for save public_key and address
-    QString path_addres_public = get_public_data_path();
+    QDir dir(get_public_data_path() + QDir::separator() + name_);
+    if (!dir.exists())
+        dir.mkpath(".");
+
+    QString path_addres_public = dir.path();
 
     QVariantMap json_addres_public_map;
     json_addres_public_map.insert("address",
@@ -98,8 +109,8 @@ void PasswordForWallet::save_public_data(
 
     mark_device(path_addres_public + QDir::separator() + "mark.dat");
 
-    QDir dir(path_addres_public);
-    dir.mkdir("Transactions");
+    QDir dir_tx(path_addres_public);
+    dir_tx.mkdir("Transactions");
 }
 
 void PasswordForWallet::mark_device(const QString& fileName)
@@ -111,6 +122,7 @@ void PasswordForWallet::mark_device(const QString& fileName)
         stream << QObject::trUtf8( "master device" );
         mark.close();
     }
+    qInfo(logInfo()) << "Usb device marked";
 }
 
 bool PasswordForWallet::check_test_network()
@@ -143,6 +155,7 @@ void PasswordForWallet::save_wallet_data(
     QString path_private_data = create_private_dir(name);
 
     save_authorization_data(path_private_data, name, pass);
+    qInfo(logInfo()) << "Authorization data successfully saved";
 
     // generate key
     OfflineWallet  wallet;
@@ -150,17 +163,23 @@ void PasswordForWallet::save_wallet_data(
     if (check_test_network())
     {
         wallet.create_wallet(TEST_NETWORK);
+        qInfo(logInfo()) << "Wallet status: TEST_NETWORK";
     }
     else if (check_main_network())
     {
         wallet.create_wallet(MAIN_NETWORK);
+        qInfo(logInfo()) << "Wallet status: MAIN_NETWORK";
     }
 
     // save private key on offline device
     save_private_data(path_private_data, wallet);
+    qInfo(logInfo()) << "Private data successfully saved";
+
     save_public_data(path_private_data, wallet);
+    qInfo(logInfo()) << "Public data successfully saved";
 
     QMessageBox::information(this, "Message", "Wallet successfully created!");
+    qInfo(logInfo()) << "Wallet " << name << " successfully created";
 
     // Open window with wallet information
     change_window();
@@ -172,15 +191,16 @@ void PasswordForWallet::on_create_wallet()
 
     if (ui->lineEdit_pass1->text() == ui->lineEdit_pass2->text())
     {
-
         if (ui->lineEdit_name->text().isEmpty())
         {
             QMessageBox::warning(this, "Error", "Enter login!");
+            qWarning(logWarning()) << "Login not entered at login";
         }
         else if (ui->lineEdit_pass1->text().isEmpty() &&
                  ui->lineEdit_pass2->text().isEmpty())
         {
             QMessageBox::warning(this, "Error", "Enter password!");
+            qWarning(logWarning()) << "Password not entered at login";
         }
         else if (check_network())
         {
@@ -190,11 +210,13 @@ void PasswordForWallet::on_create_wallet()
         else
         {
             QMessageBox::warning(this, "Error", "Select the type of wallet!");
+            qWarning(logWarning()) << "Login or password not entered at login";
         }
     }
     else
     {
         QMessageBox::warning(this, "Error", "The keys do not match, try again!");
+        qWarning(logWarning()) << "Login or password not entered at login";
     }
 }
 

@@ -11,6 +11,7 @@
 #include <includes/JsonUtils.hpp>
 #include <includes/usb_monitor.hpp>
 #include <maketransactionwindow.hpp>
+#include <transactionwindow.hpp>
 
 namespace Ui
 {
@@ -37,16 +38,26 @@ class InformationWindow : public QWidget
 
     void on_boxRequests_currentIndexChanged(int index);
 
-private:
+    void on_view_tx_clicked();
+
+ private:
     static QString address_;
 
     Ui::InformationWindow* ui;
+
+    TransactionWindow *txWindow;
 
     MakeTransactionWindow* transWindow;
 
     void init_box_requests();
 
-    void change_window();
+    void change_make_tx_window();
+
+    void change_tx_window();
+
+    QDir get_path_transaction();
+
+    QString init_dialog_id();
 
     enum class Requests
     {

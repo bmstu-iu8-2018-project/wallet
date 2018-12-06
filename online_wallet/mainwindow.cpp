@@ -1,6 +1,7 @@
 #include <mainwindow.hpp>
 #include <ui_mainwindow.h>
 #include <includes/JsonUtils.hpp>
+#include <includes/LoggingCategories.hpp>
 
 QString MainWindow::mark_path_;
 
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     chek_device();
 
     ui->setupUi(this);
+    qInfo(logInfo()) << "Initialize authorization window";
 
     ui->wallets->addItem("(select wallet)");
     ui->wallets->addItems(str_list_);
@@ -35,6 +37,7 @@ void MainWindow::find_usb_device()
     mon = usb_monitor::create();
     mon->mount_existing_devices();
     mon->start();
+    qInfo(logInfo()) << "Find usb device ...";
 }
 
 QString MainWindow::get_device_path()
@@ -61,6 +64,7 @@ void MainWindow::chek_device()
     }
 
     mon->stop();
+    qInfo(logInfo()) << "Usb device found" << QDir::drives().last().dir().path();
     chec_mark_on_device(get_device_path());
 }
 
@@ -85,7 +89,7 @@ void MainWindow::chec_mark_on_device(const QString& path)
     if (!flag)
     {
         QMessageBox::warning(this, "Message", "You inserted an incorrect USB flash drive!\nTry again");
-        chek_device();
+        qWarning(logWarning()) << "Inserted an incorrect USB flash drive";
         chec_mark_on_device(get_device_path());
     }
 }

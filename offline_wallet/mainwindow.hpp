@@ -32,7 +32,7 @@ class MainWindow : public QMainWindow
 
     void on_go_to_create_wallet_clicked();
 
-private:
+ private:
     static QString name_;
 
     Ui::MainWindow *ui;

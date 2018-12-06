@@ -1,5 +1,6 @@
 #include <mainwindow.hpp>
 #include <ui_mainwindow.h>
+#include <includes/LoggingCategories.hpp>
 
 QString MainWindow:: name_;
 
@@ -8,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    qInfo(logInfo()) << "Initialize authorization window";
 }
 
 MainWindow::~MainWindow()
@@ -22,7 +24,10 @@ void MainWindow::on_authorization_clicked()
 
     QDir dir(QDir::homePath() + QDir::separator() + "Private data");
     if (!dir.exists())
+    {
         QMessageBox::warning(this, "Error", "Wallet is not created on the device!");
+        qWarning(logWarning()) << "Wallet is not created on the device";
+    }
 
     QStringList list_dir = dir.entryList(QDir::Dirs | QDir::AllDirs | QDir::NoDotAndDotDot);
     auto it = qFind(list_dir.begin(), list_dir.end(), login);
@@ -33,32 +38,42 @@ void MainWindow::on_authorization_clicked()
         QString login_of_file = ju::get_name(dir.path() + QDir::separator() + "authorization_data.json");
         QString password_of_file = load_password(dir.path());
 
-        if (login.isEmpty())
+        if (login.isEmpty() && password.isEmpty())
+        {
+            QMessageBox::warning(this, "Error", "Enter login or passwword!");
+            qWarning(logWarning()) << "Login or password not entered at login";
+        }
+        else if (login.isEmpty())
         {
             QMessageBox::warning(this, "Error", "Enter login!");
+            qWarning(logWarning()) << "Login not entered at login";
         }
         else if (password.isEmpty())
         {
             QMessageBox::warning(this, "Error", "Enter password!");
+            qWarning(logWarning()) << "Password not entered at login";
         }
         else if ((login == login_of_file) && (password == password_of_file))
         {
             name_ = login_of_file;
             // Open window with wallet information
             infWindow = new InformationWindow();
-            infWindow->setWindowTitle("Wallet information");
+            infWindow->setWindowTitle("Offline wallet");
             infWindow->show();
 
+            qInfo(logInfo()) << "Made entry into the wallet: " << login_of_file;
             this->close();  // close the main window
         }
         else
         {
             QMessageBox::warning(this, "Error", "The authorization data do not match, try again!");
+            qWarning(logWarning()) << "Authorization data mismatch at login";
         }
     }
     else
     {
         QMessageBox::warning(this, "Error", "Wallet is not created on the device!");
+        qWarning(logWarning()) << "Wallet is not created on the device";
     }
 }
 

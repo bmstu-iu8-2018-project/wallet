@@ -9,6 +9,7 @@ TransactionWindow::TransactionWindow(QWidget *parent)
 {
     ui->setupUi(this);
     qInfo(logInfo()) << "Initialize tx_view window";
+
     init_inputs_table();
     init_outputs_table();
 }
@@ -96,10 +97,10 @@ void TransactionWindow::setOutputs(const std::vector<TxOut>& outputs)
         int row_output = ui->outputs->rowCount();
         ui->outputs->insertRow(row_output);
         QString addres = cu::get_addres_from_script(it.get_script().data()).c_str();
-        ui->outputs->setItem(row_output,0,
+        ui->outputs->setItem(row_output, 0,
                              new QTableWidgetItem(addres));
         QString value = QString::number(static_cast<double>(it.get_value()) / SATOSHI_COEF);
-        ui->outputs->setItem(row_output,1,
+        ui->outputs->setItem(row_output, 1,
                              new QTableWidgetItem(value));
         ui->outputs->item(row_output, 0)->setTextAlignment(Qt::AlignCenter);
         ui->outputs->item(row_output, 1)->setTextAlignment(Qt::AlignCenter);
@@ -114,7 +115,7 @@ void TransactionWindow::on_tx_id_box_currentIndexChanged(int index)
     if (index != 0)
     {
         QString path = tx_dir_.path() + QDir::separator() +
-                ui->tx_id_box->currentText() + QDir::separator() +"tx.dat";
+                ui->tx_id_box->currentText() + QDir::separator() + "tx.dat";
         tx = Transaction::parse(path.toStdString());
 
         setInputs(tx.get_inputs());
@@ -131,30 +132,12 @@ void TransactionWindow::on_tx_id_box_currentIndexChanged(int index)
     }
 }
 
-QString TransactionWindow::get_private_key()
-{
-    QDir dir(QDir::homePath() + QDir::separator() + "Private data");
-    dir.cd(MainWindow::get_wallet_name());
-    return ju::get_information(dir.path() + QDir::separator() + "wallet.dat.json", "private_key");
-}
-
-void TransactionWindow::update_signed_tx()
-{
-    QString path = tx_dir_.path() + QDir::separator() +
-            ui->tx_id_box->currentText() + QDir::separator() + "tx.dat";
-    QFile file_tx(path);
-    file_tx.open(QFile::WriteOnly);
-    file_tx.write(tx.get_hex_tx().c_str());
-}
-
-void TransactionWindow::on_sign_clicked()
+void TransactionWindow::on_send_clicked()
 {
     if (ui->status->text() == "Unsigned")
     {
-        tx.sign(get_private_key().toStdString());
-        update_signed_tx();
-        ui->status->setText("Signed");
-        qInfo(logInfo()) << "This transaction is signed";
+        QMessageBox::warning(this, "Message", "Transaction not signed!");
+        qInfo(logInfo()) << "This transaction is already signed";
     }
     else if (ui->tx_id_box->currentIndex() == 0)
     {
@@ -163,7 +146,15 @@ void TransactionWindow::on_sign_clicked()
     }
     else
     {
-        QMessageBox::information(this, "Message", "This transaction is already signed!");
-        qInfo(logInfo()) << "This transaction is already signed";
+        QString path = tx_dir_.path() + QDir::separator() +
+                ui->tx_id_box->currentText() + QDir::separator() + "tx.dat";
+
+        QFile tx_hex(path);
+        tx_hex.open(QFile::ReadOnly);
+        QTextStream in(&tx_hex);
+
+        QString str = nu::send_transaction(in.readAll().toStdString()).c_str();
+        QMessageBox::information(this, "Message", str);
+        qInfo(logInfo()) << str;
     }
 }

@@ -2,12 +2,15 @@
 #include <ui_maketransactionwindow.h>
 #include <mainwindow.hpp>
 #include <informationwindow.hpp>
+#include <includes/LoggingCategories.hpp>
 
 MakeTransactionWindow::MakeTransactionWindow(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MakeTransactionWindow)
 {
     ui->setupUi(this);
+    qInfo(logInfo()) << "Initialize make tx window";
+
     init_inputs_table();
     init_outputs_table();
 }
@@ -54,7 +57,7 @@ QString MakeTransactionWindow::get_path_transaction()
 
 void MakeTransactionWindow::create_transaction(QDir dir)
 {
-    Transaction tx(1, 0, vec_inputs_, vec_outputs_);
+    Transaction tx(1, vec_inputs_, vec_outputs_, 0);
     auto raw_tx = tx.get_hex_tx();
 
     QFile file_tx(dir.path() + "/tx.dat");
@@ -116,10 +119,12 @@ void MakeTransactionWindow::on_create_input_clicked()
     if (buttonBox.Ok && previous_output->text().isEmpty())
     {
         QMessageBox::warning(this, "Message", "Enter previous output!");
+        qWarning(logWarning()) << "Previous output not entered";
     }
     else if (buttonBox.Ok && index->text().isEmpty())
     {
         QMessageBox::warning(this, "Message", "Enter index!");
+        qWarning(logWarning()) << "Index not entered";
     }
     else
     {
@@ -141,7 +146,8 @@ void MakeTransactionWindow::on_create_input_clicked()
         ui->inputs->resizeColumnsToContents();
         ui->inputs->item(rowNumber, 0)->setTextAlignment(Qt::AlignCenter);
         ui->inputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
-        ui->input_label->setText(QString("Inputs (%1)").arg(vec_inputs_.size()));
+        ui->input_label->setText(QString("Inputs (%1)").arg(vec_inputs_.size()));   
+        qInfo(logInfo()) << "Create input: " << vec_inputs_.size();
     }
 }
 
@@ -170,10 +176,12 @@ void MakeTransactionWindow::on_create_output_clicked()
     if (buttonBox.Ok && address->text().isEmpty())
     {
         QMessageBox::warning(this, "Message", "Enter address!");
+        qWarning(logWarning()) << "Address not entered";
     }
     else if (buttonBox.Ok && ammount->text().isEmpty())
     {
         QMessageBox::warning(this, "Message", "Enter ammount!");
+        qWarning(logWarning()) << "Ammount not entered";
     }
     else
     {
@@ -192,5 +200,6 @@ void MakeTransactionWindow::on_create_output_clicked()
         ui->outputs->item(rowNumber, 0)->setTextAlignment(Qt::AlignCenter);
         ui->outputs->item(rowNumber, 1)->setTextAlignment(Qt::AlignCenter);
         ui->output_label->setText(QString("Outputs (%1)").arg(vec_outputs_.size()));
+        qInfo(logInfo()) << "Create output: " << vec_outputs_.size();
     }
 }

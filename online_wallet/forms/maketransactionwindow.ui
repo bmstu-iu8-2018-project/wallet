@@ -13,13 +13,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Make transaction</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="input_label">
         <property name="text">
@@ -29,17 +29,6 @@
       </item>
       <item>
        <widget class="QTableWidget" name="inputs"/>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item alignment="Qt::AlignRight">
-         <widget class="QPushButton" name="create_input">
-          <property name="text">
-           <string>Create input</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
       <item>
        <widget class="QLabel" name="output_label">
@@ -52,18 +41,7 @@
        <widget class="QTableWidget" name="outputs"/>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item alignment="Qt::AlignRight">
-         <widget class="QPushButton" name="create_output">
-          <property name="text">
-           <string>Create output</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item alignment="Qt::AlignLeft">
          <widget class="QPushButton" name="clouse">
           <property name="text">
@@ -71,12 +49,30 @@
           </property>
          </widget>
         </item>
-        <item alignment="Qt::AlignRight">
-         <widget class="QPushButton" name="build_transaction">
-          <property name="text">
-           <string>OK</string>
-          </property>
-         </widget>
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="create_input">
+            <property name="text">
+             <string>Create input</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="create_output">
+            <property name="text">
+             <string>Create output</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="build_transaction">
+            <property name="text">
+             <string>OK</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>

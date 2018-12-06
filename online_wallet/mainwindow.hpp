@@ -8,6 +8,7 @@
 #include <maketransactionwindow.hpp>
 #include <includes/usb_monitor.hpp>
 #include <QMessageBox>
+#include <QThread>
 #include <QString>
 #include <QDir>
 #include <QDirIterator>
@@ -21,18 +22,17 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
+ public:
     explicit MainWindow(QWidget *parent = nullptr);
 
     ~MainWindow();
 
     static QString get_public_data_path();
 
-private slots:
-
+ private slots:
     void on_wallets_currentIndexChanged(int index);
 
-private:
+ private:
     static QString mark_path_;
 
     Ui::MainWindow *ui;

@@ -33,7 +33,7 @@ class PasswordForWallet : public QWidget
 
     void on_back_clicked();
 
-private:
+ private:
     static QString name_;
 
     Ui::PasswordForWallet *ui;
