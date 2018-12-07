@@ -45,9 +45,12 @@ QString PasswordForWallet::get_wallet_name()
 
 void PasswordForWallet::change_window()
 {
-    infWindow = new InformationWindow();
-    infWindow->setWindowTitle("Wallet information");
-    infWindow->show();
+    auto mainWindow = new MainWindow();
+    mainWindow->setAttribute( Qt::WA_DeleteOnClose );
+    mainWindow->setWindowTitle("Offline Wallet");
+    mainWindow->show();
+    deleteLater();
+    this->close();
 }
 
 void PasswordForWallet::save_authorization_data(
@@ -205,7 +208,6 @@ void PasswordForWallet::on_create_wallet()
         else if (check_network())
         {
             save_wallet_data(ui->lineEdit_name->text(), ui->lineEdit_pass1->text());
-            this->close();    // close the main window
         }
         else
         {

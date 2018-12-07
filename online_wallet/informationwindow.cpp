@@ -119,9 +119,12 @@ void InformationWindow::on_boxRequests_currentIndexChanged(int index)
         {
             ui->requestBrowser->clear();
             auto tx_id = init_dialog_id();
-            const auto trans_json_data = nu::get_transaction(tx_id.toStdString());
-            ui->requestBrowser->setText(trans_json_data.c_str());
-            qInfo(logInfo()) << "Request received transactions";
+            if (tx_id != "false")
+            {
+                const auto trans_json_data = nu::get_transaction(tx_id.toStdString());
+                ui->requestBrowser->setText(trans_json_data.c_str());
+                qInfo(logInfo()) << "Request received transactions";
+            }
             break;
         }
     }
@@ -144,13 +147,17 @@ QString InformationWindow::init_dialog_id()
 
     dialog.setLayout(&form);
     dialog.setMinimumSize(710, 120);
-    dialog.exec();
+    int rc = dialog.exec();
 
-    if (buttonBox.Ok && tx_id->text().isEmpty())
+    if ((rc == QDialog::Accepted) && tx_id->text().isEmpty())
     {
         QMessageBox::warning(this, "Message", "Enter transaction id!");
         qWarning(logWarning()) << "Not enter transaction id";
         init_dialog_id();
+    }
+    else  if (rc == QDialog::Rejected)
+    {
+        return "false";
     }
 
     return tx_id->text();

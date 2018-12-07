@@ -6,9 +6,7 @@
 #include <QStringListModel>
 #include <informationwindow.hpp>
 #include <maketransactionwindow.hpp>
-#include <includes/usb_monitor.hpp>
 #include <QMessageBox>
-#include <QThread>
 #include <QString>
 #include <QDir>
 #include <QDirIterator>
@@ -37,21 +35,13 @@ class MainWindow : public QMainWindow
 
     Ui::MainWindow *ui;
 
-    usb_monitor *mon;
-
     InformationWindow *infWindow;
 
     QStringList str_list_;
 
     void change_window();
 
-    void find_usb_device();
-
-    void chek_device();
-
-    void chec_mark_on_device(const QString& path);
-
-    static void device_added(char letter);
+    void init_wallets(const QString& path);
 
     QString get_device_path();
 };

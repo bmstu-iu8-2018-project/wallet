@@ -29,14 +29,7 @@ InformationWindow::InformationWindow(QWidget *parent)
 QString InformationWindow::get_path_private_dir()
 {    
     QDir dir(QDir::homePath() + QDir::separator() + "Private data");
-
-    if (!MainWindow::get_wallet_name().isEmpty() && PasswordForWallet::get_wallet_name().isEmpty())
-        dir.cd(MainWindow::get_wallet_name());
-    else if (MainWindow::get_wallet_name().isEmpty() && !PasswordForWallet::get_wallet_name().isEmpty())
-        dir.cd(PasswordForWallet::get_wallet_name());
-    else
-        dir.cd(MainWindow::get_wallet_name());
-
+    dir.cd(MainWindow::get_wallet_name());
     return dir.path();
 }
 

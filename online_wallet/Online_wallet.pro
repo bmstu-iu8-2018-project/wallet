@@ -49,7 +49,9 @@ SOURCES += \
     includes/TxIn.cpp \
     includes/TxOut.cpp \
     transactionwindow.cpp \
-    includes/LoggingCategories.cpp
+    includes/LoggingCategories.cpp \
+    threadmonitor.cpp \
+    messager.cpp
 
 HEADERS += \
     includes/CryptoUtils.hpp \
@@ -65,7 +67,9 @@ HEADERS += \
     includes/TxIn.hpp \
     includes/TxOut.hpp \
     transactionwindow.hpp \
-    includes/LoggingCategories.hpp
+    includes/LoggingCategories.hpp \
+    threadmonitor.h \
+    messager.h
 
 FORMS += \
         mainwindow.ui \

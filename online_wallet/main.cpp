@@ -6,7 +6,8 @@
 #include <QTextStream>
 #include <QDateTime>
 #include <QLoggingCategory>
-#include <includes/usb_monitor.hpp>
+#include <threadmonitor.h>
+#include <messager.h>
 
 // Smart pointer to log file
 QScopedPointer<QFile>   m_logFile;
@@ -33,6 +34,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     out.flush();    // Clear the buffered data
 }
 
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -41,9 +43,9 @@ int main(int argc, char *argv[])
     // check which a path to file you use
     m_logFile.reset(new QFile(QDir::currentPath() + QDir::separator() + "log.log"));
     // Open the file logging
-    m_logFile.data()->open(QFile::Append | QFile::Text);
+    m_logFile.data()->open(QFile::WriteOnly | QFile::Text);
     // Set handler
-    qInstallMessageHandler(messageHandler);
+    qInstallMessageHandler(messageHandler);   
 
     app.setWindowIcon(QIcon(QDir::homePath() + QDir::separator()
                             + "Pictures" + QDir::separator() + "BitCoin.png"));
@@ -51,6 +53,20 @@ int main(int argc, char *argv[])
     mainWindow->setAttribute( Qt::WA_DeleteOnClose );
     mainWindow->setWindowTitle("Online wallet");
     mainWindow->show();
+
+    // Monitiring USb device
+    ThreadMonitor * monitor = new ThreadMonitor();
+    QThread worker_th;
+    worker_th.start();
+    monitor->moveToThread(&worker_th);
+
+    Messager msg;
+    QObject::connect(&worker_th, SIGNAL(started()), monitor, SLOT(start_find()));
+    QObject::connect(&app, SIGNAL(aboutToQuit()), &worker_th, SLOT(quit()));
+    QObject::connect(monitor, SIGNAL(usb_not_found()), &msg, SLOT(message()),
+                     Qt::BlockingQueuedConnection);
+    QObject::connect(monitor, SIGNAL(unknow_usb()), &msg, SLOT(message()),
+                     Qt::BlockingQueuedConnection);
 
     return app.exec();
 }

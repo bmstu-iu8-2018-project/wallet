@@ -57,12 +57,23 @@ QString MakeTransactionWindow::get_path_transaction()
 
 void MakeTransactionWindow::create_transaction(QDir dir)
 {
-    Transaction tx(1, vec_inputs_, vec_outputs_, 0);
-    auto raw_tx = tx.get_hex_tx();
+    if (vec_inputs_.size() == 0)
+    {
+        QMessageBox::warning(this, "Message", "Created inputs!");
+    }
+    else if (vec_outputs_.size() == 0)
+    {
+        QMessageBox::warning(this, "Message", "Created outputs!");
+    }
+    else
+    {
+        Transaction tx(1, vec_inputs_, vec_outputs_, 0);
+        auto raw_tx = tx.get_hex_tx();
 
-    QFile file_tx(dir.path() + "/tx.dat");
-    file_tx.open(QFile::WriteOnly);
-    file_tx.write(raw_tx.c_str());
+        QFile file_tx(dir.path() + "/tx.dat");
+        file_tx.open(QFile::WriteOnly);
+        file_tx.write(raw_tx.c_str());
+    }
 }
 
 void MakeTransactionWindow::build_transaction()
