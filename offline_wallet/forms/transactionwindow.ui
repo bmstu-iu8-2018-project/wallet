@@ -64,6 +64,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
      <item alignment="Qt::AlignLeft">
       <widget class="QPushButton" name="clouse">
        <property name="text">
@@ -71,12 +74,29 @@
        </property>
       </widget>
      </item>
-     <item alignment="Qt::AlignRight">
-      <widget class="QPushButton" name="sign">
-       <property name="text">
-        <string>Sign</string>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinimumSize</enum>
        </property>
-      </widget>
+       <property name="leftMargin">
+        <number>200</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="get_hex">
+         <property name="text">
+          <string>Hex</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="sign">
+         <property name="text">
+          <string>Sign</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

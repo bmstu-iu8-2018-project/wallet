@@ -1,49 +1,53 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
-#include <QMainWindow>
 #include <QComboBox>
+#include <QDir>
+#include <QDirIterator>
+#include <QMainWindow>
+#include <QMessageBox>
+#include <QString>
 #include <QStringListModel>
 #include <informationwindow.hpp>
 #include <maketransactionwindow.hpp>
-#include <QMessageBox>
-#include <QString>
-#include <QDir>
-#include <QDirIterator>
 
-namespace Ui
-{
-    class MainWindow;
+namespace Ui {
+class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
  public:
-    explicit MainWindow(QWidget *parent = nullptr);
+  explicit MainWindow(QWidget* parent = nullptr);
 
-    ~MainWindow();
+  ~MainWindow();
 
-    static QString get_public_data_path();
+  static QString get_public_data_path();
 
  private slots:
-    void on_wallets_currentIndexChanged(int index);
+  void on_wallets_currentIndexChanged(int index);
 
  private:
-    static QString mark_path_;
+  static QString mark_path_;
 
-    Ui::MainWindow *ui;
+  Ui::MainWindow* ui;
 
-    InformationWindow *infWindow;
+  usb_monitor* mon;
 
-    QStringList str_list_;
+  InformationWindow* infWindow;
 
-    void change_window();
+  QStringList str_list_;
 
-    void init_wallets(const QString& path);
+  void find_usb_device();
 
-    QString get_device_path();
+  void chek_device();
+
+  void chec_mark_on_device(const QString& path);
+
+  void change_window();
+
+  QString get_device_path();
 };
 
-#endif // MAINWINDOW_HPP
+#endif  // MAINWINDOW_HPP

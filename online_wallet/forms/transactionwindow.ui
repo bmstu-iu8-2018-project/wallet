@@ -13,13 +13,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Veiw transactoin :</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="label_tx_id">
         <property name="text">
@@ -77,12 +77,26 @@
           </property>
          </widget>
         </item>
-        <item alignment="Qt::AlignRight">
-         <widget class="QPushButton" name="send">
-          <property name="text">
-           <string>Send</string>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="leftMargin">
+           <number>200</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QPushButton" name="get_hex">
+            <property name="text">
+             <string>Hex</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="send">
+            <property name="text">
+             <string>Send</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>

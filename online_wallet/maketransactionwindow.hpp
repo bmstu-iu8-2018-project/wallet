@@ -1,69 +1,66 @@
 #ifndef MAKETRANSACTIONWINDOW_HPP
 #define MAKETRANSACTIONWINDOW_HPP
 
-#include <includes/JsonUtils.hpp>
-#include <includes/CryptoUtils.hpp>
-#include <includes/Transaction.hpp>
-#include <memory>
-#include <QDir>
-#include <QInputDialog>
 #include <QDialogButtonBox>
-#include <QFormLayout>
-#include <QMessageBox>
+#include <QDir>
 #include <QDirIterator>
+#include <QFormLayout>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QThread>
 #include <QWidget>
-#include <QDir>
+#include <includes/CryptoUtils.hpp>
+#include <includes/JsonUtils.hpp>
+#include <includes/Transaction.hpp>
+#include <memory>
 
-namespace Ui
-{
-    class MakeTransactionWindow;
+namespace Ui {
+class MakeTransactionWindow;
 }
 
-class MakeTransactionWindow : public QWidget
-{
-    Q_OBJECT
+class MakeTransactionWindow : public QWidget {
+  Q_OBJECT
 
  public:
-    explicit MakeTransactionWindow(QWidget *parent = nullptr);
+  explicit MakeTransactionWindow(QWidget* parent = nullptr);
 
-    ~MakeTransactionWindow();
+  ~MakeTransactionWindow();
 
  private slots:
-    void on_build_transaction_clicked();
+  void on_build_transaction_clicked();
 
-    void on_clouse_clicked();
+  void on_clouse_clicked();
 
-    void on_create_input_clicked();
+  void on_create_input_clicked();
 
-    void on_create_output_clicked();
+  void on_create_output_clicked();
 
  private:
-    Ui::MakeTransactionWindow *ui;
+  Ui::MakeTransactionWindow* ui;
 
-    size_t number_trans_ = 0;
+  size_t number_trans_ = 0;
 
-    void build_transaction();
+  void build_transaction();
 
-    QString get_path_transaction();
+  QString get_path_transaction();
 
-    void init_inputs_table();
+  void init_inputs_table();
 
-    void init_outputs_table();
+  void init_outputs_table();
 
-    void create_transaction(QDir dir);
+  void create_transaction(QDir dir);
 
-    TxIn create_input(const QString& txid, unsigned int index);
+  TxIn create_input(const QString& txid, unsigned int index);
 
-    void update_inputs_table(const QString& txid, const QString& index);
+  void update_inputs_table(const QString& txid, const QString& index);
 
-    TxOut create_output(const QString& value, const QString& address);
+  TxOut create_output(const QString& value, const QString& address);
 
-    void update_outputs_table(const QString& value, const QString& address);
+  void update_outputs_table(const QString& value, const QString& address);
 
-    outputs vec_outputs_;
+  outputs vec_outputs_;
 
-    inputs vec_inputs_;
+  inputs vec_inputs_;
 };
 
-#endif // MAKETRANSACTIONWINDOW_HPP
+#endif  // MAKETRANSACTIONWINDOW_HPP

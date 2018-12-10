@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>480</width>
     <height>250</height>
    </rect>
   </property>
@@ -102,7 +102,7 @@
        <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="go_to_create_wallet">
          <property name="text">
-          <string>Create offline wallet</string>
+          <string>Create wallet</string>
          </property>
         </widget>
        </item>
