@@ -27,7 +27,7 @@ class session : public std::enable_shared_from_this<session>
     tcp::resolver resolver_;
     ssl::stream<tcp::socket> stream_;
     boost::beast::flat_buffer buffer_;
-    http::request<http::empty_body> req_;
+    http::request<http::string_body> req_;
     http::response<http::string_body> res_;
 public:
     explicit session(boost::asio::io_context& ioc, ssl::context& ctx)

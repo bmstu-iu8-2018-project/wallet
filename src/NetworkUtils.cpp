@@ -74,7 +74,8 @@ namespace nu
 
     std::string send_transaction(const std::string& tx_hex)
     {
-        //Takes a signed transaction in hex format and sends it to the specified network.This is a POST(!) method.
-        return post_request_from_target(POST_TARGET, tx_hex);
+        const auto json = "{\"tx\":\"" + tx_hex + "\"}";
+        return post_request_from_target(POST_TARGET, json);
     }
+
 } // namespace nu

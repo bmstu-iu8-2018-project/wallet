@@ -17,8 +17,9 @@ const std::string GET_TX_UNSPENT = "get_tx_unspent/";
 const std::string GET_TX_RECEIVED = "get_tx_received/";
 const std::string GET_TX_INPUTS = "get_tx_inputs/";
 const std::string GET_TX_OUTPUTS = "get_tx_outputs/";
-const std::string POST_TARGET = "/v1/bcy/test/txs/push?token=YOURTOKEN";
-
+// token is a unique id in Blockcypher.com for blockchain developers
+const std::string POST_TARGET =
+"/v1/btc/test3/txs/push?token=5bd1d760bfa647db8db2ad11409be6ef";
 
 namespace nu
 {
