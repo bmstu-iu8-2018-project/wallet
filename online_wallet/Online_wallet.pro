@@ -25,13 +25,13 @@ CONFIG += c++17
 
 LIBS += C:\Temp\openssl\lib\libeay32.lib
 LIBS += C:\Temp\openssl\lib\ssleay32.lib
+INCLUDEPATH += C:\Temp\openssl\include
 
 LIBS += "-LC:/boost_1_68_0/boost_mingw_53_32/lib" \
                 -llibboost_system-mgw53-mt-x32-1_68.dll
 
 LIBS += -lhid -lsetupapi -lws2_32
 
-INCLUDEPATH += C:\Temp\openssl\include
 INCLUDEPATH += C:\boost_1_68_0
 
 SOURCES += \
@@ -47,7 +47,11 @@ SOURCES += \
     includes/Script.cpp \
     includes/Transaction.cpp \
     includes/TxIn.cpp \
-    includes/TxOut.cpp
+    includes/TxOut.cpp \
+    transactionwindow.cpp \
+    includes/LoggingCategories.cpp \
+    threadmonitor.cpp \
+    messager.cpp
 
 HEADERS += \
     includes/CryptoUtils.hpp \
@@ -61,12 +65,17 @@ HEADERS += \
     includes/Script.hpp \
     includes/Transaction.hpp \
     includes/TxIn.hpp \
-    includes/TxOut.hpp
+    includes/TxOut.hpp \
+    transactionwindow.hpp \
+    includes/LoggingCategories.hpp \
+    threadmonitor.h \
+    messager.h
 
 FORMS += \
         mainwindow.ui \
     maketransactionwindow.ui \
-    informationwindow.ui
+    informationwindow.ui \
+    transactionwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

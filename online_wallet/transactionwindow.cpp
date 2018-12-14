@@ -10,6 +10,7 @@ TransactionWindow::TransactionWindow(QWidget* parent)
     : QWidget(parent), ui(new Ui::TransactionWindow) {
   ui->setupUi(this);
   qInfo(logInfo()) << "Initialize tx_view window";
+
   init_inputs_table();
   init_outputs_table();
 }
@@ -120,36 +121,44 @@ void TransactionWindow::on_tx_id_box_currentIndexChanged(int index) {
   }
 }
 
-QString TransactionWindow::get_private_key() {
-  QDir dir(QDir::homePath() + QDir::separator() + "Private data");
-  dir.cd(MainWindow::get_wallet_name());
-  return ju::get_information(dir.path() + QDir::separator() + "wallet.dat.json",
-                             "private_key");
-}
-
-void TransactionWindow::update_signed_tx() {
-  QString path = tx_dir_.path() + QDir::separator() +
-                 ui->tx_id_box->currentText() + QDir::separator() + "tx.dat";
-  QFile file_tx(path);
-  file_tx.open(QFile::WriteOnly);
-  file_tx.write(tx.get_hex_tx().c_str());
-}
-
-void TransactionWindow::on_sign_clicked() {
+void TransactionWindow::on_send_clicked() {
   if (ui->status->text() == "Unsigned") {
-    tx.sign(get_private_key().toStdString());
-    update_signed_tx();
-    ui->status->setText("Signed");
-    QMessageBox::information(this, "Message",
-                             "Transaction is successfully signed!");
-    qInfo(logInfo()) << "This transaction is signed";
+    QMessageBox::warning(this, "Message", "Transaction not signed!");
+    qInfo(logInfo()) << "This transaction is already signed";
   } else if (ui->tx_id_box->currentIndex() == 0) {
     QMessageBox::warning(this, "Message", "Select transaction!");
     qWarning(logWarning()) << "Not selected transaction";
   } else {
-    QMessageBox::information(this, "Message",
-                             "This transaction is already signed!");
-    qInfo(logInfo()) << "This transaction is already signed";
+    QString path = tx_dir_.path() + QDir::separator() +
+                   ui->tx_id_box->currentText() + QDir::separator() + "tx.dat";
+
+    QFile tx_hex(path);
+    tx_hex.open(QFile::ReadOnly);
+    QTextStream in(&tx_hex);
+
+    QDialog dialog(this);
+    QGridLayout grid(&dialog);
+
+    std::unique_ptr<QTextBrowser> tx(new QTextBrowser(&dialog));
+    grid.addWidget(tx.get());
+
+    QString str = nu::send_transaction(in.readAll().toStdString()).c_str();
+    tx->setText(str);
+
+    QDialogButtonBox buttonBox(QDialogButtonBox::Cancel, Qt::Horizontal,
+                               &dialog);
+
+    grid.addWidget(&buttonBox);
+    QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+    dialog.setLayout(&grid);
+    dialog.setMinimumSize(700, 500);
+    int rc = dialog.exec();
+
+    if (rc == QDialog::Rejected)
+      dialog.close();
+
+    qInfo(logInfo()) << str;
   }
 }
 

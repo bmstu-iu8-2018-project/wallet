@@ -1,0 +1,3 @@
+[submodule "tools/hunter"]
+	path = tools/hunter
+	url = https://github.com/hunter-packages/gate.git

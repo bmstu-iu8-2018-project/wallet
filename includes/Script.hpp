@@ -1,12 +1,11 @@
-#pragma once
 #ifndef SCRIPT_HPP
 #define SCRIPT_HPP
 
-#include <string>
-#include <vector>
-#include <memory>
 #include <cstdint>
 #include <includes/CryptoUtils.hpp>
+#include <memory>
+#include <string>
+#include <vector>
 
 const byte OP_DUP = 0x76;
 const byte OP_HASH160 = 0xa9;
@@ -14,33 +13,34 @@ const byte BYTES_TO_PUSH = 0x14;
 const byte OP_EQUALVERIFY = 0x88;
 const byte OP_CHECKSIG = 0xac;
 
-class Script
-{
-public:
-    Script() = default;
+class Script {
+ public:
+  Script() = default;
 
-    ~Script() = default;
+  ~Script() = default;
 
-    Script(Script&& other);
+  Script(Script&& other) = default;
 
-    Script(const Script& other);
+  Script(const Script& other);
 
-    Script(const std::vector<byte>& bytes);
+  Script(const std::vector<byte>& bytes);
 
-    Script& operator=(Script&& other);
+  Script(std::vector<byte>&& bytes);
 
-    Script& operator=(const Script& other);
+  Script& operator=(Script&& other);
 
-    void create_pkh_script(const std::string& address);
+  Script& operator=(const Script& other) = default;
 
-    std::vector<byte> data() const;
+  void create_pkh_script(const std::string& address);
 
-    byte get_length() const;
+  std::vector<byte> data() const;
 
-    void add_signature(const std::vector<byte>& sign);
+  byte get_length() const;
 
-private:
-    std::vector<byte> script_;
+  void add_signature(std::vector<byte>&& sign);
+
+ private:
+  std::vector<byte> script_;
 };
 
-#endif // SCRIPT_HPP
+#endif  // SCRIPT_HPP

@@ -1,65 +1,59 @@
-#pragma once
 #ifndef INFORMATIONWINDOW_HPP
 #define INFORMATIONWINDOW_HPP
 
-#include <QWidget>
-#include <QListView>
 #include <QFileSystemModel>
+#include <QListView>
+#include <QWidget>
+#include <includes/LoggingCategories.hpp>
 #include <includes/usb_monitor.hpp>
 #include <transactionwindow.hpp>
 
-namespace Ui
-{
-    class InformationWindow;
+namespace Ui {
+class InformationWindow;
 }
 
-class InformationWindow : public QWidget
-{
-    Q_OBJECT
+class InformationWindow : public QWidget {
+  Q_OBJECT
 
  public:
-    explicit InformationWindow(QWidget *parent = nullptr);
+  explicit InformationWindow(QWidget* parent = nullptr);
 
-    ~InformationWindow();
+  ~InformationWindow();
 
-private slots:
+ private slots:
 
-    void on_exit_clicked();
+  void on_exit_clicked();
 
-    void on_view_tx_clicked();
+  void on_view_tx_clicked();
 
-private:
-    static QString mark_path_;
+ private:
+  static QString mark_path_;
 
-    static char name_device_;
+  Ui::InformationWindow* ui;
 
-    Ui::InformationWindow *ui;
+  TransactionWindow* transWindow;
 
-    TransactionWindow *transWindow;
+  usb_monitor* mon;
 
-    usb_monitor *mon;
+  QFileSystemModel* fs_model_;
 
-    QFileSystemModel *fs_model_;
+  QString get_path_private_dir();
 
-    QString get_path_private_dir();
+  void finde_usb_device();
 
-    void finde_usb_device();
+  bool chek_device();
 
-    static void device_added(char letter);
+  bool chec_mark_on_device(const QString& path);
 
-    void chek_device();
+  QString get_device_path();
 
-    void chec_mark_on_device(const QString& path);
+  QDir get_transactions_dir();
 
-    QString get_device_path();
+  static QString get_name_wallet();
 
-    QDir get_transactions_dir();
+  void change_window(const QDir& dir);
 
-    static QString get_name_wallet();
-
-    void change_window(const QDir& dir);
-
-    bool transactions_empty();
+  bool transactions_empty();
 };
 
-#endif // INFORMATIONWINDOW_HPP
+#endif  // INFORMATIONWINDOW_HPP

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MakeTransactionWindow</class>
- <widget class="QWidget" name="MakeTransactionWindow">
+ <class>TransactionWindow</class>
+ <widget class="QWidget" name="TransactionWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,11 +17,39 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Make transaction</string>
+      <string>Veiw transactoin :</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QLabel" name="input_label">
+       <widget class="QLabel" name="label_tx_id">
+        <property name="text">
+         <string>Transaction ID :</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="tx_id_box"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_status">
+          <property name="text">
+           <string>Status :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="status">
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_inputs">
         <property name="text">
          <string>Inputs (0)</string>
         </property>
@@ -31,7 +59,7 @@
        <widget class="QTableWidget" name="inputs"/>
       </item>
       <item>
-       <widget class="QLabel" name="output_label">
+       <widget class="QLabel" name="label_outputs">
         <property name="text">
          <string>Outputs (0)</string>
         </property>
@@ -50,25 +78,21 @@
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QPushButton" name="create_input">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="leftMargin">
+           <number>200</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="get_hex">
             <property name="text">
-             <string>Create input</string>
+             <string>Hex</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="create_output">
+          <item>
+           <widget class="QPushButton" name="send">
             <property name="text">
-             <string>Create output</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="build_transaction">
-            <property name="text">
-             <string>OK</string>
+             <string>Send</string>
             </property>
            </widget>
           </item>

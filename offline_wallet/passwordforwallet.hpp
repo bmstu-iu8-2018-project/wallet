@@ -1,77 +1,72 @@
-#pragma once
 #ifndef PASSWORDFORWALLET_HPP
 #define PASSWORDFORWALLET_HPP
 
-#include <informationwindow.hpp>
-#include <includes/OfflineWallet.hpp>
-#include <includes/usb_monitor.hpp>
-#include <includes/JsonUtils.hpp>
 #include <QDir>
 #include <QMessageBox>
 #include <QWidget>
+#include <includes/JsonUtils.hpp>
+#include <includes/OfflineWallet.hpp>
+#include <includes/usb_monitor.hpp>
+#include <informationwindow.hpp>
 
-namespace Ui
-{
-    class PasswordForWallet;
+namespace Ui {
+class PasswordForWallet;
 }
 
-class PasswordForWallet : public QWidget
-{
-    Q_OBJECT
+class PasswordForWallet : public QWidget {
+  Q_OBJECT
 
  public:
-    explicit PasswordForWallet(QWidget *parent = nullptr);
-    ~PasswordForWallet();
+  explicit PasswordForWallet(QWidget* parent = nullptr);
+  ~PasswordForWallet();
 
-    static QString get_wallet_name();
+  static QString get_wallet_name();
 
  private slots:
-    void on_create_wallet_clicked();
+  void on_create_wallet_clicked();
 
-    void on_test_network_toggled(bool checked);
+  void on_test_network_toggled(bool checked);
 
-    void on_main_network_toggled(bool checked);
+  void on_main_network_toggled(bool checked);
 
-    void on_back_clicked();
+  void on_back_clicked();
 
-private:
-    static QString name_;
+ private:
+  static QString name_;
 
-    static char name_device_;
+  Ui::PasswordForWallet* ui;
 
-    Ui::PasswordForWallet *ui;
+  InformationWindow* infWindow;
 
-    InformationWindow *infWindow;
+  usb_monitor* mon;
 
-    usb_monitor* mon;
+  void find_usb_device();
 
-    void finde_usb_device();
+  QString create_private_dir(const QString& path);
 
-    static void device_added(const char letter);
+  void change_window();
 
-    QString create_private_dir(const QString& path);
+  void on_create_wallet();
 
-    void change_window();
+  void save_wallet_data(const QString& name, const QString& pass);
 
-    void on_create_wallet();
+  void save_authorization_data(const QString& path,
+                               const QString& name,
+                               const QString& pass);
 
-    void save_wallet_data(const QString& name, const QString& pass);
+  void save_private_data(const QString& path, const OfflineWallet& wallet);
 
-    void save_authorization_data(const QString& path, const QString& name, const QString& pass);
+  void save_public_data(const QString& path, const OfflineWallet& wallet);
 
-    void save_private_data(const QString& path, const OfflineWallet& wallet);
+  QString get_public_data_path();
 
-    void save_public_data(const QString& path, const OfflineWallet& wallet);
+  void mark_device(const QString& fileName);
 
-    QString get_public_data_path();
+  bool check_test_network();
 
-    void mark_device(const QString& fileName);
+  bool check_main_network();
 
-    bool check_test_network();
-
-    bool check_main_network();
-
-    bool check_network();
+  bool check_network();
 };
 
-#endif // PASSWORDFORWALLET_HPP
+#endif  // PASSWORDFORWALLET_HPP

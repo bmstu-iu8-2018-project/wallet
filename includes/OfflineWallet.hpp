@@ -1,25 +1,24 @@
-#pragma once
 #ifndef OFFLINE_WALLET_HPP
 #define OFFLINE_WALLET_HPP
 
 #include <includes/Key.hpp>
 
-class OfflineWallet
-{
-private:
-    Key _Keys;
-public:
-    OfflineWallet() = default;
+class OfflineWallet {
+ private:
+  Key keys_;
 
-    ~OfflineWallet() = default;
+ public:
+  OfflineWallet() = default;
 
-    void create_wallet(const byte type_network);
+  ~OfflineWallet() = default;
 
-    std::string get_private_key() const noexcept;
+  void create_wallet(const byte type_network);
 
-    std::string get_public_key() const noexcept;
+  std::string get_private_key() const noexcept;
 
-    std::string get_address() const noexcept;
+  std::string get_public_key() const noexcept;
+
+  std::string get_address() const noexcept;
 };
 
-#endif // OFFLINE_WALLET_HPP
+#endif  // OFFLINE_WALLET_HPP

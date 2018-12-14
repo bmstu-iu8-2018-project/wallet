@@ -1,4 +1,3 @@
-#pragma once
 #ifndef INFORMATIONWINDOW_HPP
 #define INFORMATIONWINDOW_HPP
 
@@ -12,53 +11,59 @@
 #include <includes/JsonUtils.hpp>
 #include <includes/usb_monitor.hpp>
 #include <maketransactionwindow.hpp>
+#include <transactionwindow.hpp>
 
-namespace Ui
-{
-    class InformationWindow;
+namespace Ui {
+class InformationWindow;
 }
 
-class InformationWindow : public QWidget
-{
-    Q_OBJECT
+class InformationWindow : public QWidget {
+  Q_OBJECT
 
  public:
-    explicit InformationWindow(QWidget* parent = nullptr);
+  explicit InformationWindow(QWidget* parent = nullptr);
 
-    ~InformationWindow();
+  ~InformationWindow();
 
-    void set_name(const QString& name);
+  void set_name(const QString& name);
 
-    static QString get_address();
+  static QString get_address();
 
  private slots:
-    void on_make_transaction_clicked();
+  void on_make_transaction_clicked();
 
-    void on_exit_clicked();
+  void on_exit_clicked();
 
-    void on_boxRequests_currentIndexChanged(int index);
+  void on_boxRequests_currentIndexChanged(int index);
 
-private:
-    static QString address_;
+  void on_view_tx_clicked();
 
-    Ui::InformationWindow* ui;
+ private:
+  static QString address_;
 
-    MakeTransactionWindow* transWindow;
+  Ui::InformationWindow* ui;
 
-    void init_box_requests();
+  TransactionWindow* txWindow;
 
-    void change_window();
+  MakeTransactionWindow* transWindow;
 
-    enum class Requests
-    {
-        address_balanse = 1,
-        spent_transactions,
-        unspent_transactions,
-        received_transactions,
-        transaction_inputs,
-        transaction_outputs,
-        transaction
-    };
+  void init_box_requests();
+
+  void change_make_tx_window();
+
+  void change_tx_window();
+
+  QDir get_path_transaction();
+
+  QString init_dialog_id();
+
+  enum class Requests {
+    address_balance = 1,
+    spent_transactions,
+    unspent_transactions,
+    received_transactions,
+    transaction
+  };
 };
 
 #endif  // INFORMATIONWINDOW_HPP

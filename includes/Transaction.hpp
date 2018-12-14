@@ -1,62 +1,69 @@
-#pragma once
 #ifndef TRANSACTION_HPP
 #define TRANSACTION_HPP
 
 #include <algorithm>
 #include <fstream>
-#include <string>
 #include <includes/Script.hpp>
 #include <includes/TxIn.hpp>
 #include <includes/TxOut.hpp>
+#include <string>
 
 using outputs = std::vector<TxOut>;
 using inputs = std::vector<TxIn>;
 
-class Transaction
-{
-public:
-    Transaction() = default;
+class Transaction {
+ public:
+  Transaction() = default;
 
-    ~Transaction() = default;
+  ~Transaction() = default;
 
-    Transaction(const std::string& file_name);
+  Transaction(const std::string& file_name);
 
-    Transaction(int32_t version, uint32_t lock_time, const inputs& input, const outputs& output);
+  Transaction(int32_t version,
+              const inputs& input,
+              const outputs& output,
+              uint32_t lock_time);
 
-    Transaction(Transaction&& other);
+  Transaction(Transaction&& other);
 
-    Transaction(const Transaction& other);
+  Transaction(const Transaction& other);
 
-    Transaction& operator=(Transaction&& other);
+  Transaction& operator=(Transaction&& other);
 
-    Transaction& operator=(const Transaction& other);
+  Transaction& operator=(const Transaction& other);
 
-    std::string get_hex_tx() const;
+  std::string get_hex_tx() const;
 
-    std::vector<byte> get_byte_tx() const;
+  std::vector<byte> get_byte_tx() const;
 
-    void sign(const std::string& private_key_wif);
+  void sign(const std::string& private_key_wif);
 
-    bool is_signed() const;
+  bool is_signed() const;
 
-    static Transaction parse(const std::string& file_name);
+  static Transaction parse(const std::string& file_name);
 
-    std::vector<TxIn> get_inputs() const;
+  std::vector<TxIn> get_inputs() const;
 
-    std::vector<TxOut> get_outputs() const;
+  std::vector<TxOut> get_outputs() const;
 
-private:
-    int32_t version_;
+  int32_t get_version() const;
 
-    uint64_t tx_in_count_;
+  uint32_t get_locktime() const;
 
-    inputs tx_in_;
+  byte get_in_count() const;
 
-    uint64_t tx_out_count_;
+  byte get_out_count() const;
 
-    outputs tx_out_;
+ private:
+  int32_t version_;
 
-    uint32_t lock_time_;
+  byte tx_in_count_;
+  inputs tx_in_;
+
+  byte tx_out_count_;
+  outputs tx_out_;
+
+  uint32_t locktime_;
 };
 
-#endif // TRANSACTION_HPP
+#endif  // TRANSACTION_HPP
