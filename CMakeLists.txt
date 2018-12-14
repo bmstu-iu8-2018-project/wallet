@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.4)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
+set(TESTING_CONFIG_OPT FILEPATH ${CMAKE_CURRENT_LIST_DIR}/config.cmake)
 
 option(BUILD_COVERAGE "Build coverage" OFF)
 
@@ -28,6 +29,7 @@ hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 hunter_add_package(Boost COMPONENTS thread filesystem system)
 find_package(Boost CONFIG REQUIRED thread filesystem system)
+
 
 add_library(wallet STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/CryptoUtils.cpp
