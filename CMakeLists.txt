@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 
 option(BUILD_COVERAGE "Build coverage" OFF)
 
-include("tools/gate/cmake/HunterGate.cmake")
+include("gate/cmake/HunterGate.cmake")
 
 huntergate(
   URL "https://github.com/ruslo/hunter/archive/v0.23.34.tar.gz"
@@ -14,8 +14,7 @@ huntergate(
 )
 
 project(wallet)
-string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
-string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
+string(APPEND CMAKE_CXX_FLAGS " -pedantic -Wextra")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
 find_package(Qt5Core REQUIRED)
@@ -24,13 +23,13 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
 
 hunter_add_package(OpenSSL)
-hunter_add_package(GTest)
-hunter_add_package(Boost COMPONENTS thread system)
-find_package(Boost CONFIG REQUIRED thread system)
-find_package(GTest CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
+hunter_add_package(GTest)
+find_package(GTest CONFIG REQUIRED)
+hunter_add_package(Boost COMPONENTS thread filesystem system)
+find_package(Boost CONFIG REQUIRED thread filesystem system)
 
-add_executable(wallet
+add_library(wallet STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/CryptoUtils.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/JsonUtils.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/Key.cpp
@@ -59,15 +58,18 @@ add_executable(tests
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
 )
 
-target_include_directories(wallet
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/offline_wallet
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/online_wallet
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes
-)
 target_include_directories(tests 
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/offline_wallet
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/online_wallet
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+  ${Boost_INCLUDE_DIR}
+)
+
+target_include_directories(wallet
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/offline_wallet
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/online_wallet
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+  ${Boost_INCLUDE_DIR}
 )
 
 qt5_use_modules(wallet 
@@ -76,12 +78,15 @@ qt5_use_modules(wallet
   Core
   Gui)
 
-target_link_libraries(wallet 
-  PUBLIC Boost::thread Boost::system Boost::boost 
-  PUBLIC OpenSSL::SSL OpenSSL::Crypto)
-target_link_libraries(tests PUBLIC GTest::main wallet 
-  PUBLIC Boost::thread Boost::system Boost::boost 
-  PUBLIC OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(tests
+	PUBLIC
+	GTest::main
+	Boost::system
+  	Boost::thread
+	Boost::filesystem
+	OpenSSL::SSL
+	OpenSSL::Crypto
+)
 
 enable_testing()
 add_test(NAME unit_tests COMMAND tests) 
@@ -90,7 +95,6 @@ if(BUILD_COVERAGE)
   set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
   find_package(codecov)
-  # TODO: change template word to project name and delete this comment
   add_coverage(wallet)
   add_coverage(tests)
   list(APPEND LCOV_REMOVE_PATTERNS "'${PROJECT_SOURCE_DIR}/tests/*'")
