@@ -99,12 +99,23 @@
          </property>
         </widget>
        </item>
-       <item alignment="Qt::AlignHCenter">
-        <widget class="QPushButton" name="go_to_create_wallet">
-         <property name="text">
-          <string>Create wallet</string>
-         </property>
-        </widget>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QPushButton" name="go_to_create_wallet">
+           <property name="text">
+            <string>Create wallet</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="recover">
+           <property name="text">
+            <string>Recover wallet</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>

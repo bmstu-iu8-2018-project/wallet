@@ -17,16 +17,19 @@ InformationWindow::InformationWindow(QWidget* parent)
 
   QString path_private_data = get_path_private_dir();
 
-  ui->name->setText(ju::get_name(path_private_data + QDir::separator() +
-                                 "authorization_data.json"));
+  ui->name->setText(ju::get_name(
+      path_private_data + QDir::separator() + "authorization_data.dat",
+      MainWindow::get_key()));
   ui->name->setTextInteractionFlags(ui->name->textInteractionFlags() |
                                     Qt::TextSelectableByMouse);
-  ui->addres->setText(ju::get_address(path_private_data + QDir::separator() +
-                                      "address_public_key.json"));
+  ui->addres->setText(ju::get_address(
+      path_private_data + QDir::separator() + "address_public_key.dat",
+      MainWindow::get_key()));
   ui->addres->setTextInteractionFlags(ui->addres->textInteractionFlags() |
                                       Qt::TextSelectableByMouse);
   ui->public_key->setText(ju::get_public_key(
-      path_private_data + QDir::separator() + "address_public_key.json"));
+      path_private_data + QDir::separator() + "address_public_key.dat",
+      MainWindow::get_key()));
   qInfo(logInfo()) << "Wallet name: " << ui->name->text();
   qInfo(logInfo()) << "Wallet address: " << ui->addres->text();
 }

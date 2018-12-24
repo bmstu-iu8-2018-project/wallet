@@ -54,7 +54,8 @@ SOURCES += \
     includes/Transaction.cpp \
     includes/TxIn.cpp \
     includes/TxOut.cpp \
-    includes/LoggingCategories.cpp
+    includes/LoggingCategories.cpp \
+    includes/Encoder.cpp
 
 HEADERS += \
     includes/CryptoUtils.hpp \
@@ -72,7 +73,8 @@ HEADERS += \
     includes/Transaction.hpp \
     includes/TxIn.hpp \
     includes/TxOut.hpp \
-    includes/LoggingCategories.hpp
+    includes/LoggingCategories.hpp \
+    includes/Encoder.hpp
 
 FORMS += \
         mainwindow.ui \
