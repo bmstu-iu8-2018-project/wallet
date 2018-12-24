@@ -51,7 +51,8 @@ SOURCES += \
     transactionwindow.cpp \
     includes/LoggingCategories.cpp \
     threadmonitor.cpp \
-    messager.cpp
+    messager.cpp \
+    includes/Encoder.cpp
 
 HEADERS += \
     includes/CryptoUtils.hpp \
@@ -69,7 +70,8 @@ HEADERS += \
     transactionwindow.hpp \
     includes/LoggingCategories.hpp \
     threadmonitor.h \
-    messager.h
+    messager.h \
+    includes/Encoder.hpp
 
 FORMS += \
         mainwindow.ui \

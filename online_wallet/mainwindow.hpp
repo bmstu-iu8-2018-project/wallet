@@ -25,11 +25,15 @@ class MainWindow : public QMainWindow {
 
   static QString get_public_data_path();
 
+  static QString get_key();
+
  private slots:
   void on_wallets_currentIndexChanged(int index);
 
  private:
   static QString mark_path_;
+
+  static QString password_;
 
   Ui::MainWindow* ui;
 
@@ -48,6 +52,8 @@ class MainWindow : public QMainWindow {
   void change_window();
 
   QString get_device_path();
+
+  QString init_dialog_password();
 };
 
 #endif  // MAINWINDOW_HPP

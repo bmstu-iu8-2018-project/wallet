@@ -4,6 +4,7 @@
 #include <passwordforwallet.hpp>
 
 QString PasswordForWallet::name_;
+QString PasswordForWallet::password_;
 
 PasswordForWallet::PasswordForWallet(QWidget* parent)
     : QWidget(parent), ui(new Ui::PasswordForWallet) {
@@ -53,7 +54,8 @@ void PasswordForWallet::save_authorization_data(const QString& path,
   json_authorization_data_map.insert("name", name);
   json_authorization_data_map.insert("password", pass);
   ju::record_to_json(json_authorization_data_map,
-                     path + QDir::separator() + "authorization_data.json");
+                     path + QDir::separator() + "authorization_data.dat",
+                     password_);
 }
 
 void PasswordForWallet::save_private_data(const QString& path,
@@ -63,7 +65,7 @@ void PasswordForWallet::save_private_data(const QString& path,
                           QString::fromUtf8(wallet.get_private_key().c_str()));
 
   ju::record_to_json(json_private_map,
-                     path + QDir::separator() + "wallet.dat.json");
+                     path + QDir::separator() + "wallet.dat.dat", password_);
 }
 
 QString PasswordForWallet::get_public_data_path() {
@@ -96,11 +98,13 @@ void PasswordForWallet::save_public_data(const QString& path,
       "address", QString::fromUtf8(wallet.get_address().c_str()));
   json_addres_public_map.insert(
       "public_key", QString::fromUtf8(wallet.get_public_key().c_str()));
-  ju::record_to_json(
-      json_addres_public_map,
-      path_addres_public + QDir::separator() + "address.dat.json");
+
   ju::record_to_json(json_addres_public_map,
-                     path + QDir::separator() + "address_public_key.json");
+                     path_addres_public + QDir::separator() + "address.dat",
+                     password_);
+  ju::record_to_json(json_addres_public_map,
+                     path + QDir::separator() + "address_public_key.dat",
+                     password_);
 
   mark_device(path_addres_public + QDir::separator() + "mark.dat");
 
@@ -159,10 +163,23 @@ void PasswordForWallet::save_wallet_data(const QString& name,
 
   // save private key on offline device
   save_private_data(path_private_data, wallet);
+
   qInfo(logInfo()) << "Private data successfully saved";
 
   save_public_data(path_private_data, wallet);
   qInfo(logInfo()) << "Public data successfully saved";
+
+  // backup_path
+  QString backup_path =
+      QFileDialog::getExistingDirectory(this, "Сhoose backup path", "");
+  QDir backup_dir(backup_path + QDir::separator() + "Private data");
+  if (!backup_dir.exists())
+    backup_dir.mkpath(".");
+  backup_dir.mkdir(name);
+  backup_dir.cd(name);
+  save_authorization_data(backup_dir.path(), name, pass);
+  save_private_data(backup_dir.path(), wallet);
+  save_public_data(backup_dir.path(), wallet);
 
   QMessageBox::information(this, "Message", "Wallet successfully created!");
   qInfo(logInfo()) << "Wallet " << name << " successfully created";
@@ -175,6 +192,7 @@ void PasswordForWallet::on_create_wallet() {
   name_ = ui->lineEdit_name->text();
 
   if (ui->lineEdit_pass1->text() == ui->lineEdit_pass2->text()) {
+    password_ = ui->lineEdit_pass1->text();
     if (ui->lineEdit_name->text().isEmpty()) {
       QMessageBox::warning(this, "Error", "Enter login!");
       qWarning(logWarning()) << "Login not entered at login";

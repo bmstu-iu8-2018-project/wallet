@@ -4,6 +4,7 @@
 #include <mainwindow.hpp>
 
 QString MainWindow::mark_path_;
+QString MainWindow::password_;
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -29,6 +30,10 @@ void MainWindow::change_window() {
 
 QString MainWindow::get_device_path() {
   return QDir::drives().last().dir().path();
+}
+
+QString MainWindow::get_key() {
+  return password_;
 }
 
 void MainWindow::find_usb_device() {
@@ -84,7 +89,42 @@ void MainWindow::on_wallets_currentIndexChanged(int index) {
   if (index != 0) {
     mark_path_ =
         get_device_path() + ui->wallets->currentText() + QDir::separator();
-    change_window();
-    this->close();
+    password_ = init_dialog_password();
+    if (password_ == "false") {
+      ui->wallets->setCurrentIndex(0);
+    } else {
+      change_window();
+      this->close();
+    }
   }
+}
+
+QString MainWindow::init_dialog_password() {
+  QDialog dialog(this);
+  QFormLayout form(&dialog);
+
+  std::unique_ptr<QLineEdit> tx_id(new QLineEdit(&dialog));
+  tx_id->setEchoMode(QLineEdit::Password);
+  form.addRow("Password :", tx_id.get());
+
+  QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                             Qt::Horizontal, &dialog);
+
+  form.addRow(&buttonBox);
+  QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+  QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+  dialog.setLayout(&form);
+  dialog.setMinimumSize(420, 120);
+  int rc = dialog.exec();
+
+  if ((rc == QDialog::Accepted) && tx_id->text().isEmpty()) {
+    QMessageBox::warning(this, "Message", "Enter password!");
+    qWarning(logWarning()) << "Not enter password";
+    init_dialog_password();
+  } else if (rc == QDialog::Rejected) {
+    return "false";
+  }
+
+  return tx_id->text();
 }

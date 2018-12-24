@@ -1,8 +1,10 @@
 #include <ui_mainwindow.h>
+#include <includes/Encoder.hpp>
 #include <includes/LoggingCategories.hpp>
 #include <mainwindow.hpp>
 
 QString MainWindow::name_;
+QString MainWindow::password_;
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -30,9 +32,10 @@ void MainWindow::on_authorization_clicked() {
 
   if (it != list_dir.end()) {
     dir.cd(login);
-    QString login_of_file = ju::get_name(dir.path() + QDir::separator() +
-                                         "authorization_data.json");
-    QString password_of_file = load_password(dir.path());
+    QString login_of_file = ju::get_name(
+        dir.path() + QDir::separator() + "authorization_data.dat", password);
+
+    QString password_of_file = load_password(dir.path(), password);
 
     if (login.isEmpty() && password.isEmpty()) {
       QMessageBox::warning(this, "Error", "Enter login or passwword!");
@@ -45,6 +48,7 @@ void MainWindow::on_authorization_clicked() {
       qWarning(logWarning()) << "Password not entered at login";
     } else if ((login == login_of_file) && (password == password_of_file)) {
       name_ = login_of_file;
+      password_ = password;
       // Open window with wallet information
       infWindow = new InformationWindow();
       infWindow->setWindowTitle("Offline wallet");
@@ -63,10 +67,13 @@ void MainWindow::on_authorization_clicked() {
   }
 }
 
-QString MainWindow::load_password(const QString& path) {
-  QFile jsonFile(path + QDir::separator() + "authorization_data.json");
+QString MainWindow::load_password(const QString& path, const QString& key) {
+  QFile jsonFile(path + QDir::separator() + "authorization_data.dat");
   jsonFile.open(QFile::ReadOnly);
-  QJsonDocument document = QJsonDocument().fromJson(jsonFile.readAll());
+  QString ciphertext = jsonFile.readAll();
+  auto text =
+      Encoder::decrypt(ciphertext.toStdString(), cu::SHA256(key.toStdString()));
+  QJsonDocument document = QJsonDocument().fromJson(text.c_str());
   QJsonObject name = document.object();
   QJsonValue value = name.value("password");
   return value.toString();
@@ -74,6 +81,10 @@ QString MainWindow::load_password(const QString& path) {
 
 QString MainWindow::get_wallet_name() {
   return name_;
+}
+
+QString MainWindow::get_key() {
+  return password_;
 }
 
 void MainWindow::change_window() {
@@ -85,4 +96,26 @@ void MainWindow::change_window() {
 void MainWindow::on_go_to_create_wallet_clicked() {
   change_window();
   this->close();  // close the main window
+}
+
+void MainWindow::copy_path(QString src, QString dst) {
+  QDir dir(src);
+  if (!dir.exists())
+    dir.mkpath(".");
+
+  foreach (QString d, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+    QString dst_path = dst + QDir::separator() + d;
+    dir.mkpath(dst_path);
+    copy_path(src + QDir::separator() + d, dst_path);
+  }
+
+  foreach (QString f, dir.entryList(QDir::Files)) {
+    QFile::copy(src + QDir::separator() + f, dst + QDir::separator() + f);
+  }
+}
+
+void MainWindow::on_recover_clicked() {
+  QString backup_path =
+      QFileDialog::getExistingDirectory(this, "Сhoose backup path", "");
+  copy_path(backup_path, QDir::homePath() + QDir::separator() + "Private data");
 }

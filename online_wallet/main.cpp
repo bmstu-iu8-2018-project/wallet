@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
   qInstallMessageHandler(messageHandler);
 
   app.setWindowIcon(QIcon(QDir::homePath() + QDir::separator() + "Pictures" +
-                          QDir::separator() + "BitCoin.png"));
+                          QDir::separator() + "Bitcoin.png"));
   auto mainWindow = new MainWindow;
   mainWindow->setAttribute(Qt::WA_DeleteOnClose);
   mainWindow->setWindowTitle("Online wallet");

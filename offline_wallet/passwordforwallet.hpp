@@ -33,6 +33,7 @@ class PasswordForWallet : public QWidget {
 
  private:
   static QString name_;
+  static QString password_;
 
   Ui::PasswordForWallet* ui;
 

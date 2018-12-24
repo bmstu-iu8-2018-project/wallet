@@ -14,12 +14,14 @@ InformationWindow::InformationWindow(QWidget* parent)
 
   ui->name->setTextInteractionFlags(ui->name->textInteractionFlags() |
                                     Qt::TextSelectableByMouse);
-  ui->address->setText(ju::get_address(path_private_data + QDir::separator() +
-                                       "address.dat.json"));
+  ui->address->setText(
+      ju::get_address(path_private_data + QDir::separator() + "address.dat",
+                      MainWindow::get_key()));
   ui->address->setTextInteractionFlags(ui->address->textInteractionFlags() |
                                        Qt::TextSelectableByMouse);
-  ui->public_key->setText(ju::get_public_key(
-      path_private_data + QDir::separator() + "address.dat.json"));
+  ui->public_key->setText(
+      ju::get_public_key(path_private_data + QDir::separator() + "address.dat",
+                         MainWindow::get_key()));
   ui->balance->setText(ju::get_balance(ui->address->text()));
 
   qInfo(logInfo()) << "Wallet name: " << ui->name->text();

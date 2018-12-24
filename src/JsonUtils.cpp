@@ -1,27 +1,39 @@
+#include <includes/Encoder.hpp>
 #include <includes/JsonUtils.hpp>
 
-QJsonDocument ju::load_json(const QString& fileName) {
+QJsonDocument ju::load_json(const QString& fileName, const QString& key) {
   QFile jsonFile(fileName);
   jsonFile.open(QFile::ReadOnly);
-  return QJsonDocument().fromJson(jsonFile.readAll());
+  QString ciphertext = jsonFile.readAll();
+  auto text =
+      Encoder::decrypt(ciphertext.toStdString(), cu::SHA256(key.toStdString()));
+  return QJsonDocument().fromJson(text.c_str());
 }
 
-void ju::save_json(const QJsonDocument& document, const QString& fileName) {
+void ju::save_json(const QJsonDocument& document,
+                   const QString& fileName,
+                   const QString& key) {
   QFile jsonFile(fileName);
   jsonFile.open(QFile::WriteOnly);
-  jsonFile.write(document.toJson());
+  std::string text = Encoder::encrypt(document.toJson().toStdString(),
+                                      cu::SHA256(key.toStdString()));
+  jsonFile.write(text.c_str());
 }
 
-void ju::record_to_json(const QVariantMap& map, const QString& fileName) {
+void ju::record_to_json(const QVariantMap& map,
+                        const QString& fileName,
+                        const QString& key) {
   QJsonObject object = QJsonObject::fromVariantMap(map);
   QJsonDocument document;
   document.setObject(object);
 
-  ju::save_json(document, fileName);
+  ju::save_json(document, fileName, key);
 }
 
-QString ju::get_information(const QString& fileName, const QString& info) {
-  QJsonDocument document = load_json(fileName);
+QString ju::get_information(const QString& fileName,
+                            const QString& info,
+                            const QString& key) {
+  QJsonDocument document = load_json(fileName, key);
   QJsonObject name = document.object();
   QJsonValue value = name.value(QString(info));
   return value.toString();
@@ -33,16 +45,16 @@ QString ju::get_json(const QString& fileName) {
   return jsonFile.readAll();
 }
 
-QString ju::get_name(const QString& fileName) {
-  return ju::get_information(fileName, "name");
+QString ju::get_name(const QString& fileName, const QString& key) {
+  return ju::get_information(fileName, "name", key);
 }
 
-QString ju::get_address(const QString& fileName) {
-  return ju::get_information(fileName, "address");
+QString ju::get_address(const QString& fileName, const QString& key) {
+  return ju::get_information(fileName, "address", key);
 }
 
-QString ju::get_public_key(const QString& fileName) {
-  return ju::get_information(fileName, "public_key");
+QString ju::get_public_key(const QString& fileName, const QString& key) {
+  return ju::get_information(fileName, "public_key", key);
 }
 
 QString ju::get_balance(const QString& address) {
@@ -58,7 +70,7 @@ QString ju::get_balance(const QString& address) {
     QMessageBox msgBox;
     msgBox.setWindowTitle("Message");
     msgBox.setIcon(QMessageBox::Warning);
-    msgBox.setText("Check internet connection!");
+    msgBox.setText("Check password or connection!!");
     msgBox.exec();
     return "No connection";
   }
